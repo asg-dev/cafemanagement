@@ -4,33 +4,46 @@
     <meta charset="utf-8">
     <title>Log in with your account</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <!--<link href="/css/main.css" rel="stylesheet">-->
+    <link href="/css/login.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
 </head>
+<!------ Include the above in your HEAD tag ---------->
 
-<body>
-<div class="container">
-    <form class="form-signin" method="POST" th:action="@{/login}">
-        <h2 class="form-heading">Log in</h2>
-
-        <div class="form-group">
-            <span th:text="${message}"></span>
-            <input name="username" type="text" class="form-control" placeholder="Username"
-                   autofocus="true"/>
-
-            <input name="password" type="password" class="form-control" placeholder="Password"/>
-            <span class="has-error" th:text="${error}"></span>
-
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-            <h4 class="text-center"><a href="/registration">Create an account</a></h4>
-        </div>
-    </form>
+<body style="background: rgb(235, 239, 243)">
+<div class="wrapper-cfm" >
+<div class="sidenav image-bv">
+    <div class="login-main-text">
+        <h2>Freshbrew Cafe Management</h2>
+        <p>Login or register from here to access.</p>
+    </div>
 </div>
+<div class="main">
+    <div class="col-md-6 col-sm-12">
+        <div class="login-form">
+            <div class="container">
+                <form class="form-signin" method="POST" th:action="@{/login}">
+                    <h2 class="form-heading" style="font-family: 'Staatliches', cursive;">Log in</h2>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-<script src="/js/main.js"></script>
+                    <div class="form-group">
+                        <span th:text="${message}"></span> inga nan a
+                        <input name="username" type="text" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Username"
+                               autofocus="true"/>
+                        <br>
+                        <input name="password" type="password" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Password"/>
+                        <span class="has-error" th:text="${error}"></span>
+                        <br>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                        <button class="btn btn-black" type="submit">Log In</button>
+                        <a class = "btn btn-secondary" href="/signup">Create an account</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 </body>
-</html>

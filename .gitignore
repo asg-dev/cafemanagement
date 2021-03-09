@@ -10,6 +10,9 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# Unused Folder for temporary files
+/cafemgmt/src/main/resources/unused/
+
 # Package Files #
 *.jar
 *.war
