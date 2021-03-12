@@ -8,13 +8,11 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
 @Slf4j
 @Component
@@ -28,7 +26,7 @@ public class CafeAuthenticationSuccessHandler implements AuthenticationSuccessHa
         grantedAuthorityList.forEach(authority -> {
             if(authority.getAuthority().equals("ROLE_CUSTOMER")) {
                 try {
-                    redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/menus");
+                    redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/site/menus");
                 }
                 catch (Exception e) {
                     log.error("Exception Occurred", e);

@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class MenusController {
 
-    @RequestMapping(value = "/menus", method = RequestMethod.GET)
+    @RequestMapping(value = "/site/menus", method = RequestMethod.GET)
     public String showMenus(HttpServletRequest request, Authentication authentication, Model model) {
-        System.out.println(((PrincipalUserDetails) authentication.getPrincipal()).getAuthorities());
+        // System.out.println(((PrincipalUserDetails) authentication.getPrincipal()).getAuthorities());
         PrincipalUserDetails currentUser = (PrincipalUserDetails) authentication.getPrincipal();
         System.out.println((currentUser.getAuthorities()).getClass());
         System.out.println((currentUser.getAuthorities()));

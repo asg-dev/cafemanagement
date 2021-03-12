@@ -10,15 +10,16 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class CafeMenus {
+public class CafeMenuItems {
     @Id
-    @GeneratedValue(strategy =  GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private String name;
     private String description;
     private String imagePath;
+    private double price;
     @ElementCollection(targetClass = Long.class)
-    private List<Long> menu_items;
-    private Date created_at;
-    private Date updated_at;
+    private List<Long> mapped_menus;
+    private Date createdAt;
+    private Date updatedAt;
 }

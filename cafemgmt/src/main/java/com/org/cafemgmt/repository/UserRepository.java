@@ -7,4 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface UserRepository extends JpaRepository<CafeUsers, Long> {
     @Query("SELECT t FROM CafeUsers t WHERE t.emailAddress = ?1")
     public CafeUsers findByEmailAddress(String emailaddress);
+
+    @Query("SELECT t FROM CafeUsers t WHERE t.id = ?1")
+    public CafeUsers findUserById(long id);
+
 }
