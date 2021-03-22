@@ -24,32 +24,22 @@ public class CafeAuthenticationSuccessHandler implements AuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         Collection<? extends GrantedAuthority> grantedAuthorityList = authentication.getAuthorities();
         grantedAuthorityList.forEach(authority -> {
-            if(authority.getAuthority().equals("ROLE_CUSTOMER")) {
-                try {
+            try {
+                if (authority.getAuthority().equals("ROLE_CUSTOMER")) {
                     redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/site/menus");
-                }
-                catch (Exception e) {
-                    log.error("Exception Occurred", e);
-                }
-            }
-            else if (authority.getAuthority().equals("ROLE_ADMIN")) {
-                try {
+                } else if (authority.getAuthority().equals("ROLE_ADMIN")) {
                     redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/admin");
-                }
-                catch (Exception e) {
-                    log.error("Exception Occurred", e);
-                }
-            }
-            else if (authority.getAuthority().equals("ROLE_CLERK")) {
-                try {
-                    redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/orders");
-                }
-                catch (Exception e) {
-                    log.error("Exception Occurred", e);
+                } else if (authority.getAuthority().equals("ROLE_CLERK")) {
+                    redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/pending_orders");
+                } else {
+                    throw new IllegalStateException();
                 }
             }
-            else {
-                throw new IllegalStateException();
+            catch (IOException ioException) {
+                log.info("IOException occurred", ioException.getMessage());
+            }
+            catch (IllegalStateException illegalStateException) {
+                log.info("IllegalStateException occurred: ", illegalStateException.getMessage());
             }
         });
     }

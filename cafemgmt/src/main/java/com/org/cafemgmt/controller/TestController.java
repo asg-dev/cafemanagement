@@ -18,9 +18,4 @@ public class TestController {
         }
         return "login";
     }
-
-    @GetMapping("/user")
-    public String user() {
-        return ("<h1>Welcome User</h1>");
-    }
 }

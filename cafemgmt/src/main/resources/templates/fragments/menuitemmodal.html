@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+</head>
+<body>
+
+<div th:fragment="menuitemmodal" class="container demo">
+    <div class="modal left fade" id="menu-item-modal" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="POST" th:object="${menuItemForm}" th:action="@{/menus/items}" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="nav flex-sm-column flex-row">
+
+                            <h2 class="form-signin-heading" style="font-family: 'Staatliches', cursive;">Add Menu Item</h2>
+                            <div class="form-group">
+                                <input type="text" th:field="*{name}" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Name"
+                                       autofocus="true">
+                                <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" th:field="*{description}" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Description">
+                                <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" th:field="*{price}" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Price">
+                                <span class="has-error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <input type="file" name="file" class="form-control" id="fileInputMenuItem">
+                                    <label class="input-group-text" for="fileInputMenuItem">Upload Image for Menu Item</label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

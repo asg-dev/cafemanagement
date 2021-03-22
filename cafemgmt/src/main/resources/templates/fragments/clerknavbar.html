@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<ul th:fragment="clerknavbar" class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" >
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
+        <div class="sidebar-brand-text mx-3"  style="font-family: 'Staatliches', cursive; font-size: 18px;">Freshbrew Management Console</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Customer
+    </div>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/site/menus">
+            <i class="fab fa-elementor"></i>
+            <span>Site</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/pending_orders">
+            <i class="fab fa-elementor"></i>
+            <span>Pending Orders</span>
+        </a>
+    </li>
+
+    <hr class="sidebar-divider d-none d-md-block">
+
+</ul>
+</body>
+</html>

@@ -1,581 +1,198 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-                      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-  <head>
+<head>
 
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <title>Klassy Cafe - Restaurant HTML Template</title>
-<!--
-    
-TemplateMo 558 Klassy Cafe
+    <title>Freshbrew | Admin Console</title>
 
-https://templatemo.com/tm-558-klassy-cafe
+    <!-- Custom fonts for this template-->
+    <link href="/vendor/fontawesome-free/css/all.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
--->
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.css" rel="stylesheet">
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://kit.fontawesome.com/6bb6871a7b.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.css}">
 
-    <link rel="stylesheet" th:href="@{/css/templatemo-klassy-cafe.css}">
+</head>
 
-    <link rel="stylesheet" th:href="@{/css/owl-carousel.css}">
+<body id="page-top">
 
-    <link rel="stylesheet" th:href="@{/css/lightbox.css}">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-    </head>
-    
-    <body>
-    
-    <!-- ***** Preloader Start ***** -->
-    <div id="preloader">
-        <div class="jumper">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>  
-    <!-- ***** Preloader End ***** -->
-    
-    
-    <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="index.html" class="logo">
-                            <img th:src="@{/images/coffee-logo.png}" width="55" height="55" align="klassy cafe html template">
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
+        <!-- Sidebar -->
+        <div th:insert="fragments/navbar :: navbar"></div>
+        <!-- End of Sidebar -->
 
-                            <span th:if="${role} == admin">
-                                <ul class="nav">
-                                <li class="scroll-to-section"><a href="#top" class="active">Menus</a></li>
-                                <li class="scroll-to-section"><a th:href="@{/admin}">Admin</a></li>
-                                <li class="scroll-to-section"><a href="#menu">Pending Orders</a></li>
-                                <li class="scroll-to-section"><a href="#chefs">Cart</a></li>
-                                <form name="logoutForm" th:action="@{/logout}" method="post">
-                                    <input type="submit" value="Logout" class="scroll-to-section"></input>
-                                </form>
-                                </ul>
-                            </span>
-                            <span th:if="${role} == clerk">
-                                <ul class="nav">
-                                <li class="scroll-to-section"><a href="#top" class="active">Menus</a></li>
-                                <li class="scroll-to-section"><a href="#menu">Pending Orders</a></li>
-                                <li class="scroll-to-section"><a href="#chefs">Cart</a></li>
-                                    <form name="logoutForm" th:action="@{/logout}" method="post">
-                                    <input type="submit" value="Logout" class="scroll-to-section"></input>
-                                    </form>
-                                </ul>
-                            </span>
-                            <span th:if="${role} == customer">
-                                <ul class="nav">
-                                <li class="scroll-to-section"><a href="#top" class="active">Menus</a></li>
-                                <li class="scroll-to-section"><a href="#menu">My Orders</a></li>
-                                <li class="scroll-to-section"><a href="#chefs">Cart</a></li>
-                                                            <form name="logoutForm" th:action="@{/logout}" method="post">
-                            <input type="submit" value="Logout" class="scroll-to-section"></input>
-                        </form>
-                                </ul>
-                            </span>
-                        <!-- ***** Menu End ***** -->
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- ***** Header Area End ***** -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-    <!-- ***** Main Banner Area Start ***** -->
-<!--    <div id="top">-->
-<!--        <div class="container-fluid">-->
-<!--            <div class="row">-->
-<!--                <div class="col-lg-4">-->
-<!--                    <div class="left-content">-->
-<!--                        <div class="inner-content">-->
-<!--                            <h4>Freshbrew!</h4>-->
-<!--                            <h6>THE BEST CAFE EXPERIENCE</h6>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="col-lg-8">-->
-<!--                    <div class="main-banner header-text">-->
-<!--                        <div class="Modern-Slider">-->
-<!--                          &lt;!&ndash; Item &ndash;&gt;-->
-<!--                          <div class="item">-->
-<!--                            <div class="img-fill">-->
-<!--                                <img th:src="@{/images/slide-01.jpg}" alt="">-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                          &lt;!&ndash; // Item &ndash;&gt;-->
-<!--                          &lt;!&ndash; Item &ndash;&gt;-->
-<!--                          <div class="item">-->
-<!--                            <div class="img-fill">-->
-<!--                                <img th:src="@{/images/slide-02.jpg}" alt="">-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                          &lt;!&ndash; // Item &ndash;&gt;-->
-<!--                          &lt;!&ndash; Item &ndash;&gt;-->
-<!--                          <div class="item">-->
-<!--                            <div class="img-fill">-->
-<!--                                <img th:src="@{/images/slide-03.jpg}" alt="">-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                          &lt;!&ndash; // Item &ndash;&gt;-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-            </div>
-        </div>
-    </div>
-    <!-- ***** Main Banner Area End ***** -->
+            <!-- Main Content -->
+            <div id="content">
 
-    <!-- ***** About Area Starts ***** -->
-    <!-- ***** About Area Ends ***** -->
+                <!-- Topbar -->
+                <div th:insert="fragments/topbar :: topbar"></div>
+                <!-- End of Topbar -->
 
-    <!-- ***** Menu Area Starts ***** -->
-    <section class="section" id="menu">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="section-heading">
-                        <h6>Our Menu</h6>
-                        <h2>Our selection of cakes with quality taste</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="menu-item-carousel">
-            <div class="col-lg-12">
-                <div class="owl-menu-item owl-carousel">
-                    <div class="item">
-                        <div class='card card1'>
-                            <div class="price"><h6>$14</h6></div>
-                            <div class='info'>
-                              <h1 class='title'>Chocolate Cake</h1>
-                              <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.</p>
-                              <div class="main-text-button">
-                                  <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class='card card2'>
-                            <div class="price"><h6>$22</h6></div>
-                            <div class='info'>
-                              <h1 class='title'>Klassy Pancake</h1>
-                              <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.</p>
-                              <div class="main-text-button">
-                                  <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class='card card3'>
-                            <div class="price"><h6>$18</h6></div>
-                            <div class='info'>
-                              <h1 class='title'>Tall Klassy Bread</h1>
-                              <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.</p>
-                              <div class="main-text-button">
-                                  <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class='card card4'>
-                            <div class="price"><h6>$10</h6></div>
-                            <div class='info'>
-                              <h1 class='title'>Blueberry CheeseCake</h1>
-                              <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.</p>
-                              <div class="main-text-button">
-                                  <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class='card card5'>
-                            <div class="price"><h6>$8.50</h6></div>
-                            <div class='info'>
-                              <h1 class='title'>Klassy Cup Cake</h1>
-                              <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.</p>
-                              <div class="main-text-button">
-                                  <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class='card card3'>
-                            <div class="price"><h6>$7.25</h6></div>
-                            <div class='info'>
-                              <h1 class='title'>Klassic Cake</h1>
-                              <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.</p>
-                              <div class="main-text-button">
-                                  <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- ***** Menu Area Ends ***** -->
 
-    <!-- ***** Chefs Area Starts ***** -->
-    <!-- ***** Chefs Area Ends ***** -->
+            <div class="container-fluid">
 
-    <!-- ***** Reservation Us Area Starts ***** -->
-    <!-- ***** Reservation Area Ends ***** -->
 
-    <!-- ***** Menu Area Starts ***** -->
-    <section class="section" id="offers">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 offset-lg-4 text-center">
-                    <div class="section-heading">
-                        <h6>Klassy Week</h6>
-                        <h2>This Week’s Special Meal Offers</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="row" id="tabs">
-                        <div class="col-lg-12">
-                            <div class="heading-tabs">
-                                <div class="row">
-                                    <div class="col-lg-6 offset-lg-3">
-                                        <ul>
-                                          <li><a href='#tabs-1'><img th:src="@{/images/tab-icon-01.png}" alt="">Breakfast</a></li>
-                                          <li><a href='#tabs-2'><img th:src="@{/images/tab-icon-02.png}" alt="">Lunch</a></a></li>
-                                          <li><a href='#tabs-3'><img th:src="@{/images/tab-icon-03.png}" alt="">Dinner</a></a></li>
-                                        </ul>
+                <!-- Content Row -->
+
+                <div class="row">
+
+                    <!-- Area Chart -->
+                    <div class="col-xl-12 col-lg-7">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Menus</h6>
+                                <div class="dropdown no-arrow">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                    </a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <section class='tabs-content'>
-                                <article id='tabs-1'>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="row">
-                                                <div class="left-list">
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-01.png}" alt="">
-                                                            <h4>Fresh Chicken Salad</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$10.50</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-02.png}" alt="">
-                                                            <h4>Orange Juice</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$8.50</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-03.png}" alt="">
-                                                            <h4>Fruit Salad</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$9.90</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                            <!-- Card Body -->
+                            <button class="d-flex justify-content-start d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                <i class="fas fa-dumpster text-white-50"></i><a class="addNewMenu" th:href="@{/menus/new}" style="text-decoration: none; color:#fff;">      Add Menu</a>
+                            </button>
+                            <button class="d-flex justify-content-start d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                <i class="fas fa-dumpster text-white-50"></i><a class="addNewMenu" th:href="@{/menus/items/}" style="text-decoration: none; color:#fff;">      Manage Menu Items</a>
+                            </button> <!-- Unnecessary -->
+                            <div class="card-body">
+                                <div class="chart-area">
+
+                                        <div class="tablet">
+                                            <table id="myTable" class="card-table">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col text-primary">Menu Name</th>
+                                                    <th scope="col text-primary">Menu Description</th>
+                                                    <th scope="col text-primary">Menu Items</th>
+                                                    <th scope="col text-primary">Options</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                <th:block th:object="${menus}" th:each="menu : ${menus}">
+                                                    <tr>
+                                                        <td th:inline="text">[[${menu.name}]] </td>
+                                                        <td th:inline="text">[[${menu.description}]]</td>
+                                                        <td th:inline="text">[[${menu.menu_item_names}]]</td>
+                                                        <td>
+                                                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                                                <i class="fas fa-pencil-alt text-white-50"></i><a th:href="@{/menus/}+${menu.id}+@{/edit}" style="text-decoration: none; color:#fff;">      Edit Menu</a>
+                                                            </button>
+
+                                                            <form th:action="@{/menus/}+${menu.id}+@{/delete}" th:method="POST">
+                                                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+
+                                                                <i class="fas fa-dumpster text-white-50"></i><a class="deletionOp" th:value="@{/menus/}+${menu.id}+@{/delete}" style="text-decoration: none; color:#fff;">      Delete Menu</a>
+
+                                                            </button>
+                                                            </form>
+
+                                                            <th:block th:switch="${menu.active}">
+                                                                <th:block th:case="false">
+                                                                <form th:action="@{/menus/}+${menu.id}+@{/activate}" th:method="POST">
+                                                                <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                                                    <i class="fas fas fa-key text-white-50"></i><a class="activateValue" th:value="@{/menus/}+${menu.id}+@{/activate}" style="text-decoration: none; color:#fff;">      Activate Menu</a>
+                                                                </button>
+                                                                </form>
+                                                                </th:block>
+                                                                <th:block th:case="true">
+                                                                    <form th:action="@{/menus/}+${menu.id}+@{/deactivate}" th:method="POST">
+                                                                        <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                                                            <i class="fas fas fa-key text-white-50"></i><a class="deactivateValue" th:value="@{/menus/}+${menu.id}+@{/deactivate}" style="text-decoration: none; color:#fff;">      Deactivate Menu</a>
+                                                                        </button>
+                                                                    </form>
+                                                                </th:block>
+                                                            </th:block>
+<!--                                                            <script>-->
+<!--                                                                jQuery('.deletionOp').on('click', function(e) {-->
+<!--                                                                    e.preventDefault();-->
+<!--                                                                    fetch((e.currentTarget.attributes[1].value), {-->
+<!--                                                                        "method": 'DELETE',-->
+<!--                                                                        "credentials":"include",-->
+<!--                                                                    }).then((response) => {-->
+<!--                                                                        console.log("USER DELETED");-->
+<!--                                                                        window.location.href = "/menus";-->
+<!--                                                                    })-->
+<!--                                                                })-->
+<!--                                                            </script>-->
+                                                        </td>
+                                                    </tr>
+                                                </th:block>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <div class="row">
-                                                <div class="right-list">
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-04.png}" alt="">
-                                                            <h4>Eggs Omelette</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$6.50</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-05.png}" alt="">
-                                                            <h4>Dollma Pire</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$5.00</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-06.png}" alt="">
-                                                            <h4>Omelette & Cheese</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$4.10</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </article>  
-                                <article id='tabs-2'>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="row">
-                                                <div class="left-list">
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-04.png}" alt="">
-                                                            <h4>Eggs Omelette</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$14</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-05.png}" alt="">
-                                                            <h4>Dollma Pire</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$18</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-06.png}" alt="">
-                                                            <h4>Omelette & Cheese</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$22</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="row">
-                                                <div class="right-list">
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-01.png}" alt="">
-                                                            <h4>Fresh Chicken Salad</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$10</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-02.png}" alt="">
-                                                            <h4>Orange Juice</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$20</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-03.png}" alt="">
-                                                            <h4>Fruit Salad</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$30</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </article>
-                                <article id='tabs-3'>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="row">
-                                                <div class="left-list">
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-05.png}" alt="">
-                                                            <h4>Eggs Omelette</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$14</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-03.png}" alt="">
-                                                            <h4>Orange Juice</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$18</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-02.png}" alt="">
-                                                            <h4>Fruit Salad</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$10</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="row">
-                                                <div class="right-list">
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-06.png}" alt="">
-                                                            <h4>Fresh Chicken Salad</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$8.50</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-01.png}" alt="">
-                                                            <h4>Dollma Pire</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$9</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="tab-item">
-                                                            <img th:src="@{/images/tab-item-04.png}" alt="">
-                                                            <h4>Omelette & Cheese</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                                                            <div class="price">
-                                                                <h6>$11</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </article>   
-                            </section>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+
             </div>
+
+                <!-- Content Row -->
+
+
         </div>
-    </section>
-    <!-- ***** Chefs Area Ends ***** --> 
-    
-    <!-- ***** Footer Start ***** -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-xs-12">
-                    <div class="right-text-content">
-                            <ul class="social-icons">
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                            </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="logo">
-                        <a href="index.html"><img th:src="@{/images/white-logo.png}" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-xs-12">
-                    <div class="left-text-content">
-                        <p>© Copyright Klassy Cafe Co.
-                        
-                        <br>Design: TemplateMo</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    </div>
 
-    <!-- jQuery -->
-    <script src="/js/jquery-2.1.0.min.js"></script>
 
-    <!-- Bootstrap -->
-    <script src="/js/popper.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
 
-    <!-- Plugins -->
-    <script src="/js/owl-carousel.js"></script>
-    <script src="/js/accordions.js"></script>
-    <script src="/js/datepicker.js"></script>
-    <script src="/js/scrollreveal.min.js"></script>
-    <script src="/js/waypoints.min.js"></script>
-    <script src="/js/jquery.counterup.min.js"></script>
-    <script src="/js/imgfix.min.js"></script> 
-    <script src="/js/slick.js"></script> 
-    <script src="/js/lightbox.js"></script> 
-    <script src="/js/isotope.js"></script> 
-    
-    <!-- Global Init -->
-    <script src="/js/custom.js"></script>
-    <script>
+    <!-- End of Page Wrapper -->
 
-        $(function() {
-            var selectedClass = "";
-            $("p").click(function(){
-            selectedClass = $(this).attr("data-rel");
-            $("#portfolio").fadeTo(50, 0.1);
-                $("#portfolio div").not("."+selectedClass).fadeOut();
-            setTimeout(function() {
-              $("."+selectedClass).fadeIn();
-              $("#portfolio").fadeTo(50, 1);
-            }, 500);
-                
-            });
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript-->
+<!--    <script src="/js/jquery.min.js"></script>-->
+<!--    <script src="/js/bootstrap.bundle.min.js"></script>-->
+
+<!--    &lt;!&ndash; Core plugin JavaScript&ndash;&gt;-->
+<!--    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>-->
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.min.js"></script>
+
+<!--    &lt;!&ndash; Page level plugins &ndash;&gt;-->
+<!--    <script src="vendor/chart.js/Chart.min.js"></script>-->
+
+        <script>
+        jQuery(document).ready(function() {
+            jQuery.noConflict();
+            jQuery('#myTable').DataTable();
         });
+        </script>
 
-    </script>
-  </body>
-<html>
+    <!-- Page level custom scripts -->
+<!--    <script src="js/demo/chart-area-demo.js"></script>-->
+<!--    <script src="js/demo/chart-pie-demo.js"></script>-->
+
+</body>
+
+</html>

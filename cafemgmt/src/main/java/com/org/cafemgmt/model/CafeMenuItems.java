@@ -13,7 +13,7 @@ import java.util.List;
 public class CafeMenuItems {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    private Long id;
     private String name;
     private String description;
     private String imagePath;

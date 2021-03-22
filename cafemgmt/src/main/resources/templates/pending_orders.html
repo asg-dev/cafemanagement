@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Freshbrew | Admin Console</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="/vendor/fontawesome-free/css/all.css" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.css" rel="stylesheet">
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous">
+    </script>
+<!--    <script src="https://kit.fontawesome.com/6bb6871a7b.js" crossorigin="anonymous"></script>-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.js"></script>
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>-->
+
+<!--    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <link href="/css/sb-admin-2.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/6bb6871a7b.js" crossorigin="anonymous"></script>
+
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <th:block th:object="${role}" th:switch="${role}">
+        <div th:case="${'admin'}" th:insert="fragments/navbar :: navbar"></div>
+        <div th:case="${'clerk'}" th:insert="fragments/clerknavbar :: clerknavbar"></div>
+    </th:block>
+
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <div th:insert="fragments/topbar :: topbar"></div>
+            <!-- End of Topbar -->
+
+
+            <div class="container-fluid">
+
+
+                <!-- Content Row -->
+
+                <div class="row">
+
+                    <!-- Area Chart -->
+                    <div class="col-xl-12 col-lg-7">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Pending Orders</h6>
+                                <div class="dropdown no-arrow">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="chart-area">
+
+                                <div class="tablet">
+                                    <table id="myTable" class="card-table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col text-primary">Order ID</th>
+                                            <th scope="col text-primary">Customer Name</th>
+                                            <th scope="col text-primary">Order Details</th>
+                                            <th scope="col text-primary">Options</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <th:block th:object="${cafeOrders}" th:each="order : ${cafeOrders}">
+                                            <tr>
+                                                <td th:inline="text">[[${order.id}]] </td>
+                                                <td th:inline="text">[[${order.customerName}]]</td>
+                                                <td th:inline="text"><a href="#" id="new-menu-item-modal" data-toggle="modal" th:data-target="${'#' + order.id}">Order Details</a></td>
+                                                <td>
+
+                                                    <form th:action="@{/orders/}+${order.id}+@{/approve}" th:method="POST">
+                                                        <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                                            <i class="fas fa-dumpster text-white-50"></i><a  style="text-decoration: none; color:#fff;">      Approve Order</a>
+                                                        </button>
+                                                    </form>
+
+                                                    <form th:action="@{/orders/}+${order.id}+@{/cancel}" th:method="POST">
+                                                        <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                                            <i class="fas fa-dumpster text-white-50"></i><a style="text-decoration: none; color:#fff;">      Cancel Order</a>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                    <div th:replace="fragments/orderdetailsmodal :: orderdetailsmodal"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Content Row -->
+
+
+        </div>
+    </div>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.min.js"></script>
+
+    <script>
+        jQuery(document).ready(function() {
+            jQuery.noConflict();
+            jQuery('#myTable').DataTable();
+        });
+        </script>
+
+</body>
+
+</html>
