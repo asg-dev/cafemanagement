@@ -76,7 +76,7 @@ public class RestMenusController {
             throw new CafeAuthorizationException("Action not allowed");
         }
         List<Long> incomingList = cafeMenus.getMenu_items();
-        if (! menuItemsService.checkMenuItemValidity(incomingList)) {
+        if (!menuItemsService.checkMenuItemValidity(incomingList)) {
             throw new CafeInvalidParameterException("Items in menu_list are invalid.");
         }
     }

@@ -52,8 +52,7 @@ public class RegisterAccountController {
             try {
                 userService.triggerPasswordReset(user);
                 return "redirect:/login";
-            }
-            catch (MessagingException messagingException) {
+            } catch (MessagingException messagingException) {
                 log.error("Could not send message. ", messagingException.getCause());
                 return "redirect:/login?error=unable_to_send_email";
             }

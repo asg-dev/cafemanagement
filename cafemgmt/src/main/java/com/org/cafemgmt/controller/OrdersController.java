@@ -36,8 +36,7 @@ public class OrdersController {
         String authority = UserManagement.getAuthority(authentication, userService);
         if (authority.equals("ROLE_ADMIN")) {
             model.addAttribute("role", "admin");
-        }
-        else {
+        } else {
             model.addAttribute("role", "clerk");
         }
 
@@ -76,7 +75,7 @@ public class OrdersController {
         cafeOrderService.setMenuItemsInternal(cafeOrdersList);
 
         model.addAttribute("cafeOrders", cafeOrdersList);
-        model.addAttribute("role","customer");
+        model.addAttribute("role", "customer");
 
         model.addAttribute("ratings", new CafeRatings());
         return "my_orders";
@@ -90,8 +89,7 @@ public class OrdersController {
 
         if (cafeUser.getAuthority().equals("ROLE_ADMIN")) {
             model.addAttribute("role", "admin");
-        }
-        else {
+        } else {
             model.addAttribute("role", "clerk");
         }
 

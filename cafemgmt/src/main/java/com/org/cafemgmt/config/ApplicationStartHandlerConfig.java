@@ -25,7 +25,7 @@ public class ApplicationStartHandlerConfig implements CommandLineRunner {
             cafeUsers.setEmailAddress("walkincustomerdefault@freshbrew.com");
             cafeUsers.setAuthority("ROLE_CUSTOMER");
             cafeUsers.setName("Walk-in Customer");
-            cafeUsers.setValidityToken(new UUID(1,0));
+            cafeUsers.setValidityToken(new UUID(1, 0));
             cafeUsers.setActive(true);
             cafeUsers.setCreated_at(new Date());
             cafeUsers.setUpdated_at(new Date());

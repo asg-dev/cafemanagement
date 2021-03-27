@@ -39,12 +39,10 @@ public class RestUsersController {
                     throw new CafeInvalidParameterException("Invalid Parameter in Request - User authority should be ROLE_CLERK or ROLE_ADMIN");
                 }
                 return userService.saveUser(user);
-            }
-            else {
+            } else {
                 throw new CafeInvalidParameterException("Name, emailAddress and authority fields are mandatory");
             }
-        }
-        catch (MessagingException e) {
+        } catch (MessagingException e) {
             log.info("MessagingException: ", e);
         }
         return null;
@@ -55,7 +53,7 @@ public class RestUsersController {
         Optional<CafeUsers> userToDelete = userService.findUserById(id);
         if (!userToDelete.isPresent()) {
             log.error("User not found, throwing Exception");
-            throw new CafeEntityNotFoundException("No User Found with id "+id);
+            throw new CafeEntityNotFoundException("No User Found with id " + id);
         }
         userService.deleteUser(userToDelete.get());
         return ResponseEntity.status(204).body("");
@@ -69,10 +67,10 @@ public class RestUsersController {
         acceptedAuthorities.add("ROLE_CLERK");
         acceptedAuthorities.add("ROLE_ADMIN");
         if (!myUser.isPresent()) {
-            throw new CafeEntityNotFoundException("No User Found with id "+id);
+            throw new CafeEntityNotFoundException("No User Found with id " + id);
         }
         if (cafeUser == null || (cafeUser.getAuthority() != null &&
-                ! acceptedAuthorities.contains(cafeUser.getAuthority())) ) {
+                !acceptedAuthorities.contains(cafeUser.getAuthority()))) {
             throw new CafeInvalidParameterException("Invalid Parameters in Request. Authority should be ROLE_ADMIN or ROLE_CLERK");
         }
         cafeUser.setId(id);
@@ -84,7 +82,7 @@ public class RestUsersController {
     public ResponseEntity<Object> getUser(@PathVariable long id) {
         Optional<CafeUsers> user = userService.findUserById(id);
         if (!user.isPresent()) {
-            throw new CafeEntityNotFoundException("No User Found with id "+id);
+            throw new CafeEntityNotFoundException("No User Found with id " + id);
         }
         return ResponseEntity.status(200).body(user.get());
     }

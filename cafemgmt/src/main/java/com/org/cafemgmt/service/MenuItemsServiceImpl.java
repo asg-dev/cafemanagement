@@ -58,8 +58,7 @@ public class MenuItemsServiceImpl implements MenuItemsService {
                 String filename = file.getOriginalFilename().replace('.' + extension, "") + RandomString.make(6) + '.' + extension;
                 Files.copy(file.getInputStream(), this.menuItemRoot.resolve(filename));
                 return (menuItemRoot.toString() + File.separator + filename);
-            }
-            else {
+            } else {
                 return null;
             }
         } catch (Exception e) {
@@ -82,8 +81,7 @@ public class MenuItemsServiceImpl implements MenuItemsService {
             Optional<CafeMenuItems> menuItems = menuItemsRepository.findById(menuItem);
             if (menuItems.isPresent()) {
                 isMenuValid = true;
-            }
-            else {
+            } else {
                 isMenuValid = false;
                 break;
             }

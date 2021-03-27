@@ -36,23 +36,37 @@ public class BeanConfig {
     }
 
     @Bean
-    EmailService emailService() { return new EmailServiceImpl(); }
+    EmailService emailService() {
+        return new EmailServiceImpl();
+    }
 
     @Bean
-    UserRegistration userRegistration() { return new UserRegistrationImpl(); }
+    UserRegistration userRegistration() {
+        return new UserRegistrationImpl();
+    }
 
     @Bean
-    MenuService menuService() { return new MenuServiceImpl(); }
+    MenuService menuService() {
+        return new MenuServiceImpl();
+    }
 
     @Bean
-    MenuItemsService menuItemsService() { return new MenuItemsServiceImpl(); }
+    MenuItemsService menuItemsService() {
+        return new MenuItemsServiceImpl();
+    }
 
     @Bean
-    CartsService cartsService() { return new CartsServiceImpl(); }
+    CartsService cartsService() {
+        return new CartsServiceImpl();
+    }
 
     @Bean
-    CafeOrderService cafeOrderService() { return new CafeOrderServiceImpl(); }
+    CafeOrderService cafeOrderService() {
+        return new CafeOrderServiceImpl();
+    }
 
     @Bean
-    CafeRatingsService cafeRatingsService() { return new CafeRatingsServiceImpl(); }
+    CafeRatingsService cafeRatingsService() {
+        return new CafeRatingsServiceImpl();
+    }
 }

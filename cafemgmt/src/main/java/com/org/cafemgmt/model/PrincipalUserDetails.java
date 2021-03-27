@@ -15,12 +15,13 @@ public class PrincipalUserDetails implements UserDetails {
     private List<GrantedAuthority> authorities;
 
     public PrincipalUserDetails(CafeUsers user) {
-        this.username=user.getEmailAddress();
-        this.password=user.getPassword();
+        this.username = user.getEmailAddress();
+        this.password = user.getPassword();
         this.authorities = Arrays.asList(new SimpleGrantedAuthority(user.getAuthority()));
     }
 
-    @Override public Collection<? extends GrantedAuthority> getAuthorities() {
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
 

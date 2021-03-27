@@ -18,15 +18,17 @@ public class SignupController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value="/signup", method= RequestMethod.GET)
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String loadUserSignup(Model model) {
         model.addAttribute("userForm", new CafeUsers());
         return "signup";
     }
 
-    @RequestMapping(value="/signup", method=RequestMethod.POST)
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String signup(@ModelAttribute("userForm") CafeUsers cafeUsers) {
-        log.info("User signed up: ", cafeUsers.getEmailAddress());
+        if (cafeUsers.getName() == null || cafeUsers.getEmailAddress() == null || cafeUsers.getPassword() == null) {
+            return "redirect:/login";
+        }
         userService.insertUser(cafeUsers);
         return "login";
     }

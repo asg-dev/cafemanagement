@@ -35,6 +35,7 @@ public class MenuItemsController {
 
         // Using the referrer to identify from which page the edit was made - this way, we can redirect them to the same page with the
         // correct information after item creation.
+        // As we have to redirect them to the correct /menus/{id}/edit page.
         String referrer = request.getHeader("referer");
         String toReturn = "redirect:/" + referrer.replace("http://localhost:8080/", "");
         String imagePath = menuItemsService.saveMenuItemImage(file);

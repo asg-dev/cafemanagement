@@ -42,8 +42,7 @@ public class UsersController {
         Optional<CafeUsers> cafeUser = userService.findUserById(id);
         if (cafeUser.isPresent()) {
             model.addAttribute("userInfo", cafeUser.get());
-        }
-        else {
+        } else {
             model.addAttribute("userInfo", "");
         }
 
@@ -74,6 +73,10 @@ public class UsersController {
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     private String createUser(@ModelAttribute("userForm") CafeUsers cafeUsers, Authentication authentication) throws MessagingException {
+        CafeUsers existingUser = userService.findUserByEmail(cafeUsers.getEmailAddress());
+        if (existingUser != null) {
+            return "redirect:/users/new?error=user_already_exists";
+        }
         userService.insertCustomUser(cafeUsers);
         return "redirect:/users";
     }

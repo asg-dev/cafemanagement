@@ -28,7 +28,7 @@ public class CartsServiceImpl implements CartsService {
             String cartItems = cafeCart.get().getCartItems(); // 55:120, 66:12, 62:23
             String[] cartItemArray = cartItems.split(",");
             List<String> list = new ArrayList<String>(Arrays.asList(cartItemArray)); // [ 1:2:6, 2:1:4 ]
-            for (int i=0; i < list.size(); i++) {
+            for (int i = 0; i < list.size(); i++) {
                 if (Arrays.asList(list.get(i).split(":")).get(0).equals(String.valueOf(id))
                         && Arrays.asList(list.get(i).split(":")).get(3).equals(String.valueOf(menu_id))) {
                     long existingQuantity = Long.parseLong(Arrays.asList(list.get(i).split(":")).get(1));
@@ -38,19 +38,18 @@ public class CartsServiceImpl implements CartsService {
 
                     list.set(i, id + ":" + quantityToAdd + ":" + Double.parseDouble(decimalFormat.format(subtotalToAdd)) + ":" + menu_id);
                     break;
-                }
-                else {
-                    if (i == list.size()-1) {
-                        double subtotalToAdd = (originalPrice*quantity);
-                        list.add(id+":"+quantity+":"+Double.parseDouble(decimalFormat.format(subtotalToAdd))+":"+menu_id);
+                } else {
+                    if (i == list.size() - 1) {
+                        double subtotalToAdd = (originalPrice * quantity);
+                        list.add(id + ":" + quantity + ":" + Double.parseDouble(decimalFormat.format(subtotalToAdd)) + ":" + menu_id);
                         break;
                     }
                 }
             }
             return (String.join(",", list));
         }
-        double subtotalToAdd = (originalPrice*quantity);
-        String cartItem = id+":"+quantity+":"+Double.parseDouble(decimalFormat.format(subtotalToAdd))+":"+menu_id;
+        double subtotalToAdd = (originalPrice * quantity);
+        String cartItem = id + ":" + quantity + ":" + Double.parseDouble(decimalFormat.format(subtotalToAdd)) + ":" + menu_id;
         return cartItem;
     }
 
@@ -120,7 +119,7 @@ public class CartsServiceImpl implements CartsService {
             String cartItems = cafeCart.getCartItems();
             String[] cartItemArray = cartItems.split(",");
             List<CartItem> cartItemList = new ArrayList<CartItem>();
-            for (int i=0; i < cartItemArray.length; i++) {
+            for (int i = 0; i < cartItemArray.length; i++) {
                 CartItem cartItem = new CartItem();
                 String[] cart = cartItemArray[i].split(":");
                 cartItem.setMenuItem(Long.parseLong(cart[0]));
@@ -131,8 +130,7 @@ public class CartsServiceImpl implements CartsService {
             }
             cafeCart.setCartItemsInternal(cartItemList);
             return cafeCart;
-        }
-        else {
+        } else {
             return null;
         }
     }

@@ -18,7 +18,7 @@ public class CafeUsers {
     @JsonView(CafeUserView.ViewToReturnUsers.class)
     private long id;
     @JsonView(CafeUserView.ViewToReturnUsers.class)
-    @Column(unique=true)
+    @Column(unique = true)
     private String emailAddress;
     @Column(name = "active", nullable = true)
     private boolean active;

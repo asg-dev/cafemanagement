@@ -8,11 +8,18 @@ import java.util.Optional;
 
 public interface MenuService {
     public List<CafeMenus> listAllMenus();
+
     public boolean activateMenu(long id);
+
     public boolean deactivateMenu(long id);
+
     public CafeMenus saveMenu(CafeMenus cafeMenus);
+
     public Optional<CafeMenus> getMenuById(long id);
+
     public void deleteMenuById(long id);
+
     public List<CafeMenus> listAllActiveMenus();
+
     public CafeMenus updateMenu(CafeMenus cafeMenus, long id);
 }

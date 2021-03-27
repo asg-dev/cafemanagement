@@ -12,8 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 public class CafemgmtApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CafemgmtApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CafemgmtApplication.class, args);
+    }
 
 }

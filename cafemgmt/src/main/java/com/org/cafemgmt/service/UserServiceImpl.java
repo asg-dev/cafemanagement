@@ -41,8 +41,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(CafeUsers cafeUser) {
-       userRepository.deleteById(cafeUser.getId());
-       userRepository.flush();
+        userRepository.deleteById(cafeUser.getId());
+        userRepository.flush();
     }
 
     @Override
@@ -77,18 +77,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void insertCustomUser(CafeUsers cafeUsers) throws MessagingException {
-            cafeUsers.setCreated_at(new Date());
-            cafeUsers.setUpdated_at(new Date());
-            cafeUsers.setInternalUser(false);
-            cafeUsers.setWalkinCustomer(false);
-            cafeUsers.setActive(false);
-            cafeUsers.setValidityToken(generateUUID());
+        cafeUsers.setCreated_at(new Date());
+        cafeUsers.setUpdated_at(new Date());
+        cafeUsers.setInternalUser(false);
+        cafeUsers.setWalkinCustomer(false);
+        cafeUsers.setActive(false);
+        cafeUsers.setValidityToken(generateUUID());
         try {
             emi.sendMessage(cafeUsers.getEmailAddress(), "Your Freshbrew Cafe Management Registration :)", userRegistration.generateRegistrationMessage(
                     cafeUsers.getValidityToken(), cafeUsers.getName()
             ));
-        }
-        catch (MessagingException messagingException) {
+        } catch (MessagingException messagingException) {
             log.info("Couldn't send email. Saving user without registration. Exception thrown: " + messagingException.getCause());
         }
 
@@ -114,8 +113,7 @@ public class UserServiceImpl implements UserService {
             existingUser.setValidityToken(generateUUID()); // setting a new validity token to expire the old link.
             existingUser.setActive(true);
             userRepository.save(existingUser);
-        }
-        else {
+        } else {
             throw new IllegalStateException();
         }
     }
@@ -158,9 +156,15 @@ public class UserServiceImpl implements UserService {
         Optional<CafeUsers> existingUser = userRepository.findById(cafeUser.getId());
         if (existingUser.isPresent()) {
             CafeUsers existingUserObj = existingUser.get();
-            if (cafeUser.getName() != null) { existingUserObj.setName(cafeUser.getName()); }
-            if (cafeUser.getEmailAddress() != null) { existingUserObj.setEmailAddress(cafeUser.getEmailAddress()); }
-            if (cafeUser.getAuthority() != null) { existingUserObj.setAuthority(cafeUser.getAuthority()); }
+            if (cafeUser.getName() != null) {
+                existingUserObj.setName(cafeUser.getName());
+            }
+            if (cafeUser.getEmailAddress() != null) {
+                existingUserObj.setEmailAddress(cafeUser.getEmailAddress());
+            }
+            if (cafeUser.getAuthority() != null) {
+                existingUserObj.setAuthority(cafeUser.getAuthority());
+            }
             return userRepository.save(existingUserObj);
         }
         return null;
@@ -171,8 +175,7 @@ public class UserServiceImpl implements UserService {
         CafeUsers walkinUser = userRepository.findByEmailAddress("walkincustomerdefault@freshbrew.com");
         if (walkinUser != null) {
             return walkinUser.getId();
-        }
-        else {
+        } else {
             return -1;
         }
 
@@ -184,7 +187,7 @@ public class UserServiceImpl implements UserService {
         if (resetUser != null) {
             resetUser.setValidityToken(generateUUID());
             userRepository.save(resetUser);
-            emi.sendMessage(resetUser.getEmailAddress(), "Reset Password for Freshbrew Cafe Management", userRegistration.generatePasswordResetMessage (
+            emi.sendMessage(resetUser.getEmailAddress(), "Reset Password for Freshbrew Cafe Management", userRegistration.generatePasswordResetMessage(
                     resetUser.getValidityToken(), resetUser.getName()
             ));
         }
@@ -205,6 +208,8 @@ public class UserServiceImpl implements UserService {
         return bCryptPasswordEncoder.encode(password);
     }
 
-    private UUID generateUUID() { return new UUID(1,1).randomUUID(); }
+    private UUID generateUUID() {
+        return new UUID(1, 1).randomUUID();
+    }
 
 }

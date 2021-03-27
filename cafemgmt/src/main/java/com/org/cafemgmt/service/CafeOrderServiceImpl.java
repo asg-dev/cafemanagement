@@ -56,10 +56,10 @@ public class CafeOrderServiceImpl implements CafeOrderService {
 
     @Override
     public List<CafeOrders> setMenuItemsInternal(List<CafeOrders> cafeOrdersList) {
-        for (int i=0; i < cafeOrdersList.size(); i++) {
+        for (int i = 0; i < cafeOrdersList.size(); i++) {
             String[] cartItemArray = cafeOrdersList.get(i).getCartItemList().split(",");
             List<CartItem> cartItemList = new ArrayList<CartItem>();
-            for (int j=0; j < cartItemArray.length; j++){
+            for (int j = 0; j < cartItemArray.length; j++) {
                 String[] cartItem = cartItemArray[j].split(":");
                 CartItem cartItem1 = new CartItem();
                 cartItem1.setMenuItem(Long.parseLong(cartItem[0]));
@@ -149,8 +149,7 @@ public class CafeOrderServiceImpl implements CafeOrderService {
             CafeUsers loggedInUser = cafeUsersOptional.get();
             if (loggedInUser.isInternalUser()) {
                 user_id = userService.getWalkinCustomerId();
-            }
-            else {
+            } else {
                 user_id = cafeCart.getUserId();
             }
         }
@@ -169,14 +168,11 @@ public class CafeOrderServiceImpl implements CafeOrderService {
         CafeOrders cafeOrder = CafeOrders.builder().customerId(customerId).approvedUser(approverId).build();
         if (dateRange != null && customerId == 0 && approverId == 0) {
             return cafeOrderRepository.findWithinDateRange(new Date(completeRange[0]), new Date(completeRange[1]));
-        }
-        else if (dateRange != null && customerId != 0 && approverId == 0) {
+        } else if (dateRange != null && customerId != 0 && approverId == 0) {
             return cafeOrderRepository.findWithinDateRangeCustomerId(new Date(completeRange[0]), new Date(completeRange[1]), customerId);
-        }
-        else if (dateRange != null && customerId == 0 && approverId != 0) {
+        } else if (dateRange != null && customerId == 0 && approverId != 0) {
             return cafeOrderRepository.findWithinDateRangeApproverId(new Date(completeRange[0]), new Date(completeRange[1]), approverId);
-        }
-        else {
+        } else {
             return cafeOrderRepository.findAll(Example.of(cafeOrder));
         }
     }

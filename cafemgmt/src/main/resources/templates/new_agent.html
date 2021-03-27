@@ -11,13 +11,11 @@
 
     <title>Freshbrew | Admin Console</title>
 
-    <!-- Custom fonts for this template-->
     <link href="/vendor/fontawesome-free/css/all.css" rel="stylesheet" type="text/css">
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
-    <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/6bb6871a7b.js" crossorigin="anonymous"></script>
 
@@ -25,32 +23,28 @@
 
 <body id="page-top">
 
-<!-- Page Wrapper -->
 <div id="wrapper">
 
-    <!-- Sidebar -->
     <div th:insert="fragments/navbar :: navbar"></div>
-    <!-- End of Sidebar -->
 
-    <!-- Content Wrapper -->
+
     <div id="content-wrapper" class="d-flex flex-column">
 
-        <!-- Main Content -->
+
         <div id="content">
 
-            <!-- Topbar -->
+
             <div th:insert="fragments/topbar :: topbar"></div>
-            <!-- End of Topbar -->
 
 
             <div class="container-fluid">
-                <!-- Content Row -->
+
                 <div class="row">
 
-                    <!-- Area Chart -->
+
                     <div class="col-xl-12 col-lg-7">
                         <div class="card shadow mb-4">
-                            <!-- Card Header - Dropdown -->
+
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">Users</h6>
                                 <div class="dropdown no-arrow">
@@ -60,21 +54,33 @@
                                     </a>
                                 </div>
                             </div>
+                            <div class="alert alert-danger email-already-present-alert alert-dismissible fade show"
+                                 style="display: none;" role="alert">
+                                <strong>User already exists with the same email address.</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                         </div>
-                        <!-- Card Body -->
                         <div class="card-body">
                             <div class="chart-area">
                                 <form method="POST" th:object="${userForm}" th:action="@{/users/}">
-                                    <h2 class="form-signin-heading" style="font-family: 'Staatliches', cursive;">Add Agent</h2>
+                                    <h2 class="form-signin-heading" style="font-family: 'Staatliches', cursive;">Add
+                                        Agent</h2>
                                     <div class="form-group">
-                                        <input type="email" th:field="*{emailAddress}" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Email Address"
+                                        <input type="email" th:field="*{emailAddress}" class="form-control"
+                                               style="font-family: 'Fira Sans', sans-serif;" placeholder="Email Address"
                                                autofocus="true" required>
-                                        <span class="has-error" th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}"></span>
+                                        <span class="has-error" th:if="${#fields.hasErrors('emailAddress')}"
+                                              th:errors="*{emailAddress}"></span>
                                     </div>
 
                                     <div class="form-group">
-                                        <input type="text" th:field="*{name}" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Name" required>
-                                        <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                                        <input type="text" th:field="*{name}" class="form-control"
+                                               style="font-family: 'Fira Sans', sans-serif;" placeholder="Name"
+                                               required>
+                                        <span class="has-error" th:if="${#fields.hasErrors('name')}"
+                                              th:errors="*{name}"></span>
                                     </div>
 
                                     <div class="form-group row">
@@ -83,7 +89,7 @@
                                             <select th:field="*{authority}" class="custom-select form-control" required>
                                                 <option selected value="ROLE_CLERK" name="ROLE_CLERK">Clerk</option>
                                                 <option value="ROLE_ADMIN" name="ROLE_ADMIN">Admin</option>
-                                        </select>
+                                            </select>
                                         </div>
                                     </div>
 
@@ -92,36 +98,25 @@
                                 </form>
 
                             </div>
-
-
                         </div>
-
-
                     </div>
                 </div>
             </div>
-
-
         </div>
-
-        <!-- Content Row -->
-
 
     </div>
 </div>
-<!-- End of Page Wrapper -->
+<script>
+        jQuery(document).ready(function() {
+            if ((window.location.href).endsWith("user_already_exists") {
+                jQuery('.email-already-present-alert').show();
+            }
+        });
 
 
-<!-- Bootstrap core JavaScript-->
+</script>
 <script src="js/jquery.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="/js/sb-admin-2.min.js"></script>
-
 </body>
 
 </html>

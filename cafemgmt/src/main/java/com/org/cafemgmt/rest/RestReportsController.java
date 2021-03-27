@@ -17,8 +17,7 @@ public class RestReportsController {
         if (Boolean.parseBoolean(isCustomer)) {
             Map<Long, String> userMap = userService.searchUser(queryString, false);
             return ResponseEntity.status(200).body(userMap);
-        }
-        else {
+        } else {
             Map<Long, String> userMap = userService.searchUser(queryString, true);
             return ResponseEntity.status(200).body(userMap);
         }

@@ -29,8 +29,7 @@ public class AdminController {
         String loggedInUsername = UserManagement.getUserName(authentication, userService);
         if (authority.equals("ROLE_ADMIN")) {
             model.addAttribute("role", "admin");
-        }
-        else {
+        } else {
             model.addAttribute("role", "clerk");
         }
         model.addAttribute("firstCharInUsername", loggedInUsername.charAt(0));

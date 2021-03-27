@@ -69,8 +69,7 @@ public class RestMenuItemsController {
         if (imagePath != null) {
             cafeMenuItem.setImagePath(imagePath);
             return ResponseEntity.status(201).body(menuItemsService.saveMenuItem(cafeMenuItem));
-        }
-        else {
+        } else {
             throw new CafeInvalidParameterException("Image Path invalid. Allowed [ jpg, jpeg, png, gif, bmp ]");
         }
 

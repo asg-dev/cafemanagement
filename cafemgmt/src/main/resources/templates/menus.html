@@ -11,13 +11,13 @@
 
     <title>Freshbrew | Admin Console</title>
 
-    <!-- Custom fonts for this template-->
+
     <link href="/vendor/fontawesome-free/css/all.css" rel="stylesheet" type="text/css">
     <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
 
-    <!-- Custom styles for this template-->
+
     <link href="/css/sb-admin-2.css" rel="stylesheet">
     <script
             src="https://code.jquery.com/jquery-3.6.0.js"
@@ -33,35 +33,31 @@
 
 <body id="page-top">
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
 
-        <!-- Sidebar -->
-        <div th:insert="fragments/navbar :: navbar"></div>
-        <!-- End of Sidebar -->
+<div id="wrapper">
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
 
-            <!-- Main Content -->
-            <div id="content">
+    <div th:insert="fragments/navbar :: navbar"></div>
 
-                <!-- Topbar -->
-                <div th:insert="fragments/topbar :: topbar"></div>
-                <!-- End of Topbar -->
+
+    <div id="content-wrapper" class="d-flex flex-column">
+
+
+        <div id="content">
+
+
+            <div th:insert="fragments/topbar :: topbar"></div>
 
 
             <div class="container-fluid">
 
 
-                <!-- Content Row -->
-
                 <div class="row">
 
-                    <!-- Area Chart -->
+
                     <div class="col-xl-12 col-lg-7">
                         <div class="card shadow mb-4">
-                            <!-- Card Header - Dropdown -->
+
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">Menus</h6>
                                 <div class="dropdown no-arrow">
@@ -69,85 +65,105 @@
                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fa fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                     </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Card Body -->
-                            <button class="d-flex justify-content-start d-sm-inline-block btn btn-primary shadow-sm">
-                                <i class="fas fa-dumpster text-white-50"></i><a class="addNewMenu" th:href="@{/menus/new}" style="text-decoration: none; color:#fff;">      Add Menu</a>
-                            </button>
-
-                            <button class="d-flex justify-content-start d-sm-inline-block btn btn-primary shadow-sm">
-                                <i class="fas fa-dumpster text-white-50"></i><a class="addNewMenu" th:href="@{/menus/items/}" style="text-decoration: none; color:#fff;">      Manage Menu Items</a>
-                            </button>
-                            <div class="card-body">
-                                <div class="chart-area">
-
-                                        <div class="tablet">
-                                            <table id="myTable" class="card-table">
-                                                <thead>
-                                                <tr>
-                                                    <th scope="col text-primary">Menu Name</th>
-                                                    <th scope="col text-primary">Menu Description</th>
-                                                    <th scope="col text-primary">Menu Items</th>
-                                                    <th scope="col text-primary">Options</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                <th:block th:object="${menus}" th:each="menu : ${menus}">
-                                                    <tr>
-                                                        <td th:inline="text">[[${menu.name}]] </td>
-                                                        <td th:inline="text">[[${menu.description}]]</td>
-                                                        <td th:inline="text">[[${menu.menu_item_names}]]</td>
-                                                        <td>
-                                                            <button class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm">
-                                                                <i class="fas fa-pencil-alt text-white-50"></i><a th:href="@{/menus/}+${menu.id}+@{/edit}" style="text-decoration: none; color:#fff;">      Edit Menu</a>
-                                                            </button>
-
-                                                            <form th:action="@{/menus/}+${menu.id}+@{/delete}" th:method="POST">
-                                                            <button class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm">
-                                                                <i class="fas fa-dumpster text-white-50"></i><a class="deletionOp" th:value="@{/menus/}+${menu.id}+@{/delete}" style="text-decoration: none; color:#fff;">      Delete Menu</a>
-                                                            </button>
-                                                            </form>
-
-                                                            <th:block th:switch="${menu.active}">
-                                                                <th:block th:case="false">
-                                                                <form th:action="@{/menus/}+${menu.id}+@{/activate}" th:method="POST">
-                                                                <button class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
-                                                                    <i class="fas fas fa-key text-white-50"></i><a class="activateValue" th:value="@{/menus/}+${menu.id}+@{/activate}" style="text-decoration: none; color:#fff;">      Activate Menu</a>
-                                                                </button>
-                                                                </form>
-                                                                </th:block>
-                                                                <th:block th:case="true">
-                                                                    <form th:action="@{/menus/}+${menu.id}+@{/deactivate}" th:method="POST">
-                                                                        <button class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
-                                                                            <i class="fas fas fa-key text-white-50"></i><a class="deactivateValue" th:value="@{/menus/}+${menu.id}+@{/deactivate}" style="text-decoration: none; color:#fff;">      Deactivate Menu</a>
-                                                                        </button>
-                                                                    </form>
-                                                                </th:block>
-                                                            </th:block>
-
-                                                        </td>
-                                                    </tr>
-                                                </th:block>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
                                 </div>
                             </div>
                         </div>
+
+                        <button class="d-flex justify-content-start d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <i class="fas fa-dumpster text-white-50"></i><a class="addNewMenu" th:href="@{/menus/new}"
+                                                                            style="text-decoration: none; color:#fff;">
+                            Add Menu</a>
+                        </button>
+
+                        <button class="d-flex justify-content-start d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <i class="fas fa-dumpster text-white-50"></i><a class="addNewMenu"
+                                                                            th:href="@{/menus/items/}"
+                                                                            style="text-decoration: none; color:#fff;">
+                            Manage Menu Items</a>
+                        </button>
+                        <div class="card-body">
+                            <div class="chart-area">
+
+                                <div class="tablet">
+                                    <table id="myTable" class="card-table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col text-primary">Menu Name</th>
+                                            <th scope="col text-primary">Menu Description</th>
+                                            <th scope="col text-primary">Menu Items</th>
+                                            <th scope="col text-primary">Options</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <th:block th:object="${menus}" th:each="menu : ${menus}">
+                                            <tr>
+                                                <td th:inline="text">[[${menu.name}]]</td>
+                                                <td th:inline="text">[[${menu.description}]]</td>
+                                                <td th:inline="text">[[${menu.menu_item_names}]]</td>
+                                                <td>
+                                                    <button class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm">
+                                                        <i class="fas fa-pencil-alt text-white-50"></i><a
+                                                            th:href="@{/menus/}+${menu.id}+@{/edit}"
+                                                            style="text-decoration: none; color:#fff;"> Edit Menu</a>
+                                                    </button>
+
+                                                    <form th:action="@{/menus/}+${menu.id}+@{/delete}" th:method="POST">
+                                                        <button class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm">
+                                                            <i class="fas fa-dumpster text-white-50"></i><a
+                                                                class="deletionOp"
+                                                                th:value="@{/menus/}+${menu.id}+@{/delete}"
+                                                                style="text-decoration: none; color:#fff;"> Delete
+                                                            Menu</a>
+                                                        </button>
+                                                    </form>
+
+                                                    <th:block th:switch="${menu.active}">
+                                                        <th:block th:case="false">
+                                                            <form th:action="@{/menus/}+${menu.id}+@{/activate}"
+                                                                  th:method="POST">
+                                                                <button class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
+                                                                    <i class="fas fas fa-key text-white-50"></i><a
+                                                                        class="activateValue"
+                                                                        th:value="@{/menus/}+${menu.id}+@{/activate}"
+                                                                        style="text-decoration: none; color:#fff;">
+                                                                    Activate Menu</a>
+                                                                </button>
+                                                            </form>
+                                                        </th:block>
+                                                        <th:block th:case="true">
+                                                            <form th:action="@{/menus/}+${menu.id}+@{/deactivate}"
+                                                                  th:method="POST">
+                                                                <button class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
+                                                                    <i class="fas fas fa-key text-white-50"></i><a
+                                                                        class="deactivateValue"
+                                                                        th:value="@{/menus/}+${menu.id}+@{/deactivate}"
+                                                                        style="text-decoration: none; color:#fff;">
+                                                                    Deactivate Menu</a>
+                                                                </button>
+                                                            </form>
+                                                        </th:block>
+                                                    </th:block>
+
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
+                </div>
 
             </div>
 
-                <!-- Content Row -->
+            <!-- Content Row -->
 
 
         </div>
     </div>
-
 
 
     <!-- End of Page Wrapper -->
@@ -158,28 +174,31 @@
     </a>
 
     <!-- Bootstrap core JavaScript-->
-<!--    <script src="/js/jquery.min.js"></script>-->
-<!--    <script src="/js/bootstrap.bundle.min.js"></script>-->
+    <!--    <script src="/js/jquery.min.js"></script>-->
+    <!--    <script src="/js/bootstrap.bundle.min.js"></script>-->
 
-<!--    &lt;!&ndash; Core plugin JavaScript&ndash;&gt;-->
-<!--    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>-->
+    <!--    &lt;!&ndash; Core plugin JavaScript&ndash;&gt;-->
+    <!--    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>-->
 
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>
 
-<!--    &lt;!&ndash; Page level plugins &ndash;&gt;-->
-<!--    <script src="vendor/chart.js/Chart.min.js"></script>-->
+    <!--    &lt;!&ndash; Page level plugins &ndash;&gt;-->
+    <!--    <script src="vendor/chart.js/Chart.min.js"></script>-->
 
-        <script>
+    <script>
         jQuery(document).ready(function() {
             jQuery.noConflict();
             jQuery('#myTable').DataTable();
         });
-        </script>
+
+
+
+    </script>
 
     <!-- Page level custom scripts -->
-<!--    <script src="js/demo/chart-area-demo.js"></script>-->
-<!--    <script src="js/demo/chart-pie-demo.js"></script>-->
+    <!--    <script src="js/demo/chart-area-demo.js"></script>-->
+    <!--    <script src="js/demo/chart-pie-demo.js"></script>-->
 
 </body>
 

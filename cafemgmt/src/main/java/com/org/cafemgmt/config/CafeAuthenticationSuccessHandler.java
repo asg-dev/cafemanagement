@@ -34,16 +34,14 @@ public class CafeAuthenticationSuccessHandler implements AuthenticationSuccessHa
                 } else {
                     throw new IllegalStateException();
                 }
-            }
-            catch (IOException ioException) {
+            } catch (IOException ioException) {
                 log.info("IOException occurred", ioException.getMessage());
                 try {
                     redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/error");
                 } catch (IOException e) {
                     log.error("IOException Occurred: ", e);
                 }
-            }
-            catch (IllegalStateException illegalStateException) {
+            } catch (IllegalStateException illegalStateException) {
                 log.info("IllegalStateException occurred: ", illegalStateException.getMessage());
                 try {
                     redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/error");

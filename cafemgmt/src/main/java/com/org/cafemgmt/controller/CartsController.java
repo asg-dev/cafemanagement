@@ -37,11 +37,9 @@ public class CartsController {
         System.out.println((currentUser.getAuthorities()));
         if (currentUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
             model.addAttribute("role", "admin");
-        }
-        else if (currentUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CLERK"))) {
+        } else if (currentUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CLERK"))) {
             model.addAttribute("role", "clerk");
-        }
-        else {
+        } else {
             model.addAttribute("role", "customer");
         }
         String userEmail = currentUser.getUsername();

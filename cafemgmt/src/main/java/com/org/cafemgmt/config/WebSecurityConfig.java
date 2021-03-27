@@ -42,13 +42,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/login").permitAll()
                 .and()
                 .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                    .successHandler(successHandler)
+                .loginPage("/login")
+                .permitAll()
+                .successHandler(successHandler)
                 .and()
-                    .httpBasic()
+                .httpBasic()
                 .and()
-                    .cors().and().csrf().disable();
+                .cors().and().csrf().disable();
     }
 
     @Bean

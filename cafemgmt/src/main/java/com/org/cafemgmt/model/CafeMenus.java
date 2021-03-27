@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 public class CafeMenus {
     @Id
-    @GeneratedValue(strategy =  GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @JsonView(CafeMenuView.ViewToReturnMenus.class)
     private long id;
     @JsonView(CafeMenuView.ViewToReturnMenus.class)

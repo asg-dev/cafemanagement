@@ -39,16 +39,14 @@ public class MenusController {
 
     @RequestMapping(value = "/site/menus", method = RequestMethod.GET)
     public String showMenus(HttpServletRequest request, Authentication authentication, Model model) {
-        // System.out.println(((PrincipalUserDetails) authentication.getPrincipal()).getAuthorities());
+
         PrincipalUserDetails currentUser = (PrincipalUserDetails) authentication.getPrincipal();
 
         if (currentUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
             model.addAttribute("role", "admin");
-        }
-        else if (currentUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CLERK"))) {
+        } else if (currentUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CLERK"))) {
             model.addAttribute("role", "clerk");
-        }
-        else {
+        } else {
             model.addAttribute("role", "customer");
         }
         CafeUsers loggedInUser = userService.findUserByEmail(currentUser.getUsername());
@@ -59,8 +57,7 @@ public class MenusController {
         CafeCarts cafeCart = cartsService.getCartByUserId(loggedInUser.getId());
         if (cafeCart != null) {
             model.addAttribute("cartItems", cafeCart.getCartItems());
-        }
-        else {
+        } else {
             model.addAttribute("cartItems", "");
         }
 
@@ -78,7 +75,7 @@ public class MenusController {
         String loggedInUsername = UserManagement.getUserName(authentication, userService);
 
         model.addAttribute("firstCharInUsername", loggedInUsername.charAt(0));
-        model.addAttribute("username",loggedInUsername);
+        model.addAttribute("username", loggedInUsername);
 
         List<CafeMenus> menuList = menuService.listAllMenus();
 
