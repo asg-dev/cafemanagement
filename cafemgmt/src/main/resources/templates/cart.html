@@ -30,7 +30,7 @@
 <div class="row table d-flex justify-content-center" style="padding-top:15%;">
     <div class="w-75 ">
         <form th:action="@{/checkout}" th:method="POST" th:object="${cafeCart}">
-            <th:block th:if="${cafeCart} == null">
+            <th:block th:if="${cafeCart == null or allEmpty == true}">
                 <div class="page-wrap d-flex flex-row align-items-center">
                     <div class="container">
                         <div class="row justify-content-center">
@@ -44,7 +44,7 @@
                     </div>
                 </div>
             </th:block>
-            <th:block th:unless="${cafeCart} == null">
+            <th:block th:unless="${cafeCart == null or allEmpty == true}">
                 <table id="myTable" class="table col-lg-12">
                     <thead>
                     <tr>

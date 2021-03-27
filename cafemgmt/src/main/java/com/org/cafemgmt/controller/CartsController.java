@@ -47,7 +47,20 @@ public class CartsController {
 
         long user_id = cafeUser.getId();
         cartsService.setCartItems(cartsService.getCartByUserId(user_id));
-        model.addAttribute("cafeCart", cartsService.getCartByUserId(user_id));
+        CafeCarts checkCart = cartsService.getCartByUserId(user_id);
+        boolean allEmpty = true;
+
+        if (checkCart != null) {
+            for (String item : checkCart.getCartItems().split(",")) {
+                if (Long.parseLong(item.split(":")[1]) != 0) {
+                    allEmpty = false;
+                    break;
+                }
+            }
+        }
+        System.out.println(allEmpty);
+        model.addAttribute("allEmpty", allEmpty);
+        model.addAttribute("cafeCart", checkCart);
         return "cart";
     }
 

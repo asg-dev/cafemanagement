@@ -69,7 +69,6 @@
                 <div class="tab-content">
                     <th:block th:each="menu : ${menus}">
                         <div th:id="@{|menu${menu.id}|}" class="tab-pane fade">
-
                             <table class="table col-sm-6">
                                 <div class="h2 text-wrap" style="font-family: 'Catamaran', sans-serif; width:42rem;">
                                     [[${menu.name}]] <br> <span class="text-muted h4">[[${menu.description}]]</span>
@@ -109,8 +108,8 @@
                                                        style="font-size: 26px;"></i>
                                                     <th:block th:object="${cartItems}">
                                                         <th:block th:if="${#strings.isEmpty(cartItems)}">
-                                                            <input type='text' name='quantity' value='0' max="999"
-                                                                   min="0" class='qty' disabled/>
+                                                            <input type='number' name='quantity' value='0' min="0" max="999"
+                                                                    class='qty' disabled/>
                                                         </th:block>
                                                         <th:block th:unless="${#strings.isEmpty(cartItems)}"
                                                                   th:each="cartItem : ${#strings.listSplit(cartItems, ',')}">
@@ -122,9 +121,9 @@
                                                                             th:if="${#strings.equals(itemOps[3], menuId)}">
                                                                         <th:block
                                                                                 th:if="${#strings.equals(itemOps[0], menuItem.id)}">
-                                                                            <input type='text' name='quantity'
-                                                                                   th:value="${itemOps[1]}" max="999"
-                                                                                   min="0" class='qty' disabled/>
+                                                                            <input type='number' name='quantity'
+                                                                                   th:value="${itemOps[1]}" min="0" max="999"
+                                                                                    class='qty' disabled/>
                                                                         </th:block>
                                                                     </th:block>
                                                                 </th:block>

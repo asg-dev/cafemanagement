@@ -5,7 +5,7 @@ jQuery(document).ready(function(){
 jQuery('.qtyplus').each(function(e) {
 var respPar = jQuery(this).prev();
 if(respPar.attr('class') != "qty") {
-    jQuery(respPar).replaceWith(`<i class="fa fa-minus-square qtyminus fa-xl" field='quantity' style="font-size: 26px;"></i><input type='text' name='quantity' value='0' max="999" min="0" class='qty' disabled />`);
+    jQuery(respPar).replaceWith(`<i class="fa fa-minus-square qtyminus fa-xl" field='quantity' style="font-size: 26px;"></i><input type='number' name='quantity' value='0' min="0" max="999"  class='qty' disabled />`);
 }
 });
 
@@ -34,6 +34,9 @@ if(respPar.attr('class') != "qty") {
         var menu_id = itemDetails[0];
         var id = itemDetails[1];
         if (!isNaN(quantity)) {
+            if (quantity-1 < 0) {
+                return;
+            }
             $(this).next().val(quantity-=1);
         } else {
             $(this).next().val(0);
