@@ -72,9 +72,6 @@ public class RestMenusController {
         if (cafeMenus.getName() == null || cafeMenus.getDescription() == null || cafeMenus.getMenu_items() == null || cafeMenus.getMenu_items().size() == 0) {
             throw new CafeInvalidParameterException("Name, Description or Menu Items of Menu cannot be empty");
         }
-        if (cafeMenus.getImagePath() != null) {
-            throw new CafeAuthorizationException("Action not allowed");
-        }
         List<Long> incomingList = cafeMenus.getMenu_items();
         if (!menuItemsService.checkMenuItemValidity(incomingList)) {
             throw new CafeInvalidParameterException("Items in menu_list are invalid.");

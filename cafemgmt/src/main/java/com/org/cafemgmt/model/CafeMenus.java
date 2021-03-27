@@ -24,7 +24,6 @@ public class CafeMenus {
     @Column(nullable = true)
     @JsonView(CafeMenuView.ViewToReturnMenus.class)
     private boolean active;
-    private String imagePath;
     @ElementCollection(targetClass = Long.class)
     @JsonView(CafeMenuView.ViewToReturnMenus.class)
     private List<Long> menu_items;

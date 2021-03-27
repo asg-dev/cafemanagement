@@ -27,9 +27,12 @@ public class SignupController {
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String signup(@ModelAttribute("userForm") CafeUsers cafeUsers) {
         if (cafeUsers.getName() == null || cafeUsers.getEmailAddress() == null || cafeUsers.getPassword() == null) {
-            return "redirect:/login";
+            return "redirect:/login?error=invalid_parameters";
         }
-        userService.insertUser(cafeUsers);
+        if(userService.findUserByEmail(cafeUsers.getEmailAddress()) != null) {
+            return "redirect:/login?error=email_already_taken";
+        }
+        userService.signupUser(cafeUsers);
         return "login";
     }
 }

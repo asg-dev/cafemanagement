@@ -25,9 +25,10 @@ public class CartsServiceImpl implements CartsService {
         DecimalFormat decimalFormat = new DecimalFormat("##.00");
         double originalPrice = cafeMenuItem.get().getPrice();
         if (cafeCart.isPresent()) {
-            String cartItems = cafeCart.get().getCartItems(); // 55:120, 66:12, 62:23
+            // get the cartItems string with format itemId:quantity:subTotal:menuId
+            String cartItems = cafeCart.get().getCartItems();
             String[] cartItemArray = cartItems.split(",");
-            List<String> list = new ArrayList<String>(Arrays.asList(cartItemArray)); // [ 1:2:6, 2:1:4 ]
+            List<String> list = new ArrayList<String>(Arrays.asList(cartItemArray)); // List of cart items
             for (int i = 0; i < list.size(); i++) {
                 if (Arrays.asList(list.get(i).split(":")).get(0).equals(String.valueOf(id))
                         && Arrays.asList(list.get(i).split(":")).get(3).equals(String.valueOf(menu_id))) {
@@ -53,30 +54,7 @@ public class CartsServiceImpl implements CartsService {
         return cartItem;
     }
 
-    // Choosing to calculate subtotal inside handleCartItems method.
-//    @Override
-//    public double calculateSubtotal(long id, long quantity) {
-//        Optional<CafeMenuItems> cafeMenuItem = menuItemsRepository.findById(id);
-//        if (cafeMenuItem.isPresent()) {
-//            double existingPrice = cafeMenuItem.get().getPrice();
-//            return ((double) quantity * existingPrice);
-//        }
-//        return 0;
-//    }
-
-    //            String cartItem = "";
-//            for (int i=0; i < list.size(); i++) {
-//                StringBuilder stringBuilder = new StringBuilder();
-//                stringBuilder.append(id);
-//                stringBuilder.append(sep);
-//                stringBuilder.append(quantity);
-//                stringBuilder.append(sep);
-//                stringBuilder.append(subtotalPrice);
-//                if (i != list.size()-1) {
-//                    stringBuilder.append(",");
-//                }
-//                cartItem = cartItem + stringBuilder.toString();
-//            }
+    // Calculating subtotal inside handleCartItems method.
 
     @Override
     public double calculateTotalPrice(String cartItems) {

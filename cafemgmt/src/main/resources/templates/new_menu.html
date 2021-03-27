@@ -75,6 +75,22 @@
                             </div>
                         </div>
 
+                        <div class="alert alert-danger upload-alert alert-dismissible fade show" style="display: none;"
+                             role="alert">
+
+                            <strong>Invalid Image Extension.</strong> Allowed: [ png, jpeg, jpg, gif, bmp ]
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="alert alert-danger menuitem-alert alert-dismissible fade show" style="display: none;"
+                             role="alert">
+
+                            <strong>Please fill menu item name, description, price & image path</strong>.</strong> All fields are mandatory.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <div class="card-body">
                             <div class="chart-area">
 
@@ -86,14 +102,14 @@
                                     <div class="form-group">
                                         <input type="text" th:field="*{name}" class="form-control"
                                                style="font-family: 'Fira Sans', sans-serif;" placeholder="Name"
-                                               autofocus="true" required>
+                                               autofocus="true" maxlength="254" required>
                                         <span class="has-error" th:if="${#fields.hasErrors('name')}"
                                               th:errors="*{name}"></span>
                                     </div>
 
                                     <div class="form-group">
                                         <input type="text" th:field="*{description}" class="form-control"
-                                               style="font-family: 'Fira Sans', sans-serif;" placeholder="Description"
+                                               style="font-family: 'Fira Sans', sans-serif;" placeholder="Description" maxlength="254"
                                                required>
                                         <span class="has-error" th:if="${#fields.hasErrors('description')}"
                                               th:errors="*{description}"></span>
@@ -103,7 +119,7 @@
                                         <label for="active1"> Activated</label>
                                         <input type="checkbox" class="form-control" th:field="*{active}" name="active1"
                                                id="active1" data-toggle="toggle" data-size="sm"
-                                               data-on="Active" data-off="Unactive" required>
+                                               data-on="Active" data-off="Unactive">
                                     </div>
 
                                     <div class="form-group">
@@ -127,73 +143,7 @@
                                     <a class="btn btn-secondary" href="/menus">Cancel</a>
                                 </form>
 
-                                <div class="container demo">
-                                    <div class="modal left fade" id="menu-item-modal" tabindex="" role="dialog"
-                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <form method="POST" th:object="${menuItemForm}" th:action="@{/menus/items}"
-                                                  enctype="multipart/form-data">
-                                                <div class="modal-content">
-                                                    <div class="modal-body">
-                                                        <div class="nav flex-sm-column flex-row">
-
-                                                            <h2 class="form-signin-heading"
-                                                                style="font-family: 'Staatliches', cursive;">Add Menu
-                                                                Item</h2>
-                                                            <div class="form-group">
-                                                                <input type="text" th:field="*{name}"
-                                                                       class="form-control"
-                                                                       style="font-family: 'Fira Sans', sans-serif;"
-                                                                       placeholder="Name"
-                                                                       autofocus="true">
-                                                                <span class="has-error"
-                                                                      th:if="${#fields.hasErrors('name')}"
-                                                                      th:errors="*{name}"></span>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <input type="text" th:field="*{description}"
-                                                                       class="form-control"
-                                                                       style="font-family: 'Fira Sans', sans-serif;"
-                                                                       placeholder="Description">
-                                                                <span class="has-error"
-                                                                      th:if="${#fields.hasErrors('name')}"
-                                                                      th:errors="*{name}"></span>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <input type="text" th:field="*{price}"
-                                                                       class="form-control"
-                                                                       style="font-family: 'Fira Sans', sans-serif;"
-                                                                       placeholder="Price">
-                                                                <span class="has-error"
-                                                                      th:if="${#fields.hasErrors('price')}"
-                                                                      th:errors="*{price}"></span>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <div class="input-group mb-3">
-                                                                    <input type="file" name="file" class="form-control"
-                                                                           id="fileInputMenuItem">
-                                                                    <label class="input-group-text"
-                                                                           for="fileInputMenuItem">Upload Image for Menu
-                                                                        Item</label>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-primary">Create</button>
-                                                        <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Close
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div th:replace="fragments/menuitemmodal :: menuitemmodal"></div>
 
                             </div>
 
@@ -213,11 +163,26 @@
 </div>
 
 
+
 <!-- Bootstrap core JavaScript-->
 <script src="js/jquery.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
 
-<script src="/js/sb-admin-2.min.js"></script>
+<script>
+    jQuery(document).ready(function() {
+        if ((window.location.href).endsWith("?error=invalid_image_path")) {
+            jQuery('.upload-alert').show();
+        }
+
+        if ((window.location.href).endsWith("?error=invalid_parameters")) {
+            jQuery('.menuitem-alert').show();
+        }
+
+        jQuery('.close').click(function() {
+            $(".alert").alert('close')
+        });
+    })
+</script>
 
 </body>
 

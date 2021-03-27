@@ -20,7 +20,7 @@ public class CafeUsers {
     @JsonView(CafeUserView.ViewToReturnUsers.class)
     @Column(unique = true)
     private String emailAddress;
-    @Column(name = "active", nullable = true)
+    @Column(name = "active")
     private boolean active;
     private String password;
     @JsonView(CafeUserView.ViewToReturnUsers.class)
@@ -33,5 +33,4 @@ public class CafeUsers {
     private String name;
     private UUID validityToken;
     private boolean internalUser;
-    private boolean walkinCustomer;
 }

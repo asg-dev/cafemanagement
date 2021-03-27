@@ -2,6 +2,7 @@ package com.org.cafemgmt.controller;
 
 import com.org.cafemgmt.common.UserManagement;
 import com.org.cafemgmt.model.CafeUsers;
+import com.org.cafemgmt.model.PrincipalUserDetails;
 import com.org.cafemgmt.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class UsersController {
     private String editUser(Model model, Authentication authentication, @PathVariable Long id) {
         Optional<CafeUsers> cafeUser = userService.findUserById(id);
         if (cafeUser.isPresent()) {
+            if (cafeUser.get().getAuthority().equals("ROLE_CUSTOMER") ){
+                return "redirect:/users?invalid_action";
+            }
             model.addAttribute("userInfo", cafeUser.get());
         } else {
             model.addAttribute("userInfo", "");
@@ -55,9 +59,18 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.POST)
-    private String updateUsers(@ModelAttribute("userInfo") CafeUsers user, @PathVariable long id) {
-        log.info("Editing User with Id: ", id);
-        userService.updateInternalUser(user);
+    private String updateUsers(@ModelAttribute("userInfo") CafeUsers user, @PathVariable long id, Authentication authentication) {
+        log.info("Editing User with Id: " + id + " auth " + user.getAuthority());
+        log.info("Logged in User id" + userService.findUserByEmail(((PrincipalUserDetails) authentication.getPrincipal()).getUsername()).getId());
+        CafeUsers loggedInUser = userService.findUserByEmail(((PrincipalUserDetails) authentication.getPrincipal()).getUsername());
+        if (id == loggedInUser.getId()
+                && user.getAuthority().equals("ROLE_CLERK")) {
+            return "redirect:/users?update_not_allowed";
+        }
+        if (loggedInUser.getAuthority().equals("ROLE_CUSTOMER")) {
+            return "redirect:/users?update_not_allowed";
+        }
+        userService.saveCafeUser(user, "UPDATE");
         return "redirect:/users";
     }
 
@@ -77,7 +90,7 @@ public class UsersController {
         if (existingUser != null) {
             return "redirect:/users/new?error=user_already_exists";
         }
-        userService.insertCustomUser(cafeUsers);
+        userService.saveCafeUser(cafeUsers, "CREATE");
         return "redirect:/users";
     }
 }

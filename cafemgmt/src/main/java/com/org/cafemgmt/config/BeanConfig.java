@@ -13,6 +13,11 @@ import java.util.Properties;
 public class BeanConfig {
 
     @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     UserService userService() {
         return new UserServiceImpl();
     }
@@ -69,4 +74,6 @@ public class BeanConfig {
     CafeRatingsService cafeRatingsService() {
         return new CafeRatingsServiceImpl();
     }
+
+
 }

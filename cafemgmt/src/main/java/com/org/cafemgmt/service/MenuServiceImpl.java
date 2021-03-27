@@ -3,6 +3,7 @@ package com.org.cafemgmt.service;
 import com.org.cafemgmt.model.CafeMenus;
 import com.org.cafemgmt.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<CafeMenus> listAllMenus() {
+
         return menuRepository.findAll();
     }
 

@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface MenuItemsRepository extends JpaRepository<CafeMenuItems, Long> {
-    @Query("SELECT t FROM CafeMenuItems t WHERE t.id = ?1")
+    @Query("SELECT t FROM CafeMenuItems t WHERE t.id = ?1 ORDER BY t.createdAt DESC")
     public List<CafeMenuItems> findMenuItemsByMenuId(long cafeMenusId);
 }

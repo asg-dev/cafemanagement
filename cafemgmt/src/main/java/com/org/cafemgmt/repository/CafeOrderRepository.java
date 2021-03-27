@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CafeOrderRepository extends JpaRepository<CafeOrders, Long> {
-    @Query("SELECT t FROM CafeOrders t WHERE t.status = 1")
+    @Query("SELECT t FROM CafeOrders t WHERE t.status = 1 ORDER BY t.createdAt DESC")
     public List<CafeOrders> listAllPendingOrders();
 
-    @Query("SELECT t FROM CafeOrders t WHERE t.status = 2")
+    @Query("SELECT t FROM CafeOrders t WHERE t.status = 2 ORDER BY t.createdAt DESC")
     public List<CafeOrders> listAllApprovedOrders();
 
-    @Query("SELECT t FROM CafeOrders t WHERE t.customerId = ?1")
+    @Query("SELECT t FROM CafeOrders t WHERE t.customerId = ?1 ORDER BY t.createdAt DESC")
     public List<CafeOrders> findAllByUserId(long user_id);
 
     // created within

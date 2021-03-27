@@ -4,6 +4,7 @@ import com.org.cafemgmt.model.CafeUsers;
 import com.org.cafemgmt.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,51 +47,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CafeUsers saveUser(CafeUsers user) throws MessagingException { // RestUsersController to save API POST /api/users - POST
-        user.setCreated_at(new Date());
-        user.setUpdated_at(new Date());
-        if (user.getAuthority() == null) {
-            user.setAuthority("ROLE_CLERK");
-        }
-
-        user.setWalkinCustomer(false);
-        user.setInternalUser(true); // all API user creation applies only for internal users.
-        user.setValidityToken(generateUUID());
-        emi.sendMessage(user.getEmailAddress(), "Your Freshbrew Cafe Management Registration :)", userRegistration.generateRegistrationMessage(
-                user.getValidityToken(), user.getName()
-        ));
-        return userRepository.save(user);
-    }
-
-    @Override
-    public void insertUser(CafeUsers cafeUsers) { // used in Signup flow - not ideal but useful for testing
+    public void signupUser(CafeUsers cafeUsers) { // used in Signup flow
         // After completion, users should always follow two-step verification - where active will be set to true.
         cafeUsers.setCreated_at(new Date());
         cafeUsers.setUpdated_at(new Date());
         cafeUsers.setActive(true);
         cafeUsers.setAuthority("ROLE_CUSTOMER");
         cafeUsers.setInternalUser(false);
-        cafeUsers.setWalkinCustomer(false);
         cafeUsers.setPassword(getHashedPassword(cafeUsers.getPassword()));
-        userRepository.save(cafeUsers);
-    }
-
-    @Override
-    public void insertCustomUser(CafeUsers cafeUsers) throws MessagingException {
-        cafeUsers.setCreated_at(new Date());
-        cafeUsers.setUpdated_at(new Date());
-        cafeUsers.setInternalUser(false);
-        cafeUsers.setWalkinCustomer(false);
-        cafeUsers.setActive(false);
-        cafeUsers.setValidityToken(generateUUID());
-        try {
-            emi.sendMessage(cafeUsers.getEmailAddress(), "Your Freshbrew Cafe Management Registration :)", userRegistration.generateRegistrationMessage(
-                    cafeUsers.getValidityToken(), cafeUsers.getName()
-            ));
-        } catch (MessagingException messagingException) {
-            log.info("Couldn't send email. Saving user without registration. Exception thrown: " + messagingException.getCause());
-        }
-
         userRepository.save(cafeUsers);
     }
 
@@ -103,13 +67,10 @@ public class UserServiceImpl implements UserService {
     public void registerUser(CafeUsers cafeUsers) {
         CafeUsers existingUser = userRepository.findByEmailAddress(cafeUsers.getEmailAddress());
         if (existingUser != null) {
-            log.info("cafeUsers (name): " + cafeUsers.getName());
-            log.info("cafeUsers (email): " + cafeUsers.getEmailAddress());
-            log.info("cafeUsers (rawPassword): " + cafeUsers.getPassword());
-
+            log.info("Registering new user with (name): " + cafeUsers.getName());
+            log.info("Registering new user with (email): " + cafeUsers.getEmailAddress());
             existingUser.setPassword(getHashedPassword(cafeUsers.getPassword()));
-
-            log.info("ID: " + cafeUsers.getId() + " ::: ID EXISTING: " + existingUser.getId());
+            existingUser.setName(cafeUsers.getName());
             existingUser.setValidityToken(generateUUID()); // setting a new validity token to expire the old link.
             existingUser.setActive(true);
             userRepository.save(existingUser);
@@ -119,27 +80,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateInternalUser(CafeUsers cafeUsers) {
-        CafeUsers existingUser = userRepository.findUserById(cafeUsers.getId());
-        if (existingUser != null) {
-            Date createdTime = existingUser.getCreated_at();
-            cafeUsers.setCreated_at(createdTime);
-            String password = existingUser.getPassword();
-            cafeUsers.setPassword(password);
+    public CafeUsers saveCafeUser(CafeUsers cafeUsers, String method) {
+        if (method.equals("UPDATE")) {
+            CafeUsers existingUser = userRepository.findUserById(cafeUsers.getId());
+            if (existingUser != null) {
+                Date createdTime = existingUser.getCreated_at();
+                cafeUsers.setCreated_at(createdTime);
+                String password = existingUser.getPassword();
+                cafeUsers.setPassword(password);
+                cafeUsers.setActive(existingUser.isActive());
+                cafeUsers.setValidityToken(existingUser.getValidityToken());
+                cafeUsers.setUpdated_at(new Date());
+                if (!existingUser.getEmailAddress().equals(cafeUsers.getEmailAddress())) {
+                    triggerRegistrationEmail(cafeUsers);
+                }
+                userRepository.save(cafeUsers);
+            }
         }
-        cafeUsers.setUpdated_at(new Date());
-        userRepository.save(cafeUsers);
-    }
+        else if (method.equals("CREATE")) {
+            cafeUsers.setCreated_at(new Date());
+            cafeUsers.setUpdated_at(new Date());
+            if (cafeUsers.getAuthority().contains("ROLE_CUSTOMER")) {
+                cafeUsers.setInternalUser(false);
+            }
+            else {
+                cafeUsers.setInternalUser(true);
+            }
 
-    @Override
-    public void insertInternalUser(CafeUsers cafeUsers) {
-        cafeUsers.setCreated_at(new Date());
-        cafeUsers.setUpdated_at(new Date());
-        cafeUsers.setInternalUser(true);
-        cafeUsers.setWalkinCustomer(false);
-        cafeUsers.setValidityToken(generateUUID());
-        // user will be saved without a password. We have to send an email and ask them to set the password - javamailer
-        userRepository.save(cafeUsers);
+            cafeUsers.setActive(false);
+            cafeUsers.setValidityToken(generateUUID());
+            triggerRegistrationEmail(cafeUsers);
+            userRepository.save(cafeUsers);
+        }
+        return cafeUsers;
     }
 
     @Override
@@ -160,7 +133,11 @@ public class UserServiceImpl implements UserService {
                 existingUserObj.setName(cafeUser.getName());
             }
             if (cafeUser.getEmailAddress() != null) {
-                existingUserObj.setEmailAddress(cafeUser.getEmailAddress());
+                if (! cafeUser.getEmailAddress().equals(existingUser.get().getEmailAddress())) {
+                    existingUserObj.setEmailAddress(cafeUser.getEmailAddress());
+                    existingUserObj.setValidityToken(generateUUID());
+                    triggerRegistrationEmail(existingUserObj);
+                } // if the email does not match, don't perform necessary updates
             }
             if (cafeUser.getAuthority() != null) {
                 existingUserObj.setAuthority(cafeUser.getAuthority());
@@ -178,7 +155,6 @@ public class UserServiceImpl implements UserService {
         } else {
             return -1;
         }
-
     }
 
     @Override
@@ -203,8 +179,23 @@ public class UserServiceImpl implements UserService {
         return userMap;
     }
 
+    @Override
+    public long getUserCount(String authority) {
+        return userRepository.findAdminCount(authority);
+    }
 
-    private String getHashedPassword(String password) {
+    private void triggerRegistrationEmail(CafeUsers cafeUsers) {
+        try {
+            emi.sendMessage(cafeUsers.getEmailAddress(), "Your Freshbrew Cafe Management Registration :)", userRegistration.generateRegistrationMessage(
+                    cafeUsers.getValidityToken(), cafeUsers.getName()
+            ));
+        } catch (MessagingException messagingException) {
+            log.info("Couldn't send email. Saving user without registration. Exception thrown: " + messagingException.getCause());
+        }
+    }
+
+    @Override
+    public String getHashedPassword(String password) {
         return bCryptPasswordEncoder.encode(password);
     }
 

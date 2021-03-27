@@ -16,7 +16,8 @@
 
             <a class="nav-link">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:inline="text">[[${username}]]</span></span>
-                <img class="img-profile rounded-circle" th:with="fc=${firstCharInUsername}" th:src="@{/images/profile_svg/}+${#strings.toUpperCase(fc)}+@{.svg}">
+                <img class="img-profile rounded-circle" th:with="fc=${firstCharInUsername}"
+                     th:src="@{/images/profile_svg/}+${#strings.toUpperCase(fc)}+@{.svg}">
             </a>
 
         </li>

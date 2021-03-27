@@ -2,12 +2,11 @@ package com.org.cafemgmt.service;
 
 import com.org.cafemgmt.model.*;
 import com.org.cafemgmt.repository.CafeCartsRepository;
-import com.org.cafemgmt.repository.CafeInvoiceRepository;
 import com.org.cafemgmt.repository.CafeOrderRepository;
 import com.org.cafemgmt.repository.MenuItemsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
@@ -26,9 +25,6 @@ public class CafeOrderServiceImpl implements CafeOrderService {
 
     @Autowired
     CafeCartsRepository cafeCartsRepository;
-
-    @Autowired
-    CafeInvoiceRepository cafeInvoiceRepository;
 
     @Autowired
     UserService userService;
@@ -51,11 +47,12 @@ public class CafeOrderServiceImpl implements CafeOrderService {
 
     @Override
     public List<CafeOrders> listAllOrders() {
-        return cafeOrderRepository.findAll();
+        return cafeOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
     @Override
     public List<CafeOrders> setMenuItemsInternal(List<CafeOrders> cafeOrdersList) {
+
         for (int i = 0; i < cafeOrdersList.size(); i++) {
             String[] cartItemArray = cafeOrdersList.get(i).getCartItemList().split(",");
             List<CartItem> cartItemList = new ArrayList<CartItem>();
@@ -96,11 +93,6 @@ public class CafeOrderServiceImpl implements CafeOrderService {
             cafeOrderAct.setApprovedUser(approver_id);
             cafeOrderAct.setStatus(2);
             cafeOrderRepository.save(cafeOrderAct);
-            CafeOrderInvoices cafeOrderInvoice = new CafeOrderInvoices();
-            cafeOrderInvoice.setOrderId(cafeOrderAct.getId());
-            cafeOrderInvoice.setCreatedAt(new Date());
-            cafeOrderInvoice.setUpdatedAt(new Date());
-            cafeInvoiceRepository.save(cafeOrderInvoice);
         }
     }
 
@@ -148,7 +140,12 @@ public class CafeOrderServiceImpl implements CafeOrderService {
         if (cafeUsersOptional.isPresent()) {
             CafeUsers loggedInUser = cafeUsersOptional.get();
             if (loggedInUser.isInternalUser()) {
-                user_id = userService.getWalkinCustomerId();
+                if (userService.getWalkinCustomerId() != -1) {
+                    user_id = userService.getWalkinCustomerId();
+                }
+                else {
+                    user_id = cafeCart.getUserId();
+                }
             } else {
                 user_id = cafeCart.getUserId();
             }

@@ -18,6 +18,7 @@
 }
 
 
+
 </style>
 
 <body>
@@ -32,7 +33,7 @@
                             account</h2>
                         <div class="form-group">
                             <input type="text" th:field="*{emailAddress}" class="form-control"
-                                   style="font-family: 'Fira Sans', sans-serif;" placeholder="Email Address"
+                                   style="font-family: 'Fira Sans', sans-serif;pointer-events:none; background:grey;" placeholder="Email Address"
                                    autofocus="true">
                             <span class="has-error" th:if="${#fields.hasErrors('emailAddress')}"
                                   th:errors="*{emailAddress}"></span>

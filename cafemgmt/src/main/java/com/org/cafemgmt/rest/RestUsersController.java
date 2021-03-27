@@ -33,19 +33,14 @@ public class RestUsersController {
     @JsonView(CafeUserView.ViewToReturnUsers.class)
     @RequestMapping(value = "/api/users", method = RequestMethod.POST)
     public CafeUsers addUser(@RequestBody CafeUsers user) {
-        try {
-            if (user != null && user.getAuthority() != null) {
-                if (!user.getAuthority().contains("ROLE_CLERK") && !user.getAuthority().contains("ROLE_ADMIN")) {
-                    throw new CafeInvalidParameterException("Invalid Parameter in Request - User authority should be ROLE_CLERK or ROLE_ADMIN");
-                }
-                return userService.saveUser(user);
-            } else {
-                throw new CafeInvalidParameterException("Name, emailAddress and authority fields are mandatory");
+        if (user != null && user.getAuthority() != null) {
+            if (!user.getAuthority().contains("ROLE_CLERK") && !user.getAuthority().contains("ROLE_ADMIN")) {
+                throw new CafeInvalidParameterException("Invalid Parameter in Request - User authority should be ROLE_CLERK or ROLE_ADMIN");
             }
-        } catch (MessagingException e) {
-            log.info("MessagingException: ", e);
+            return userService.saveCafeUser(user,"CREATE");
+        } else {
+            throw new CafeInvalidParameterException("Name, emailAddress and authority fields are mandatory");
         }
-        return null;
     }
 
     @RequestMapping(value = "/api/users/{id}", method = RequestMethod.DELETE)
@@ -74,7 +69,11 @@ public class RestUsersController {
             throw new CafeInvalidParameterException("Invalid Parameters in Request. Authority should be ROLE_ADMIN or ROLE_CLERK");
         }
         cafeUser.setId(id);
-        return ResponseEntity.status(200).body(userService.apiUpdateUser(cafeUser));
+        CafeUsers updatedUser = userService.apiUpdateUser(cafeUser);
+        if (updatedUser == null) {
+            throw new CafeEntityNotFoundException("No User Found with id " + id);
+        }
+        return ResponseEntity.status(200).body(updatedUser);
     }
 
     @JsonView(CafeUserView.ViewToReturnUsers.class)

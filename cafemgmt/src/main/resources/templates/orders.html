@@ -101,6 +101,7 @@
                                         <tr>
                                             <th scope="col text-primary">Order ID</th>
                                             <th scope="col text-primary">Customer Name</th>
+                                            <th scope="col text-primary">Status</th>
                                             <th scope="col text-primary">Order Details</th>
                                             <th scope="col text-primary">Rating</th>
                                         </tr>
@@ -111,6 +112,14 @@
                                             <tr>
                                                 <td th:inline="text">[[${order.id}]]</td>
                                                 <td th:inline="text">[[${order.customerName}]]</td>
+                                                <td th:inline="text">
+                                                    <th:block th:switch="${order.status}">
+                                                        <th:block th:case="'1'">Pending Approval</th:block>
+                                                        <th:block th:case="'2'">Approved / Delivered</th:block>
+                                                        <th:block th:case="'3'">Cancelled</th:block>
+                                                        <th:block th:case="'*'">Unknown</th:block>
+                                                    </th:block>
+                                                </td>
                                                 <td th:inline="text"><a href="#" id="new-menu-item-modal"
                                                                         data-toggle="modal"
                                                                         th:data-target="${'#' + order.id}">Order
@@ -150,6 +159,7 @@
             jQuery.noConflict();
             jQuery('#myTable').DataTable();
         });
+
 
 
 

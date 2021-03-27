@@ -38,10 +38,23 @@ public class MenuItemsController {
         // As we have to redirect them to the correct /menus/{id}/edit page.
         String referrer = request.getHeader("referer");
         String toReturn = "redirect:/" + referrer.replace("http://localhost:8080/", "");
-        String imagePath = menuItemsService.saveMenuItemImage(file);
-        if (imagePath == null) {
-            return toReturn + "?error=invalid_image_path";
+        toReturn = toReturn.split("\\?")[0];
+        String imagePath = "";
+        System.out.println(file);
+        if (! file.isEmpty()) {
+            imagePath = menuItemsService.saveMenuItemImage(file);
+            if (imagePath == null) {
+                return toReturn + "?error=invalid_image_path";
+            }
         }
+        else {
+            imagePath = "uploads/menu_items/defaultmenuitem.png";
+        }
+
+        if (cafeMenuItems.getName() == null || cafeMenuItems.getDescription() == null || cafeMenuItems.getPrice() == 0.0) {
+            return toReturn + "?error=invalid_parameters";
+        }
+
         cafeMenuItems.setImagePath(imagePath);
         menuItemsService.saveMenuItem(cafeMenuItems);
 
@@ -49,7 +62,7 @@ public class MenuItemsController {
         model.addAttribute("menuItemForm", new CafeMenuItems());
         model.addAttribute("menuItems", menuItemsService.getAllMenuItems());
 
-        return toReturn;
+        return toReturn ;
     }
 
     @RequestMapping(value = "/menus/items/new", method = RequestMethod.GET)

@@ -19,4 +19,7 @@ public interface UserRepository extends JpaRepository<CafeUsers, Long> {
 
     @Query("SELECT t FROM CafeUsers t WHERE UPPER(t.name) LIKE %?1% AND t.internalUser=?2")
     public List<CafeUsers> searchUsers(String queryString, boolean b);
+
+    @Query("SELECT COUNT(t) FROM CafeUsers t WHERE t.authority IN (?1)")
+    public long findAdminCount(String authority);
 }

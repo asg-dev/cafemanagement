@@ -35,6 +35,22 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    <div class="alert alert-danger signup-existing-alert alert-dismissible fade show" style="display: none;"
+                         role="alert">
+
+                        <strong>Email Address already exists.</strong> Please click on forgot password to reset your password.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="alert alert-danger signup-invalid-alert alert-dismissible fade show" style="display: none;"
+                         role="alert">
+
+                        <strong>Invalid Parameters in request.</strong> Username, Email & Password are mandatory.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <form class="form-signin" method="POST" th:action="@{/login}">
                         <h2 class="form-heading" style="font-family: 'Staatliches', cursive;">Log in</h2>
 
@@ -65,11 +81,19 @@
             jQuery('.login-alert').show();
         }
 
+        if ((window.location.href).endsWith("?error=email_already_taken")) {
+            jQuery('.signup-existing-alert').show();
+        }
+
+        if ((window.location.href).endsWith("?error=invalid_parameters")) {
+            jQuery('.signup-invalid-alert').show();
+        }
+
+
         jQuery('.close').click(function() {
             $(".alert").alert('close')
         });
     })
-
 
     </script>
 </div>

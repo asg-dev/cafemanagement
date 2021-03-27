@@ -54,7 +54,7 @@ public class MenuItemsServiceImpl implements MenuItemsService {
         try {
             String[] extensionSplit = file.getOriginalFilename().split("\\.");
             String extension = extensionSplit[extensionSplit.length - 1];
-            if (extension == "jpg" || extension == "jpeg" || extension == "png" || extension == "gif" || extension == "bmp") {
+            if (extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png") || extension.equals("gif") || extension.equals("bmp")) {
                 String filename = file.getOriginalFilename().replace('.' + extension, "") + RandomString.make(6) + '.' + extension;
                 Files.copy(file.getInputStream(), this.menuItemRoot.resolve(filename));
                 return (menuItemRoot.toString() + File.separator + filename);

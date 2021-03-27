@@ -3,13 +3,16 @@
 <head>
 </head>
 <body>
-<header class="header-area header-sticky" style="background-color: #652d13;background-image: linear-gradient(300deg, #652d13 10%, #d3d3d3 170%);background-size: cover;" th:fragment="header-customer-facing">
+<header class="header-area header-sticky"
+        style="background-color: #652d13;background-image: linear-gradient(300deg, #652d13 10%, #d3d3d3 170%);background-size: cover;"
+        th:fragment="header-customer-facing">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <nav class="main-nav">
                     <a href="/site/menus" class="logo">
-                        <img th:src="@{/images/logo.png}" width="55" height="55"><span style="font-family:Cookie; font-size:40px;"> reshbrew Cafe</span>
+                        <img th:src="@{/images/logo.png}" width="55" height="55"><span
+                            style="font-family:Cookie; font-size:40px;"> reshbrew Cafe</span>
                     </a>
                     <span th:if="${role} == admin">
                                 <ul class="nav">
