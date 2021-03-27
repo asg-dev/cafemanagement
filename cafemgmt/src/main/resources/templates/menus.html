@@ -73,12 +73,13 @@
                                 </div>
                             </div>
                             <!-- Card Body -->
-                            <button class="d-flex justify-content-start d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <button class="d-flex justify-content-start d-sm-inline-block btn btn-primary shadow-sm">
                                 <i class="fas fa-dumpster text-white-50"></i><a class="addNewMenu" th:href="@{/menus/new}" style="text-decoration: none; color:#fff;">      Add Menu</a>
                             </button>
-                            <button class="d-flex justify-content-start d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+
+                            <button class="d-flex justify-content-start d-sm-inline-block btn btn-primary shadow-sm">
                                 <i class="fas fa-dumpster text-white-50"></i><a class="addNewMenu" th:href="@{/menus/items/}" style="text-decoration: none; color:#fff;">      Manage Menu Items</a>
-                            </button> <!-- Unnecessary -->
+                            </button>
                             <div class="card-body">
                                 <div class="chart-area">
 
@@ -100,46 +101,33 @@
                                                         <td th:inline="text">[[${menu.description}]]</td>
                                                         <td th:inline="text">[[${menu.menu_item_names}]]</td>
                                                         <td>
-                                                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                                            <button class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm">
                                                                 <i class="fas fa-pencil-alt text-white-50"></i><a th:href="@{/menus/}+${menu.id}+@{/edit}" style="text-decoration: none; color:#fff;">      Edit Menu</a>
                                                             </button>
 
                                                             <form th:action="@{/menus/}+${menu.id}+@{/delete}" th:method="POST">
-                                                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-
+                                                            <button class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm">
                                                                 <i class="fas fa-dumpster text-white-50"></i><a class="deletionOp" th:value="@{/menus/}+${menu.id}+@{/delete}" style="text-decoration: none; color:#fff;">      Delete Menu</a>
-
                                                             </button>
                                                             </form>
 
                                                             <th:block th:switch="${menu.active}">
                                                                 <th:block th:case="false">
                                                                 <form th:action="@{/menus/}+${menu.id}+@{/activate}" th:method="POST">
-                                                                <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                                                <button class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
                                                                     <i class="fas fas fa-key text-white-50"></i><a class="activateValue" th:value="@{/menus/}+${menu.id}+@{/activate}" style="text-decoration: none; color:#fff;">      Activate Menu</a>
                                                                 </button>
                                                                 </form>
                                                                 </th:block>
                                                                 <th:block th:case="true">
                                                                     <form th:action="@{/menus/}+${menu.id}+@{/deactivate}" th:method="POST">
-                                                                        <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                                                        <button class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
                                                                             <i class="fas fas fa-key text-white-50"></i><a class="deactivateValue" th:value="@{/menus/}+${menu.id}+@{/deactivate}" style="text-decoration: none; color:#fff;">      Deactivate Menu</a>
                                                                         </button>
                                                                     </form>
                                                                 </th:block>
                                                             </th:block>
-<!--                                                            <script>-->
-<!--                                                                jQuery('.deletionOp').on('click', function(e) {-->
-<!--                                                                    e.preventDefault();-->
-<!--                                                                    fetch((e.currentTarget.attributes[1].value), {-->
-<!--                                                                        "method": 'DELETE',-->
-<!--                                                                        "credentials":"include",-->
-<!--                                                                    }).then((response) => {-->
-<!--                                                                        console.log("USER DELETED");-->
-<!--                                                                        window.location.href = "/menus";-->
-<!--                                                                    })-->
-<!--                                                                })-->
-<!--                                                            </script>-->
+
                                                         </td>
                                                     </tr>
                                                 </th:block>

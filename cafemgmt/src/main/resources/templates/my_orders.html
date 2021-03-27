@@ -11,48 +11,24 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <title>Klassy Cafe - Restaurant HTML Template</title>
+    <title>Freshbrew Cafe | My Orders</title>
 
-
-    <!--
-
-    TemplateMo 558 Klassy Cafe
-
-    https://templatemo.com/tm-558-klassy-cafe
-
-    -->
-    <!-- Additional CSS Files -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.css}">
-
-    <link rel="stylesheet" th:href="@{/css/templatemo-klassy-cafe.css}">
-
-    <link rel="stylesheet" th:href="@{/css/owl-carousel.css}">
-
-    <link rel="stylesheet" th:href="@{/css/lightbox.css}">
-
-    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" th:href="@{/css/cafemgmt.css}">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <link href="/vendor/fontawesome-free/css/all.css" rel="stylesheet" type="text/css">
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
-
-    <!-- Custom styles for this template-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/6bb6871a7b.js" crossorigin="anonymous"></script>
 
 </head>
 
 <body>
-
-<!-- ***** Preloader Start ***** -->
-
 <div th:replace="fragments/cf-header :: header-customer-facing"></div>
 
 
@@ -71,11 +47,12 @@
                     <th scope="col text-primary">Status</th>
                     <th scope="col text-primary">Placed On</th>
                     <th scope="col text-primary">Details</th>
+                    <th scope="col text-primary">Rating</th>
                 </tr>
                 </thead>
                 <tbody>
 
-                <th:block th:object="${allOrders}" th:each="order : ${allOrders}">
+                <th:block th:object="${cafeOrders}" th:each="order : ${cafeOrders}">
                     <tr>
                         <td th:inline="text">[[${order.id}]] </td>
                         <td th:inline="text">[[${order.totalPrice}]]</td>
@@ -85,39 +62,23 @@
                             <td th:case="'3'" th:inline="text">Cancelled</td>
                         </th:block>
                         <td th:inline="text">[[${order.createdAt}]]</td>
-                        <td th:inline="text"><a href="#">Order Details</a></td>
+                        <td th:inline="text"><a href="#" id="new-menu-item-modal" data-toggle="modal" th:data-target="${'#' + order.id}">Order Details</a></td>
                         <td>
-
+                            <th:block th:if="${order.rating>0}" th:inline="text">
+                                [[${order.rating}]] / 5
+                            </th:block>
+                            <th:block th:unless="${order.rating>0}">
+                                <a href="#" id="rating-modal" data-toggle="modal" th:data-target="${'#rate' + order.id}">Rate</a>
+                            </th:block>
                         </td>
                     </tr>
                 </th:block>
                 </tbody>
             </table>
+            <div th:replace="fragments/myorderdetailsmodal :: myorderdetailsmodal"></div>
+            <div th:replace="fragments/ratings :: ratingsmodal"></div>
         </div>
     </div>
 </div>
-
-<!-- jQuery -->
-<script src="/js/jquery-2.1.0.min.js"></script>
-
-<!-- Bootstrap -->
-<script src="/js/popper.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-
-<!-- Plugins -->
-<script src="/js/owl-carousel.js"></script>
-<script src="/js/accordions.js"></script>
-<script src="/js/datepicker.js"></script>
-<script src="/js/scrollreveal.min.js"></script>
-<script src="/js/waypoints.min.js"></script>
-<script src="/js/jquery.counterup.min.js"></script>
-<script src="/js/imgfix.min.js"></script>
-<script src="/js/slick.js"></script>
-<script src="/js/lightbox.js"></script>
-<script src="/js/isotope.js"></script>
-
-<!-- Global Init -->
-
-
 </body>
 <html>

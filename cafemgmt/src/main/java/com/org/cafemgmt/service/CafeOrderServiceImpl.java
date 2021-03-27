@@ -1,17 +1,16 @@
 package com.org.cafemgmt.service;
 
-import com.org.cafemgmt.model.CafeMenuItems;
-import com.org.cafemgmt.model.CafeOrderInvoices;
-import com.org.cafemgmt.model.CafeOrders;
-import com.org.cafemgmt.model.CartItem;
+import com.org.cafemgmt.model.*;
 import com.org.cafemgmt.repository.CafeCartsRepository;
 import com.org.cafemgmt.repository.CafeInvoiceRepository;
 import com.org.cafemgmt.repository.CafeOrderRepository;
 import com.org.cafemgmt.repository.MenuItemsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,13 +35,18 @@ public class CafeOrderServiceImpl implements CafeOrderService {
 
     @Override
     @Transactional
-    public void saveCafeOrder(CafeOrders cafeOrder) {
-        cafeOrderRepository.save(cafeOrder);
+    public CafeOrders saveCafeOrder(CafeOrders cafeOrder) {
+        return cafeOrderRepository.save(cafeOrder);
     }
 
     @Override
     public List<CafeOrders> getAllPendingOrders() {
         return cafeOrderRepository.listAllPendingOrders();
+    }
+
+    @Override
+    public List<CafeOrders> getAllApprovedOrders() {
+        return cafeOrderRepository.listAllApprovedOrders();
     }
 
     @Override
@@ -52,7 +56,6 @@ public class CafeOrderServiceImpl implements CafeOrderService {
 
     @Override
     public List<CafeOrders> setMenuItemsInternal(List<CafeOrders> cafeOrdersList) {
-
         for (int i=0; i < cafeOrdersList.size(); i++) {
             String[] cartItemArray = cafeOrdersList.get(i).getCartItemList().split(",");
             List<CartItem> cartItemList = new ArrayList<CartItem>();
@@ -68,23 +71,29 @@ public class CafeOrderServiceImpl implements CafeOrderService {
                         cartItem1.setMenuItemName(cafeMenuItems.get().getName());
                         cartItem1.setMenuItemDescription(cafeMenuItems.get().getDescription());
                         cartItem1.setImagePath(cafeMenuItems.get().getImagePath());
+                        cartItem1.setIndividualPrice(cafeMenuItems.get().getPrice());
                     }
                 }
                 cartItemList.add(cartItem1);
             }
             cafeOrdersList.get(i).setCartItemListInternal(cartItemList);
+            if (userService.findUserById(cafeOrdersList.get(i).getApprovedUser()).isPresent()) {
+                cafeOrdersList.get(i).setApprovedUserName(userService.findUserById(cafeOrdersList.get(i).getApprovedUser()).get().getName());
+            }
             if (userService.findUserById(cafeOrdersList.get(i).getCustomerId()).isPresent()) {
                 cafeOrdersList.get(i).setCustomerName(userService.findUserById(cafeOrdersList.get(i).getCustomerId()).get().getName());
+                cafeOrdersList.get(i).setCustomerEmail(userService.findUserById(cafeOrdersList.get(i).getCustomerId()).get().getEmailAddress());
             }
         }
         return cafeOrdersList;
     }
 
     @Override
-    public void approveOrder(long id) {
+    public void approveOrder(long id, long approver_id) {
         Optional<CafeOrders> cafeOrder = cafeOrderRepository.findById(id);
         if (cafeOrder.isPresent()) {
             CafeOrders cafeOrderAct = cafeOrder.get();
+            cafeOrderAct.setApprovedUser(approver_id);
             cafeOrderAct.setStatus(2);
             cafeOrderRepository.save(cafeOrderAct);
             CafeOrderInvoices cafeOrderInvoice = new CafeOrderInvoices();
@@ -96,10 +105,11 @@ public class CafeOrderServiceImpl implements CafeOrderService {
     }
 
     @Override
-    public void cancelOrder(long id) {
+    public void cancelOrder(long id, long canceller_id) {
         Optional<CafeOrders> cafeOrder = cafeOrderRepository.findById(id);
         if (cafeOrder.isPresent()) {
             CafeOrders cafeOrderAct = cafeOrder.get();
+            cafeOrderAct.setApprovedUser(canceller_id);
             cafeOrderAct.setStatus(3);
             cafeOrderRepository.save(cafeOrderAct);
         }
@@ -108,5 +118,66 @@ public class CafeOrderServiceImpl implements CafeOrderService {
     @Override
     public List<CafeOrders> getAllOrdersByUserId(long user_id) {
         return cafeOrderRepository.findAllByUserId(user_id);
+    }
+
+    @Override
+    public CafeOrders getOrderById(long order_id) {
+        Optional<CafeOrders> cafeOrdersOptional = cafeOrderRepository.findById(order_id);
+        if (cafeOrdersOptional.isPresent()) {
+            List<CafeOrders> cafeOrdersList = new ArrayList<CafeOrders>();
+            cafeOrdersList.add(cafeOrdersOptional.get());
+            setMenuItemsInternal(cafeOrdersList);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, yyyy");
+            String date = simpleDateFormat.format(cafeOrdersList.get(0).getCreatedAt());
+            cafeOrdersList.get(0).setFormattedOrderDate(date);
+            return cafeOrdersList.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public List<CafeOrders> getAllOrders() {
+        return cafeOrderRepository.findAll();
+    }
+
+    @Override
+    public CafeOrders transformAndSaveCart(CafeCarts cafeCart) {
+        CafeOrders cafeOrder = new CafeOrders();
+        Optional<CafeUsers> cafeUsersOptional = userService.findUserById(cafeCart.getUserId());
+        long user_id = 0;
+        if (cafeUsersOptional.isPresent()) {
+            CafeUsers loggedInUser = cafeUsersOptional.get();
+            if (loggedInUser.isInternalUser()) {
+                user_id = userService.getWalkinCustomerId();
+            }
+            else {
+                user_id = cafeCart.getUserId();
+            }
+        }
+        cafeOrder.setCustomerId(user_id);
+        cafeOrder.setCartItemList(cafeCart.getCartItems());
+        cafeOrder.setTotalPrice(cafeCart.getTotalPrice());
+        cafeOrder.setStatus(1);
+        cafeOrder.setCreatedAt(new Date());
+        cafeOrder.setUpdatedAt(new Date());
+        return saveCafeOrder(cafeOrder);
+    }
+
+    @Override
+    public List<CafeOrders> getOrdersForReport(String dateRange, long customerId, long approverId) {
+        String[] completeRange = dateRange.split(" - ");
+        CafeOrders cafeOrder = CafeOrders.builder().customerId(customerId).approvedUser(approverId).build();
+        if (dateRange != null && customerId == 0 && approverId == 0) {
+            return cafeOrderRepository.findWithinDateRange(new Date(completeRange[0]), new Date(completeRange[1]));
+        }
+        else if (dateRange != null && customerId != 0 && approverId == 0) {
+            return cafeOrderRepository.findWithinDateRangeCustomerId(new Date(completeRange[0]), new Date(completeRange[1]), customerId);
+        }
+        else if (dateRange != null && customerId == 0 && approverId != 0) {
+            return cafeOrderRepository.findWithinDateRangeApproverId(new Date(completeRange[0]), new Date(completeRange[1]), approverId);
+        }
+        else {
+            return cafeOrderRepository.findAll(Example.of(cafeOrder));
+        }
     }
 }

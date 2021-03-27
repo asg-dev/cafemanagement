@@ -1,7 +1,7 @@
 package com.org.cafemgmt.controller;
 
+import com.org.cafemgmt.common.UserManagement;
 import com.org.cafemgmt.model.CafeUsers;
-import com.org.cafemgmt.model.PrincipalUserDetails;
 import com.org.cafemgmt.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -25,55 +25,55 @@ public class UsersController {
     UserService userService;
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    private String listAllUsers(HttpServletRequest request, Authentication authentication, Model model) {
+    private String listAllUsers(Authentication authentication, Model model) {
         List<CafeUsers> userList = userService.listAllUserDetails();
-        model.addAllAttributes(userList);
-        PrincipalUserDetails currentUser = (PrincipalUserDetails) authentication.getPrincipal();
-        String userEmail = currentUser.getUsername();
-        System.out.println(userEmail);
-        CafeUsers cafeUser = userService.findUserByEmail(userEmail);
-        System.out.println(cafeUser.getName());
-        // System.out.println(userService.findUserByEmail(userEmail));
-        model.addAttribute("firstCharInUsername", cafeUser.getName().charAt(0));
-        model.addAttribute("username", cafeUser.getName());
-        model.addAttribute("users", userService.listAllUserDetails());
+
+        String loggedInUsername = UserManagement.getUserName(authentication, userService);
+
+        model.addAttribute("firstCharInUsername", loggedInUsername.charAt(0));
+        model.addAttribute("username", loggedInUsername);
+
+        model.addAttribute("users", userList);
         return "users";
     }
 
     @RequestMapping(value = "/users/{id}/edit", method = RequestMethod.GET)
-    private String editUser(HttpServletRequest request, Model model, Authentication authentication, @PathVariable Long id) {
-        if (userService.findUserById(id).isPresent()) {
-            model.addAttribute("userInfo", userService.findUserById(id).get());
+    private String editUser(Model model, Authentication authentication, @PathVariable Long id) {
+        Optional<CafeUsers> cafeUser = userService.findUserById(id);
+        if (cafeUser.isPresent()) {
+            model.addAttribute("userInfo", cafeUser.get());
         }
         else {
             model.addAttribute("userInfo", "");
         }
+
+        String loggedInUsername = UserManagement.getUserName(authentication, userService);
+
+        model.addAttribute("firstCharInUsername", loggedInUsername.charAt(0));
+        model.addAttribute("username", loggedInUsername);
+
         return "edit";
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.POST)
-    private String updateUsers(HttpServletRequest request, @ModelAttribute("userInfo") CafeUsers user, @PathVariable long id) {
-        log.info("Trying to POST for cafeUser. Id: ", id);
+    private String updateUsers(@ModelAttribute("userInfo") CafeUsers user, @PathVariable long id) {
+        log.info("Editing User with Id: ", id);
         userService.updateInternalUser(user);
         return "redirect:/users";
     }
 
     @RequestMapping(value = "/users/new", method = RequestMethod.GET)
-    private String addNewUser(HttpServletRequest request, Model model, Authentication authentication) {
-        PrincipalUserDetails currentUser = (PrincipalUserDetails) authentication.getPrincipal();
-        String userEmail = currentUser.getUsername();
-        System.out.println(userEmail);
-        CafeUsers cafeUser = userService.findUserByEmail(userEmail);
-        System.out.println(cafeUser.getName());
-        // System.out.println(userService.findUserByEmail(userEmail));
-        model.addAttribute("firstCharInUsername", cafeUser.getName().charAt(0));
-        model.addAttribute("username", cafeUser.getName());
+    private String addNewUser(Model model, Authentication authentication) {
+        String loggedInUsername = UserManagement.getUserName(authentication, userService);
+
+        model.addAttribute("firstCharInUsername", loggedInUsername.charAt(0));
+        model.addAttribute("username", loggedInUsername);
         model.addAttribute("userForm", new CafeUsers());
         return "new_agent";
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    private String createUser(HttpServletRequest request, @ModelAttribute("userForm") CafeUsers cafeUsers, Authentication authentication) throws MessagingException {
+    private String createUser(@ModelAttribute("userForm") CafeUsers cafeUsers, Authentication authentication) throws MessagingException {
         userService.insertCustomUser(cafeUsers);
         return "redirect:/users";
     }

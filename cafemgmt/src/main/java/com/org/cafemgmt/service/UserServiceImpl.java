@@ -8,12 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.swing.text.html.Option;
-import java.security.InvalidParameterException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -57,9 +52,7 @@ public class UserServiceImpl implements UserService {
         if (user.getAuthority() == null) {
             user.setAuthority("ROLE_CLERK");
         }
-        if (user.getAuthority() == "ROLE_CUSTOMER") {
-            throw new InvalidParameterException();
-        }
+
         user.setWalkinCustomer(false);
         user.setInternalUser(true); // all API user creation applies only for internal users.
         user.setValidityToken(generateUUID());
@@ -173,10 +166,45 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public long getWalkinCustomerId() {
+        CafeUsers walkinUser = userRepository.findByEmailAddress("walkincustomerdefault@freshbrew.com");
+        if (walkinUser != null) {
+            return walkinUser.getId();
+        }
+        else {
+            return -1;
+        }
+
+    }
+
+    @Override
+    public void triggerPasswordReset(CafeUsers cafeUser) throws MessagingException {
+        CafeUsers resetUser = userRepository.findByEmailAddress(cafeUser.getEmailAddress());
+        if (resetUser != null) {
+            resetUser.setValidityToken(generateUUID());
+            userRepository.save(resetUser);
+            emi.sendMessage(resetUser.getEmailAddress(), "Reset Password for Freshbrew Cafe Management", userRegistration.generatePasswordResetMessage (
+                    resetUser.getValidityToken(), resetUser.getName()
+            ));
+        }
+    }
+
+    @Override
+    public Map<Long, String> searchUser(String queryString, boolean b) {
+        List<CafeUsers> cafeUsers = userRepository.searchUsers(queryString.toUpperCase(), b);
+        Map<Long, String> userMap = new HashMap<Long, String>();
+        for (CafeUsers user : cafeUsers) {
+            userMap.put(user.getId(), user.getName());
+        }
+        return userMap;
+    }
+
 
     private String getHashedPassword(String password) {
         return bCryptPasswordEncoder.encode(password);
     }
+
     private UUID generateUUID() { return new UUID(1,1).randomUUID(); }
 
 }

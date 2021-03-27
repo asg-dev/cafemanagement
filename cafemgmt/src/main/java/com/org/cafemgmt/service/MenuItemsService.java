@@ -8,9 +8,11 @@ import java.util.Optional;
 
 public interface MenuItemsService {
     public List<CafeMenuItems> getMenuItemByMenuId(long id);
+    public CafeMenuItems getMenuItemById(long id);
     public List<CafeMenuItems> findAllMenuItemsById(List<Long> ids);
     public List<CafeMenuItems> getAllMenuItems();
-    public void saveMenuItem(CafeMenuItems cafeMenuItems);
+    public CafeMenuItems saveMenuItem(CafeMenuItems cafeMenuItems);
     public String saveMenuItemImage(MultipartFile file);
     public void deleteMenuItem(long id);
+    public boolean checkMenuItemValidity(List<Long> incomingMenuItems);
  }

@@ -10,6 +10,7 @@ public class CartItem {
     private String menuItemName;
     private String menuItemDescription;
     private String imagePath;
+    private double individualPrice;
     private long quantity;
     private double subTotal;
 }

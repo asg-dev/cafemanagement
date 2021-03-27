@@ -52,4 +52,7 @@ public class BeanConfig {
 
     @Bean
     CafeOrderService cafeOrderService() { return new CafeOrderServiceImpl(); }
+
+    @Bean
+    CafeRatingsService cafeRatingsService() { return new CafeRatingsServiceImpl(); }
 }

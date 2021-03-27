@@ -8,28 +8,33 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
 </head>
 <!------ Include the above in your HEAD tag ---------->
 
 <body style="background: rgb(235, 239, 243)">
 <div class="wrapper-cfm" >
-<div class="sidenav image-bv">
-    <div class="login-main-text">
-        <h2>Freshbrew <br> Cafeteria</h2>
-        <p>Login or register from here to access.</p>
-    </div>
-</div>
-<div class="main">
+<div th:replace="fragments/login-sidenav :: loginsidenav"></div>
+
+    <div class="main">
     <div class="col-md-6 col-sm-12">
         <div class="login-form">
             <div class="container">
+                <div class="alert alert-danger login-alert alert-dismissible fade show" style="display: none;" role="alert">
+
+                    <strong>Invalid Credentials.</strong> Please use the correct email and password.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <form class="form-signin" method="POST" th:action="@{/login}">
                     <h2 class="form-heading" style="font-family: 'Staatliches', cursive;">Log in</h2>
 
                     <div class="form-group">
                         <span th:text="${message}"></span>
-                        <input name="username" type="text" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Username"
+                        <input name="username" type="email" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Username"
                                autofocus="true"/>
                         <br>
                         <input name="password" type="password" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Password"/>
@@ -39,11 +44,23 @@
 
                         <button class="btn btn-black" type="submit">Log In</button>
                         <a class = "btn btn-secondary" href="/signup">Create an account</a>
+                        <a class = "btn btn-secondary" href="/forgot_password">Forgot Password?</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+    <script>
+    jQuery(document).ready(function() {
+        if ((window.location.href).endsWith("?error")) {
+            jQuery('.login-alert').show();
+        }
+
+        jQuery('.close').click(function() {
+            $(".alert").alert('close')
+        });
+    })
+    </script>
 </div>
 </body>

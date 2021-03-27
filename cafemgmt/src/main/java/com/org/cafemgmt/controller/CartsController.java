@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Controller
 public class CartsController {
@@ -54,17 +55,11 @@ public class CartsController {
 
     @RequestMapping(value = "/checkout", method = RequestMethod.POST)
     public String placeOrder(Authentication authentication, @ModelAttribute("cafeCart") CafeCarts cafeCart, Model model) {
-        System.out.println("TotPrice" + cafeCart.getTotalPrice());
-        CafeOrders cafeOrder = new CafeOrders();
-        cafeOrder.setCustomerId(cafeCart.getUserId());
-        cafeOrder.setCartItemList(cafeCart.getCartItems());
-        cafeOrder.setTotalPrice(cafeCart.getTotalPrice());
-        cafeOrder.setStatus(1);
-        cafeOrder.setCreatedAt(new Date());
-        cafeOrder.setUpdatedAt(new Date());
-        cafeOrderService.saveCafeOrder(cafeOrder);
-        long id = cartsService.getCartByUserId(cafeCart.getUserId()).getId();
-        cartsService.deletePlacedCart(id);
+        cafeOrderService.transformAndSaveCart(cafeCart);
+
+        long deletableCartId = cartsService.getCartByUserId(cafeCart.getUserId()).getId();
+        cartsService.deletePlacedCart(deletableCartId);
+
         return "redirect:/site/menus";
     }
 }

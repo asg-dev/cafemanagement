@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class PrincipalUserDetails implements UserDetails {
-
     private String username;
     private String password;
     private List<GrantedAuthority> authorities;

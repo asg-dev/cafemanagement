@@ -23,25 +23,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CafeAuthenticationSuccessHandler successHandler;
 
-//    private AuthenticationSuccessHandler authenticationSuccessHandler;
-//    @Autowired
-//    public WebSecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler) {
-//        this.authenticationSuccessHandler = authenticationSuccessHandler;
-//    }
+    @Autowired
+    private CafeAuthenticationFailureHandler failureHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        System.out.println(userDetailsService);
         auth.userDetailsService(userDetailsService);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/admin").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/user").hasAuthority("ROLE_CUSTOMER")
-                .antMatchers("/menus", "/users", "/users/*").authenticated()
-                .antMatchers("/api/users").authenticated()
+                .antMatchers("/admin", "/reports", "/menus/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/pending_orders").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLERK")
+                .antMatchers("/site/my_orders").hasAuthority("ROLE_CUSTOMER")
+                .antMatchers("/menus", "/users", "/users/**", "/site/**").authenticated()
+                .antMatchers("/api/users/**", "/api/menus/**", "/api/carts/**", "/api/menus/items/**").authenticated()
                 .antMatchers("/", "/login").permitAll()
                 .and()
                 .formLogin()
@@ -51,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .httpBasic()
                 .and()
-                    .csrf().disable();
+                    .cors().and().csrf().disable();
     }
 
     @Bean

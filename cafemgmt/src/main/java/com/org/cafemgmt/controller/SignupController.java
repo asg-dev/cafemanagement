@@ -19,15 +19,14 @@ public class SignupController {
     UserService userService;
 
     @RequestMapping(value="/signup", method= RequestMethod.GET)
-    public String register(Model model) {
-        log.info("Redirecting to Signup Page!");
+    public String loadUserSignup(Model model) {
         model.addAttribute("userForm", new CafeUsers());
         return "signup";
     }
 
     @RequestMapping(value="/signup", method=RequestMethod.POST)
-    public String signup(HttpServletRequest request, @ModelAttribute("userForm") CafeUsers cafeUsers) {
-        System.out.println(cafeUsers.getEmailAddress());
+    public String signup(@ModelAttribute("userForm") CafeUsers cafeUsers) {
+        log.info("User signed up: ", cafeUsers.getEmailAddress());
         userService.insertUser(cafeUsers);
         return "login";
     }

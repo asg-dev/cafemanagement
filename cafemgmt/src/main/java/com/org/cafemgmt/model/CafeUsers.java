@@ -34,6 +34,4 @@ public class CafeUsers {
     private UUID validityToken;
     private boolean internalUser;
     private boolean walkinCustomer;
-    private String passwordRecoveryQuestion;
-    private String passwordRecoveryAnswer;
 }

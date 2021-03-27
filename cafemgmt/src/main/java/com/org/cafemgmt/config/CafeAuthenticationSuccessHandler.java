@@ -28,7 +28,7 @@ public class CafeAuthenticationSuccessHandler implements AuthenticationSuccessHa
                 if (authority.getAuthority().equals("ROLE_CUSTOMER")) {
                     redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/site/menus");
                 } else if (authority.getAuthority().equals("ROLE_ADMIN")) {
-                    redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/admin");
+                    redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/pending_orders");
                 } else if (authority.getAuthority().equals("ROLE_CLERK")) {
                     redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/pending_orders");
                 } else {
@@ -37,9 +37,19 @@ public class CafeAuthenticationSuccessHandler implements AuthenticationSuccessHa
             }
             catch (IOException ioException) {
                 log.info("IOException occurred", ioException.getMessage());
+                try {
+                    redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/error");
+                } catch (IOException e) {
+                    log.error("IOException Occurred: ", e);
+                }
             }
             catch (IllegalStateException illegalStateException) {
                 log.info("IllegalStateException occurred: ", illegalStateException.getMessage());
+                try {
+                    redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/error");
+                } catch (IOException ioException) {
+                    log.error("IOException Occurred: ", ioException);
+                }
             }
         });
     }

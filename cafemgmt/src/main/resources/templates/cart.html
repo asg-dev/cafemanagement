@@ -3,37 +3,19 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <title>Freshbrew Cafe</title>
 
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
-    <!-- CSS only -->
+    <link rel="stylesheet" th:href="@{/css/cafemgmt.css}">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.css}">
-
-    <link rel="stylesheet" th:href="@{/css/templatemo-klassy-cafe.css}">
-
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-
+    <script src="https://kit.fontawesome.com/6bb6871a7b.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -44,7 +26,18 @@
     <div class="w-75 ">
         <form th:action="@{/checkout}" th:method="POST" th:object="${cafeCart}">
             <th:block th:if="${cafeCart} == null">
-                <p>Your Cart is Empty. Please add from the previous page.</p>
+                <div class="page-wrap d-flex flex-row align-items-center">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 text-center">
+                                <span class="display-1 d-block"> <img src="/images/cart-empty3.svg" style="width:335px"> </span>
+                                <br>
+                                <div class="mb-4 lead">Your Cart is Empty</div>
+                                <a href="/site/menus" class="btn btn-link">Continue Ordering</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 </th:block>
             <th:block th:unless="${cafeCart} == null">
         <table id="myTable" class="table col-lg-12">
@@ -76,7 +69,7 @@
                 <div><strong>Payable Total: </strong></div><span><strong>$[[${cafeCart.totalPrice}]]</strong></span>
             </div>
 
-            <button class="btn btn-primary" type="submit">Place Order</button>
+            <button class="btn btn-info" type="submit">Place Order</button>
             </th:block>
         </form>
     </div>

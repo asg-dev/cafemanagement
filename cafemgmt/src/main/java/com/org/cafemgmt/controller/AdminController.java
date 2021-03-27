@@ -1,5 +1,6 @@
 package com.org.cafemgmt.controller;
 
+import com.org.cafemgmt.common.UserManagement;
 import com.org.cafemgmt.model.CafeUsers;
 import com.org.cafemgmt.model.PrincipalUserDetails;
 import com.org.cafemgmt.service.UserService;
@@ -22,14 +23,18 @@ public class AdminController {
     UserService userService;
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String admin(HttpServletRequest request, Authentication authentication, Model model) {
-        log.info("Inside Admin Controller!");
-        PrincipalUserDetails currentUser = (PrincipalUserDetails) authentication.getPrincipal();
-        String userEmail = currentUser.getUsername();
-        CafeUsers cafeUser = userService.findUserByEmail(userEmail);
-        // System.out.println(userService.findUserByEmail(userEmail));
-        model.addAttribute("firstCharInUsername", cafeUser.getName().charAt(0));
-        model.addAttribute("username", cafeUser.getName());
+    public String admin(Authentication authentication, Model model) {
+        String authority = UserManagement.getAuthority(authentication, userService);
+
+        String loggedInUsername = UserManagement.getUserName(authentication, userService);
+        if (authority.equals("ROLE_ADMIN")) {
+            model.addAttribute("role", "admin");
+        }
+        else {
+            model.addAttribute("role", "clerk");
+        }
+        model.addAttribute("firstCharInUsername", loggedInUsername.charAt(0));
+        model.addAttribute("username", loggedInUsername);
         return "admin";
     }
 

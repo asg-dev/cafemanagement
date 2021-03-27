@@ -32,36 +32,19 @@
 </head>
 
 <body id="page-top">
-
-    <!-- Page Wrapper -->
     <div id="wrapper">
-
-        <!-- Sidebar -->
         <div th:insert="fragments/navbar :: navbar"></div>
-        <!-- End of Sidebar -->
-
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 
-            <!-- Main Content -->
             <div id="content">
-
-                <!-- Topbar -->
                 <div th:insert="fragments/topbar :: topbar"></div>
-                <!-- End of Topbar -->
-
 
             <div class="container-fluid">
 
-
-                <!-- Content Row -->
-
                 <div class="row">
 
-                    <!-- Area Chart -->
                     <div class="col-xl-12 col-lg-7">
                         <div class="card shadow mb-4">
-                            <!-- Card Header - Dropdown -->
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">Users</h6>
                                 <div class="dropdown no-arrow">
@@ -73,8 +56,8 @@
                                 </div>
                             </div>
                             <!-- Card Body -->
-                            <button class="d-flex justify-content-start d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                <i class="fas fa-dumpster text-white-50"></i><a class="addNewUser" th:href="@{/users/new}" style="text-decoration: none; color:#fff;">      Add User</a>
+                            <button class="d-flex justify-content-start d-sm-inline-block btn btn-primary shadow-sm">
+                                <i class="fa fa-user text-white-50"></i><a class="addNewUser" th:href="@{/users/new}" style="text-decoration: none; color:#fff;">      Add User</a>
                             </button>
                             <div class="card-body">
                                 <div class="chart-area">
@@ -98,16 +81,15 @@
                                                             <td th:case="'ROLE_ADMIN'" th:inline="text">Admin</td>
                                                             <td th:case="'ROLE_CLERK'" th:inline="text">Clerk</td>
                                                         </th:block>
-                                                        <td>
-                                                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                                                <i class="fas fa-pencil-alt text-white-50"></i><a th:href="@{/users/}+${user.id}+@{/edit}" style="text-decoration: none; color:#fff;">      Edit User</a>
-                                                            </button>
+                                                        <td class="d-flex justify-content-center">
+                                                            <th:block th:unless="${user.authority=='ROLE_CUSTOMER'}">
+                                                                <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                                                    <i class="fas fa-pencil-alt text-white-50"></i><a th:href="@{/users/}+${user.id}+@{/edit}" style="text-decoration: none; color:#fff;">      Edit User</a>
+                                                                </button>
+                                                            </th:block>
                                                             <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                                                 <i class="fas fa-dumpster text-white-50"></i><a class="deletionOp" th:value="@{/api/users/}+${user.id}" style="text-decoration: none; color:#fff;">      Delete User</a>
                                                             </button>
-<!--                                                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">-->
-<!--                                                                <i class="fas fas fa-key text-white-50"></i><a class="sendPassword" th:value="@{/api/users/}+${user.id}+@{/send_password}" style="text-decoration: none; color:#fff;">      Trigger Password Reset</a>-->
-<!--                                                            </button>-->
                                                             <script>
                                                                 jQuery('.deletionOp').on('click', function(e) {
                                                                     e.preventDefault();

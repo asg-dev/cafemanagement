@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div th:fragment="ratingsmodal">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <th:block th:each="order : ${cafeOrders}">
+<div class="modal" th:id="${'rate'+order.id}" tabindex="" role="dialog" aria-labelledby="orderModal" aria-hidden="true">
+<div class="container modal-content">
+    <form th:action="@{/orders/}+${order.id}+@{/rate}" th:method="POST" th:object="${ratings}">
+    <div class="row row-md-5 p-5 d-flex justify-content-around">
+        <div class="form-group" id="rating-ability-wrapper">
+            <label class="control-label" for="rating">
+                <span class="field-label-header">Please rate your experience of ordering food from us.</span><br>
+                <span class="field-label-info"></span>
+                <input type="hidden" th:field="*{rating}" id="selected_rating" name="selected_rating" value="" required="required">
+            </label>
+            <br>
+            <br>
+            <br>
+            <div class="d-flex justify-content-around">
+                <button type="button" class="btnrating btn btn-default btn-lg" data-attr="1" id="rating-star-1">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btnrating btn btn-default btn-lg" data-attr="2" id="rating-star-2">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btnrating btn btn-default btn-lg" data-attr="3" id="rating-star-3">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btnrating btn btn-default btn-lg" data-attr="4" id="rating-star-4">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btnrating btn btn-default btn-lg" data-attr="5" id="rating-star-5">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </button>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <textarea class="form-control rounded-0" th:field="*{feedback}" placeholder="Please enter your feedback" maxlength="1023" rows="10"></textarea>
+    </div>
+        <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">Submit Rating</button>
+        <div class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+        </div>
+    </form>
+</div>
+</div>
+</th:block>
+
+    <script>
+
+
+	$(".btnrating").on('click',(function(e) {
+var selectedRating = jQuery(jQuery(this).parent().parent().children()[0]).find('input:hidden');
+	var previous_value = selectedRating.val();
+
+	var selected_value = $(this).attr("data-attr");
+	selectedRating.val(selected_value);
+
+	selectedRating.empty();
+	selectedRating.html(selected_value);
+
+	for (i = 1; i <= selected_value; ++i) {
+	$("#rating-star-"+i).toggleClass('btn-warning');
+	$("#rating-star-"+i).toggleClass('btn-default');
+	}
+
+	for (ix = 1; ix <= previous_value; ++ix) {
+	$("#rating-star-"+ix).toggleClass('btn-warning');
+	$("#rating-star-"+ix).toggleClass('btn-default');
+	}
+
+	}));
+
+</script>
+
+</div>
+
+</body>
+</html>

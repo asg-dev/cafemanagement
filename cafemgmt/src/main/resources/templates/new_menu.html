@@ -23,8 +23,9 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap2-toggle.min.css" rel="stylesheet">
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap2-toggle.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -77,24 +78,23 @@
                                     <h2 class="form-signin-heading" style="font-family: 'Staatliches', cursive;">Add Menu</h2>
                                     <div class="form-group">
                                         <input type="text" th:field="*{name}" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Name"
-                                               autofocus="true">
+                                               autofocus="true" required>
                                         <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                                     </div>
 
                                     <div class="form-group">
-                                        <input type="text" th:field="*{description}" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Description">
+                                        <input type="text" th:field="*{description}" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Description" required>
                                         <span class="has-error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
                                     </div>
 
                                     <div class="form-group">
-                                        <input type="checkbox" class="form-control" th:field="*{active}" id="active1" name="active1" value="true">
-                                        <label for="active1"> Activated</label><br>
-                                        <input type="checkbox" class="form-control" th:field="*{active}" id="active2" name="active2" value="false">
-                                        <label for="active2"> Non Activated</label><br>
+                                        <label for="active1"> Activated</label>
+                                        <input type="checkbox" class="form-control"  th:field="*{active}" name="active1" id="active1" data-toggle="toggle" data-size="sm"
+                                               data-on="Active" data-off="Unactive" required>
                                     </div>
 
                                     <div class="form-group">
-                                        <select class="form-select" th:field="*{menu_items}" multiple aria-label="multiple select example">
+                                        <select class="form-select" th:field="*{menu_items}" multiple required>
                                             <option th:each="menuItem : ${menuItems}" th:value="${menuItem.id}" th:text="${menuItem.name}"></option>
                                         </select>
                                     </div>
@@ -104,13 +104,6 @@
                                         <button type="button" class="btn btn-black" id="new-menu-item-modal" data-toggle="modal" data-target="#menu-item-modal">Add Menu Item</button>
 
 
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="input-group mb-3">
-                                            <input type="file" name="file" class="form-control" id="inputGroupFile02">
-                                            <label class="input-group-text" for="inputGroupFile02">Upload Menu Image</label>
-                                        </div>
                                     </div>
 
                                     <button class="btn btn-black" type="submit">Submit</button>

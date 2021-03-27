@@ -13,7 +13,6 @@ import java.util.Map;
 @Getter
 @Setter
 public class CafeCarts {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
@@ -25,5 +24,6 @@ public class CafeCarts {
     private Date updated_at;
     @Transient
     private List<CartItem> cartItemsInternal;
-
+    @Transient
+    private long totalQuantity;
 }

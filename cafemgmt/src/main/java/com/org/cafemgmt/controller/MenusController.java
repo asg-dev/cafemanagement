@@ -1,6 +1,7 @@
 package com.org.cafemgmt.controller;
 
 import com.fasterxml.jackson.databind.util.TypeKey;
+import com.org.cafemgmt.common.UserManagement;
 import com.org.cafemgmt.model.*;
 import com.org.cafemgmt.service.CartsService;
 import com.org.cafemgmt.service.MenuItemsService;
@@ -40,8 +41,7 @@ public class MenusController {
     public String showMenus(HttpServletRequest request, Authentication authentication, Model model) {
         // System.out.println(((PrincipalUserDetails) authentication.getPrincipal()).getAuthorities());
         PrincipalUserDetails currentUser = (PrincipalUserDetails) authentication.getPrincipal();
-        System.out.println((currentUser.getAuthorities()).getClass());
-        System.out.println((currentUser.getAuthorities()));
+
         if (currentUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
             model.addAttribute("role", "admin");
         }
@@ -52,9 +52,10 @@ public class MenusController {
             model.addAttribute("role", "customer");
         }
         CafeUsers loggedInUser = userService.findUserByEmail(currentUser.getUsername());
+
         model.addAttribute("menus", menuService.listAllActiveMenus());
         model.addAttribute("allMenuItems", menuItemsService.getAllMenuItems());
-        // System.out.println(cartsService.getCartsByUserId(loggedInUser.getId()).getCartItems());
+
         CafeCarts cafeCart = cartsService.getCartByUserId(loggedInUser.getId());
         if (cafeCart != null) {
             model.addAttribute("cartItems", cafeCart.getCartItems());
@@ -63,7 +64,7 @@ public class MenusController {
             model.addAttribute("cartItems", "");
         }
 
-        return "site_menus";
+        return "site_menus2";
     }
 
     // CUSTOMER: MENU (currentpage) - MY ORDERS - CART - LOGOUT
@@ -74,14 +75,10 @@ public class MenusController {
 
     @RequestMapping(value = "/menus", method = RequestMethod.GET)
     public String showMenus(Authentication authentication, Model model) {
-        PrincipalUserDetails currentUser = (PrincipalUserDetails) authentication.getPrincipal();
-        String userEmail = currentUser.getUsername();
-        System.out.println(userEmail);
-        CafeUsers cafeUser = userService.findUserByEmail(userEmail);
-        System.out.println(cafeUser.getName());
-        // System.out.println(userService.findUserByEmail(userEmail));
-        model.addAttribute("firstCharInUsername", cafeUser.getName().charAt(0));
-        model.addAttribute("username", cafeUser.getName());
+        String loggedInUsername = UserManagement.getUserName(authentication, userService);
+
+        model.addAttribute("firstCharInUsername", loggedInUsername.charAt(0));
+        model.addAttribute("username",loggedInUsername);
 
         List<CafeMenus> menuList = menuService.listAllMenus();
 
@@ -113,33 +110,26 @@ public class MenusController {
 
     @RequestMapping(value = "/menus/new", method = RequestMethod.GET)
     public String addNewMenu(Authentication authentication, Model model) {
-        PrincipalUserDetails currentUser = (PrincipalUserDetails) authentication.getPrincipal();
-        String userEmail = currentUser.getUsername();
-        System.out.println(userEmail);
-        CafeUsers cafeUser = userService.findUserByEmail(userEmail);
-        System.out.println(cafeUser.getName());
-        // System.out.println(userService.findUserByEmail(userEmail));
-        model.addAttribute("firstCharInUsername", cafeUser.getName().charAt(0));
-        model.addAttribute("username", cafeUser.getName());
+        String loggedInUsername = UserManagement.getUserName(authentication, userService);
+
+        model.addAttribute("firstCharInUsername", loggedInUsername.charAt(0));
+        model.addAttribute("username", loggedInUsername);
+
         model.addAttribute("menuItems", menuItemsService.getAllMenuItems());
         model.addAttribute("menuForm", new CafeMenus());
         model.addAttribute("menuItemForm", new CafeMenuItems());
+
         return "new_menu";
     }
 
     @RequestMapping(value = "/menus", method = RequestMethod.POST)
-    public String createNewMenu(Authentication authentication, @ModelAttribute("menuForm") CafeMenus cafeMenus, @RequestParam("file") MultipartFile multipartFile) {
-        System.out.println(multipartFile.getOriginalFilename());
-        System.out.println(cafeMenus.getName());
-        System.out.println(cafeMenus.getDescription());
-        System.out.println(cafeMenus.getMenu_items());
-        cafeMenus.setImagePath(menuService.saveMenuImage(multipartFile));
+    public String createNewMenu(@ModelAttribute("menuForm") CafeMenus cafeMenus) {
         menuService.saveMenu(cafeMenus);
         return "redirect:/menus";
     }
 
     @RequestMapping(value = "/menus/{id}/edit", method = RequestMethod.GET)
-    public String editMenu(HttpServletRequest request, Authentication authentication, @PathVariable long id, Model model) {
+    public String editMenu(@PathVariable long id, Model model) {
         CafeMenus menu = menuService.getMenuById(id).get();
 
         List<CafeMenuItems> cafeMenuItems = menuItemsService.findAllMenuItemsById(menu.getMenu_items());
@@ -147,15 +137,18 @@ public class MenusController {
         for (CafeMenuItems cafeMenuItem : cafeMenuItems) {
             menuItemNames.add(cafeMenuItem.getName());
         }
+
         menu.setMenu_item_names(menuItemNames);
+
         model.addAttribute("menuForm", menu);
         model.addAttribute("menuItemForm", new CafeMenuItems());
         model.addAttribute("allMenuItems", menuItemsService.getAllMenuItems());
+
         return "edit_menu";
     }
 
     @RequestMapping(value = "/menus/{id}", method = RequestMethod.POST)
-    public String updateMenu(HttpServletRequest request, Authentication authentication, @PathVariable long id, @ModelAttribute("menuForm") CafeMenus cafeMenus) {
+    public String updateMenu(@PathVariable long id, @ModelAttribute("menuForm") CafeMenus cafeMenus) {
         menuService.saveMenu(cafeMenus);
         return "redirect:/menus";
     }

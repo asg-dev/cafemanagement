@@ -44,10 +44,7 @@
 
 
             <div class="container-fluid">
-
-
                 <!-- Content Row -->
-
                 <div class="row">
 
                     <!-- Area Chart -->
@@ -70,24 +67,22 @@
                                 <form method="POST" th:object="${userForm}" th:action="@{/users/}">
                                     <h2 class="form-signin-heading" style="font-family: 'Staatliches', cursive;">Add Agent</h2>
                                     <div class="form-group">
-                                        <input type="text" th:field="*{emailAddress}" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Email Address"
-                                               autofocus="true">
+                                        <input type="email" th:field="*{emailAddress}" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Email Address"
+                                               autofocus="true" required>
                                         <span class="has-error" th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}"></span>
                                     </div>
 
                                     <div class="form-group">
-                                        <input type="text" th:field="*{name}" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Name">
+                                        <input type="text" th:field="*{name}" class="form-control" style="font-family: 'Fira Sans', sans-serif;" placeholder="Name" required>
                                         <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                                     </div>
 
-
                                     <div class="form-group row">
-                                        <label for="inputName" class="col-sm-2 col-form-label">Role</label>
+                                        <label class="col-sm-2 col-form-label">Role</label>
                                         <div class="col-sm-10">
-                                            <select th:field="*{authority}" class="custom-select form-control">
+                                            <select th:field="*{authority}" class="custom-select form-control" required>
                                                 <option selected value="ROLE_CLERK" name="ROLE_CLERK">Clerk</option>
                                                 <option value="ROLE_ADMIN" name="ROLE_ADMIN">Admin</option>
-                                                <option value="ROLE_CUSTOMER" name="ROLE_CUSTOMER">Customer</option>
                                         </select>
                                         </div>
                                     </div>
@@ -114,15 +109,8 @@
 
     </div>
 </div>
-
-
-
 <!-- End of Page Wrapper -->
 
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fa fa-angle-up"></i>
-</a>
 
 <!-- Bootstrap core JavaScript-->
 <script src="js/jquery.min.js"></script>
