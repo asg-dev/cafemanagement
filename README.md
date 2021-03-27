@@ -5,7 +5,7 @@ A Cafeteria Management System built using Java, Spring Boot, Thymeleaf, PostgreS
 There are three personas in the system.
 
 * Admin 
-  * **Manage Users** - Add / Update / Remove Billing Clerks & other Admin.
+  * **Manage Users** - Add / Update / Remove Billing Clerks & other Admins.
   * **Manage Menus** - Add / Update / Remove Menus, activate / deactivate them & Add / Remove Menu Items for each menu.
   * **Manage Orders** - View all orders, their ratings and pending orders queue, mark pending orders as delivered / cancelled and place order for walk-in customer.
   * **Reports** - View Sale Reports based on Date Range, Customer Name & Approver Name
