@@ -169,6 +169,8 @@ public class CafeOrderServiceImpl implements CafeOrderService {
             return cafeOrderRepository.findWithinDateRangeCustomerId(new Date(completeRange[0]), new Date(completeRange[1]), customerId);
         } else if (dateRange != null && customerId == 0 && approverId != 0) {
             return cafeOrderRepository.findWithinDateRangeApproverId(new Date(completeRange[0]), new Date(completeRange[1]), approverId);
+        }  else if (dateRange != null && customerId != 0 && approverId != 0) {
+            return cafeOrderRepository.findWithinDateRangeBothIds(new Date(completeRange[0]), new Date(completeRange[1]), customerId, approverId);
         } else {
             return cafeOrderRepository.findAll(Example.of(cafeOrder));
         }

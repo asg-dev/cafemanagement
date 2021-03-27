@@ -40,6 +40,9 @@
             rel="stylesheet"
             type="text/css">
     <link href="/css/supplement.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
 
 </head>
 
@@ -50,7 +53,12 @@
         <div id="content">
             <div th:insert="fragments/topbar :: topbar"></div>
             <div class="container-fluid">
-
+                <p>
+                    <a class="btn btn-info" data-toggle="collapse" href="#filters" role="button" aria-expanded="false" aria-controls="filters">
+                        Filters
+                    </a>
+                </p>
+                <div class="collapse" id="filters">
                 <form method="POST" th:object="${cafeReport}" th:action="@{/generate_report}">
 
                     <div class="form-group">
@@ -81,6 +89,7 @@
                     <script src="js/reportsFilter.js"></script>
 
                 </form>
+                </div>
                 <br>
                 <table id="reports-table" class="display nowrap" style="width:100%">
                     <thead>

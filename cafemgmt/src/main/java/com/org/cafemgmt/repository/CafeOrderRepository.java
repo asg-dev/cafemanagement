@@ -19,13 +19,6 @@ public interface CafeOrderRepository extends JpaRepository<CafeOrders, Long> {
     @Query("SELECT t FROM CafeOrders t WHERE t.customerId = ?1 ORDER BY t.createdAt DESC")
     public List<CafeOrders> findAllByUserId(long user_id);
 
-    // created within
-    // customerId --> Builder
-    // approverId --> Builder
-    // created within + cid
-    // created within + aid
-    //  cid + aid --> Biilder
-
     @Query("SELECT t FROM CafeOrders t WHERE t.status = 2 AND t.createdAt > ?1 AND t.createdAt < ?2")
     public List<CafeOrders> findWithinDateRange(Date startRange, Date endRange);
 
@@ -35,4 +28,6 @@ public interface CafeOrderRepository extends JpaRepository<CafeOrders, Long> {
     @Query("SELECT t FROM CafeOrders t WHERE t.status = 2 AND t.createdAt > ?1 AND t.createdAt < ?2 AND t.customerId = ?3")
     public List<CafeOrders> findWithinDateRangeCustomerId(Date startRange, Date endRange, long customerId);
 
+    @Query("SELECT t FROM CafeOrders t WHERE t.status = 2 AND t.createdAt > ?1 AND t.createdAt < ?2 AND t.customerId = ?3 AND t.approvedUser = ?4")
+    public List<CafeOrders> findWithinDateRangeBothIds(Date date, Date date1, long customerId, long approverId);
 }
