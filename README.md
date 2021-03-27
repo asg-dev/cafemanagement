@@ -36,8 +36,11 @@ There are three personas in the system.
 ### Setting up PostgreSQL:
 
 Download Postgres 13.2 from [here](https://www.postgresql.org/download/macosx/)
+
 (Optional) Download PGAdmin 4 from [here](https://www.pgadmin.org/download/pgadmin-4-macos/)
+
 Add the PostgreSQL path to `.bash-profile` and load a new terminal window.
+
 Connect to psql: 
 
 ```
