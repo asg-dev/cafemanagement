@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<ul th:fragment="navbar" class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
+        <div class="sidebar-brand-text mx-3" style="font-family: 'Staatliches', cursive; font-size: 18px;">Freshbrew
+            Management Console
+        </div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="/admin">
+            <i class="fa fa-mug-hot"></i>
+            <span>Console</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Customer
+    </div>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/menus">
+            <i class="fab fa-elementor"></i>
+            <span>Menus</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/site/menus">
+            <i class="fa fa-gem"></i>
+            <span>Site</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/orders">
+            <i class="fab fa-elementor"></i>
+            <span>All Orders</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/pending_orders">
+            <i class="fab fa-elementor"></i>
+            <span>Pending Orders</span>
+        </a>
+    </li>
+
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Internal
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/users">
+            <i class="fa fa-users-cog"></i>
+            <span>Users</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/reports">
+            <i class="fa fa-table"></i>
+            <span>Reports</span>
+        </a>
+    </li>
+
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <div class="sidebar-card">
+        <p class="text-center mb-2"><strong>Freshbrew Management Console</strong><br>Handle menu addition, user addition
+            & invoices from here!</p>
+    </div>
+
+</ul>
+</body>
+</html>

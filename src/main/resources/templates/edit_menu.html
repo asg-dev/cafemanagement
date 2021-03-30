@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Freshbrew | Admin Console</title>
+
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+            crossorigin="anonymous"></script>
+    <link href="/css/sb-admin-2.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/6bb6871a7b.js" crossorigin="anonymous"></script>
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.3/css/sb-admin-2.css"
+            rel="stylesheet"
+            type="text/css">
+    <link href="/css/supplement.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<div id="wrapper">
+
+    <div th:insert="fragments/navbar :: navbar"></div>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <div id="content">
+
+            <div th:insert="fragments/topbar :: topbar"></div>
+
+            <div class="container-fluid">
+
+                <div class="row">
+
+                    <div class="col-xl-12 col-lg-7">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Menus</h6>
+                                <div class="dropdown no-arrow">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger upload-alert alert-dismissible fade show" style="display: none;"
+                             role="alert">
+
+                            <strong>Invalid Image Extension.</strong> Allowed: [ png, jpeg, jpg, gif, bmp ]
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="alert alert-danger menuitem-alert alert-dismissible fade show" style="display: none;"
+                             role="alert">
+
+                            <strong>Please fill menu item name, description, price & image path</strong>.</strong> All fields are mandatory.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-area">
+                                <form method="POST" th:object="${menuForm}" th:action="@{/menus/}+${menuForm.id}">
+                                    <div class="form-group row">
+                                        <label for="inputName" class="col-sm-2 col-form-label">Menu Name</label>
+                                        <div class="col-sm-10">
+                                            <th:block>
+                                                <input type="text" th:field="*{name}" class="form-control"
+                                                       id="inputName" placeholder="Menu Name"
+                                                       th:value="${menuForm.name}">
+                                            </th:block>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" th:field="*{id}" value="${menuForm.id}">
+                                    <input type="hidden" th:field="*{active}" value="${menuForm.active}">
+                                    <div class="form-group row">
+                                        <label for="inputdescription"
+                                               class="col-sm-2 col-form-label">Description</label>
+                                        <div class="col-sm-10">
+                                            <th:block>
+                                                <input class="form-control" th:field="*{description}"
+                                                       id="inputdescription" placeholder="Name"
+                                                       th:value="${menuForm.description}">
+                                            </th:block>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputName" class="col-sm-2 col-form-label">Menu Items</label>
+                                        <div class="col-sm-10">
+                                            <div class="form-group">
+                                                <select class="form-select" th:field="*{menu_items}" multiple
+                                                        aria-label="multiple select example">
+                                                    <th:block th:each="menuItem : ${allMenuItems}">
+                                                        <th:block th:if="${menuForm.menu_items.contains(menuItem.id)}">
+                                                            <option selected th:value="${menuItem.id}"
+                                                                    th:text="${menuItem.name}"></option>
+                                                        </th:block>
+                                                        <th:block
+                                                                th:unless="${menuForm.menu_items.contains(menuItem.id)}">
+                                                            <option th:value="${menuItem.id}"
+                                                                    th:text="${menuItem.name}"></option>
+                                                        </th:block>
+                                                    </th:block>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Menu item not present in above list? Click here to add a new Menu
+                                            Item</label>
+                                        <button type="button" class="btn btn-primary" id="new-menu-item-modal"
+                                                data-toggle="modal" data-target="#menu-item-modal">Add Menu Item
+                                        </button>
+                                    </div>
+
+                                    <div class="col-auto my-1" style="padding-top: 2%;">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                        <button type="cancel" class="btn btn-secondary"><a href="/menus"
+                                                                                           style="text-decoration: none; color:#fff;">Cancel</a>
+                                        </button>
+                                    </div>
+                                </form>
+                                <div th:replace="fragments/menuitemmodal :: menuitemmodal"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap core JavaScript-->
+<script src="js/jquery.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<script>
+    jQuery(document).ready(function() {
+        if ((window.location.href).endsWith("?error=invalid_image_path")) {
+            jQuery('.upload-alert').show();
+        }
+
+        if ((window.location.href).endsWith("?error=invalid_parameters")) {
+            jQuery('.menuitem-alert').show();
+        }
+
+        jQuery('.close').click(function() {
+            $(".alert").alert('close')
+        });
+    })
+
+
+
+</script>
+
+
+<script src="/js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>

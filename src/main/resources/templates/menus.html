@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Freshbrew | Admin Console</title>
+
+
+    <link href="/vendor/fontawesome-free/css/all.css" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+
+    <link href="/css/sb-admin-2.css" rel="stylesheet">
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://kit.fontawesome.com/6bb6871a7b.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.js"></script>
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.3/css/sb-admin-2.css"
+            rel="stylesheet"
+            type="text/css">
+    <link href="/css/supplement.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+
+<div id="wrapper">
+
+
+    <div th:insert="fragments/navbar :: navbar"></div>
+
+
+    <div id="content-wrapper" class="d-flex flex-column">
+
+
+        <div id="content">
+
+
+            <div th:insert="fragments/topbar :: topbar"></div>
+
+
+            <div class="container-fluid">
+
+
+                <div class="row">
+
+
+                    <div class="col-xl-12 col-lg-7">
+                        <div class="card shadow mb-4">
+
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Menus</h6>
+                                <div class="dropdown no-arrow">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="d-flex justify-content-start d-sm-inline-block btn btn btn-primary shadow-sm">
+                            <i class="fa fa-plus-circle text-white-50"></i><a class="addNewMenu" th:href="@{/menus/new}"
+                                                                            style="text-decoration: none; color:#fff;">
+                            Add Menu</a>
+                        </button>
+
+                        <button class="d-flex justify-content-start d-sm-inline-block btn btn btn-primary shadow-sm">
+                            <i class="fas fa-pizza-slice text-white-50"></i><a class="addNewMenu"
+                                                                            th:href="@{/menus/items/}"
+                                                                            style="text-decoration: none; color:#fff;">
+                            Manage Menu Items</a>
+                        </button>
+                        <div class="card-body">
+                            <div class="chart-area">
+
+                                <div class="tablet">
+                                    <table id="myTable" class="card-table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col text-primary">Menu Name</th>
+                                            <th scope="col text-primary">Menu Description</th>
+                                            <th scope="col text-primary">Menu Items</th>
+                                            <th scope="col text-primary">Options</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <th:block th:object="${menus}" th:each="menu : ${menus}">
+                                            <tr>
+                                                <td th:inline="text">[[${menu.name}]]</td>
+                                                <td th:inline="text">[[${menu.description}]]</td>
+                                                <td th:inline="text">[[${menu.menu_item_names}]]</td>
+                                                <td>
+                                                    <button class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm">
+                                                        <i class="fas fa-pencil-alt text-white-50"></i><a
+                                                            th:href="@{/menus/}+${menu.id}+@{/edit}"
+                                                            style="text-decoration: none; color:#fff;"> Edit Menu</a>
+                                                    </button>
+
+                                                    <form th:action="@{/menus/}+${menu.id}+@{/delete}" th:method="POST">
+                                                        <button class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm">
+                                                            <i class="fas fa-dumpster text-white-50"></i><a
+                                                                class="deletionOp"
+                                                                th:value="@{/menus/}+${menu.id}+@{/delete}"
+                                                                style="text-decoration: none; color:#fff;"> Delete
+                                                            Menu</a>
+                                                        </button>
+                                                    </form>
+
+                                                    <th:block th:switch="${menu.active}">
+                                                        <th:block th:case="false">
+                                                            <form th:action="@{/menus/}+${menu.id}+@{/activate}"
+                                                                  th:method="POST">
+                                                                <button class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
+                                                                    <i class="fas fas fa-key text-white-50"></i><a
+                                                                        class="activateValue"
+                                                                        th:value="@{/menus/}+${menu.id}+@{/activate}"
+                                                                        style="text-decoration: none; color:#fff;">
+                                                                    Activate Menu</a>
+                                                                </button>
+                                                            </form>
+                                                        </th:block>
+                                                        <th:block th:case="true">
+                                                            <form th:action="@{/menus/}+${menu.id}+@{/deactivate}"
+                                                                  th:method="POST">
+                                                                <button class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
+                                                                    <i class="fas fas fa-key text-white-50"></i><a
+                                                                        class="deactivateValue"
+                                                                        th:value="@{/menus/}+${menu.id}+@{/deactivate}"
+                                                                        style="text-decoration: none; color:#fff;">
+                                                                    Deactivate Menu</a>
+                                                                </button>
+                                                            </form>
+                                                        </th:block>
+                                                    </th:block>
+
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Content Row -->
+
+
+        </div>
+    </div>
+
+
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript-->
+    <!--    <script src="/js/jquery.min.js"></script>-->
+    <!--    <script src="/js/bootstrap.bundle.min.js"></script>-->
+
+    <!--    &lt;!&ndash; Core plugin JavaScript&ndash;&gt;-->
+    <!--    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>-->
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.min.js"></script>
+
+    <!--    &lt;!&ndash; Page level plugins &ndash;&gt;-->
+    <!--    <script src="vendor/chart.js/Chart.min.js"></script>-->
+
+    <script>
+        jQuery(document).ready(function() {
+            jQuery.noConflict();
+            jQuery('#myTable').DataTable();
+        });
+
+
+
+
+    </script>
+
+    <!-- Page level custom scripts -->
+    <!--    <script src="js/demo/chart-area-demo.js"></script>-->
+    <!--    <script src="js/demo/chart-pie-demo.js"></script>-->
+
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <title>Freshbrew Cafe | My Orders</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+
+    <link rel="stylesheet" th:href="@{/css/cafemgmt.css}">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/6bb6871a7b.js" crossorigin="anonymous"></script>
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.3/css/sb-admin-2.css"
+            rel="stylesheet"
+            type="text/css">
+
+
+</head>
+
+<body>
+<div th:replace="fragments/cf-header :: header-customer-facing"></div>
+
+
+<div class="container" style="padding-top:150px;">
+    <div class="panel panel-default panel-order">
+        <div class="panel-heading">
+            <strong>Order History</strong>
+        </div>
+
+        <div class="table">
+            <table id="myTable" class="table card-table">
+                <thead>
+                <tr>
+                    <th scope="col text-primary">Order ID</th>
+                    <th scope="col text-primary">Total Price</th>
+                    <th scope="col text-primary">Status</th>
+                    <th scope="col text-primary">Placed On</th>
+                    <th scope="col text-primary">Details</th>
+                    <th scope="col text-primary">Rating</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <th:block th:object="${cafeOrders}" th:each="order : ${cafeOrders}">
+                    <tr>
+                        <td th:inline="text">[[${order.id}]]</td>
+                        <td th:inline="text">[[${order.totalPrice}]]</td>
+                        <th:block th:switch="${order.status}">
+                            <td th:case="'1'" th:inline="text">Pending</td>
+                            <td th:case="'2'" th:inline="text">Approved</td>
+                            <td th:case="'3'" th:inline="text">Cancelled</td>
+                        </th:block>
+                        <td th:inline="text">[[${order.createdAt}]]</td>
+                        <td th:inline="text"><a href="#" id="new-menu-item-modal" data-toggle="modal"
+                                                th:data-target="${'#' + order.id}">Order Details</a></td>
+                        <td>
+                            <th:block th:if="${order.rating>0}" th:inline="text">
+                                [[${order.rating}]] / 5
+                            </th:block>
+                            <th:block th:unless="${order.rating>0}">
+                                <a href="#" id="rating-modal" data-toggle="modal"
+                                   th:data-target="${'#rate' + order.id}">Rate</a>
+                            </th:block>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+            <div th:replace="fragments/myorderdetailsmodal :: myorderdetailsmodal"></div>
+            <div th:replace="fragments/ratings :: ratingsmodal"></div>
+        </div>
+    </div>
+</div>
+</body>
+<html>

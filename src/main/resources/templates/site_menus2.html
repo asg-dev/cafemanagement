@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@300&family=Fira+Sans:wght@300;400&display=swap"
+          rel="stylesheet">
+
+    <title>Freshbrew Cafe</title>
+
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+
+    <link rel="stylesheet" th:href="@{/css/cafemgmt.css}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/6bb6871a7b.js" crossorigin="anonymous"></script>
+
+    <style>
+
+    </style>
+
+</head>
+<body>
+
+<div th:replace="fragments/cf-header :: header-customer-facing"></div>
+<section class="section">
+    <div class="container-fluid">
+        <div class="vertical-nav bg-white" id="sidebar">
+            <div class="py-4 px-3 mb-4 bg-light">
+
+            </div>
+
+            <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">MENUS</p>
+            <ul class="nav flex-column bg-white mb-0">
+                <th:block th:each="menu : ${menus}">
+                    <li class="nav-item" data-toggle="tooltip" data-placement="left" th:title="${menu.description}">
+                        <a th:href="@{|#menu${menu.id}|}" data-toggle="pill"
+                           class="nav-link text-dark font-italic bg-light" th:inline="text" style="font-weight:400px">
+                            [[${menu.name}]]
+                        </a>
+                    </li>
+                </th:block>
+            </ul>
+        </div>
+
+        <div class="page-content p-3" id="content">
+            <div class="col">
+                <div class="tab-content">
+                    <th:block th:each="menu : ${menus}">
+                        <div th:id="@{|menu${menu.id}|}" class="tab-pane fade">
+                            <table class="table col-sm-6">
+                                <div class="h2 text-wrap" style="font-family: 'Catamaran', sans-serif; width:42rem;">
+                                    [[${menu.name}]] <br> <span class="text-muted h4">[[${menu.description}]]</span>
+                                </div>
+                                <tbody>
+                                <th:block th:each="menuItem : ${allMenuItems}">
+                                    <th:block th:if="${menu.menu_items.contains(menuItem.id)}">
+                                        <tr>
+                                            <td>
+                                                <div class="p-3" style="width: 30rem;">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <span>
+                                                                    <img class="card-img-top cart-image"
+                                                                         th:src="@{/}+${menuItem.imagePath}"
+                                                                         th:alt="${menuItem.description}">
+                                                                </span>
+                                                            </div>
+                                                            <div class="col text-right">
+                                                                <span class="text-muted h3"
+                                                                      style="font-family: 'Catamaran', sans-serif;">[[${menuItem.name}]] </span><br><br><br>
+                                                                <span class="h5"
+                                                                      style="font-family: 'Fira Sans', sans-serif;">$[[${menuItem.price}]]</span>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <p class="card-text text-muted h6"
+                                                           style="font-family: 'Catamaran', sans-serif;">
+                                                            [[${menuItem.description}]]</p>
+                                                    </div>
+                                                </div>
+                                            <td>
+                                                <div class="input-group" th:value="@{${menu.id} + 'M' + ${menuItem.id}}"
+                                                     style="margin-top:50%;">
+                                                    <i class="fa fa-minus-square qtyminus fa-xl" field='quantity'
+                                                       style="font-size: 26px;"></i>
+                                                    <th:block th:object="${cartItems}">
+                                                        <th:block th:if="${#strings.isEmpty(cartItems)}">
+                                                            <input type='number' name='quantity' value='0' min="0" max="999"
+                                                                    class='qty' disabled/>
+                                                        </th:block>
+                                                        <th:block th:unless="${#strings.isEmpty(cartItems)}"
+                                                                  th:each="cartItem : ${#strings.listSplit(cartItems, ',')}">
+                                                            <th:block th:unless="${#strings.isEmpty(cartItem)}"
+                                                                      th:with="menuId=${#strings.toString(menu.id)}">
+                                                                <th:block
+                                                                        th:with="itemOps=${#strings.listSplit(cartItem, ':')}">
+                                                                    <th:block
+                                                                            th:if="${#strings.equals(itemOps[3], menuId)}">
+                                                                        <th:block
+                                                                                th:if="${#strings.equals(itemOps[0], menuItem.id)}">
+                                                                            <input type='number' name='quantity'
+                                                                                   th:value="${itemOps[1]}" min="0" max="999"
+                                                                                    class='qty' disabled/>
+                                                                        </th:block>
+                                                                    </th:block>
+                                                                </th:block>
+                                                            </th:block>
+                                                        </th:block>
+
+                                                    </th:block>
+
+                                                    <i class="fa fa-plus-square qtyplus fa-xl" field='quantity'
+                                                       style="font-size: 26px;"></i>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </th:block>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+<script src="../js/carts.js"></script>
+</html>

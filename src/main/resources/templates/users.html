@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Freshbrew | Admin Console</title>
+
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://kit.fontawesome.com/6bb6871a7b.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.js"></script>
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.3/css/sb-admin-2.css"
+            rel="stylesheet"
+            type="text/css">
+    <link href="/css/supplement.css" rel="stylesheet">
+
+
+</head>
+
+<body id="page-top">
+<div id="wrapper">
+    <div th:insert="fragments/navbar :: navbar"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <div id="content">
+            <div th:insert="fragments/topbar :: topbar"></div>
+
+            <div class="container-fluid">
+
+                <div class="row">
+
+                    <div class="col-xl-12 col-lg-7">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Users</h6>
+                                <div class="dropdown no-arrow">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger user-danger-alert alert-dismissible fade show"
+                             style="display: none;" role="alert">
+                            <strong>You can't downgrade yourself.</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <button class="d-flex justify-content-start d-sm-inline-block btn btn-primary shadow-sm">
+                            <i class="fa fa-user text-white-50"></i><a class="addNewUser" th:href="@{/users/new}"
+                                                                       style="text-decoration: none; color:#fff;"> Add
+                            User</a>
+                        </button>
+
+                        <div class="card-body">
+                            <div class="chart-area">
+
+                                <div class="tablet">
+                                    <table id="myTable" class="card-table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col text-primary">User Name</th>
+                                            <th scope="col text-primary">User Role</th>
+                                            <th scope="col text-primary">Handle</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <th:block th:object="${users}" th:each="user : ${users}">
+                                            <tr>
+                                                <td th:inline="text">[[${user.name}]] ( [[${user.emailAddress}]] )</td>
+                                                <th:block th:switch=${user.authority}>
+                                                    <td th:case="'ROLE_CUSTOMER'" th:inline="text">Customer</td>
+                                                    <td th:case="'ROLE_ADMIN'" th:inline="text">Admin</td>
+                                                    <td th:case="'ROLE_CLERK'" th:inline="text">Clerk</td>
+                                                </th:block>
+                                                <td class="d-flex justify-content-center">
+                                                    <th:block th:unless="${user.authority=='ROLE_CUSTOMER'}">
+                                                        <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                                            <i class="fas fa-pencil-alt text-white-50"></i><a
+                                                                th:href="@{/users/}+${user.id}+@{/edit}"
+                                                                style="text-decoration: none; color:#fff;"> Edit
+                                                            User</a>
+                                                        </button>
+                                                    </th:block>
+                                                    <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                                        <i class="fas fa-dumpster text-white-50"></i><a
+                                                            class="deletionOp" th:value="@{/api/users/}+${user.id}"
+                                                            style="text-decoration: none; color:#fff;"> Delete User</a>
+                                                    </button>
+                                                    <script>
+                                                                jQuery('.deletionOp').on('click', function(e) {
+                                                                    e.preventDefault();
+                                                                    fetch((e.currentTarget.attributes[1].value), {
+                                                                        "method": 'DELETE',
+                                                                        "credentials":"include",
+                                                                    }).then((response) => {
+                                                                        console.log("USER DELETED");
+                                                                        window.location.href = "/users";
+                                                                    })
+                                                                })
+                                                    </script>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        jQuery(document).ready(function() {
+            jQuery.noConflict();
+            jQuery('#myTable').DataTable();
+
+            if ((window.location.href).endsWith("not_allowed")) {
+                jQuery('.user-danger-alert').show();
+            }
+
+            jQuery('.close').click(function() {
+                jQuery(".alert").hide();
+            });
+        });
+</script>
+
+</body>
+
+</html>
