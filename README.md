@@ -134,7 +134,7 @@ Method: GET
 Method: POST
 
 ```
-api/users
+/api/users
 ```
 
 Sample Payload:
@@ -147,7 +147,7 @@ Sample Payload:
 }
 ```
 
-1. Authority field cannot take value "ROLE_CUSTOMER". Accepted values are "ROLE_ADMIN" & "ROLE_CLERK".
+1. `authority` field cannot take value `ROLE_CUSTOMER`. Accepted values are `ROLE_ADMIN` & `ROLE_CLERK`.
 
 ### Update User
 
@@ -167,14 +167,14 @@ Sample Payload:
 }
 ```
 
-1. Authority field cannot take value "ROLE_CUSTOMER". Accepted values are "ROLE_ADMIN" & "ROLE_CLERK".
+1. `authority` field cannot take value `ROLE_CUSTOMER`. Accepted values are `ROLE_ADMIN` & `ROLE_CLERK`.
 
 ### Delete User
 
 Method: DELETE
 
 ```
-api/users/{id}
+/api/users/{id}
 ```
 
 1. Id cannot be the same user used for authentication.
@@ -186,7 +186,7 @@ api/users/{id}
 Method: GET
 
 ```
-api/menus
+/api/menus
 ```
 
 ### View a menu: 
@@ -194,7 +194,7 @@ api/menus
 Method: GET
 
 ```
-api/menus/{id}
+/api/menus/{id}
 ```
 
 ### Create a menu: 
@@ -202,7 +202,7 @@ api/menus/{id}
 Method: POST
 
 ```
-api/menus
+/api/menus
 ```
 
 Sample Payload: 
@@ -224,7 +224,7 @@ Sample Payload:
 Method: PUT
 
 ```
-api/menus/{id}
+/api/menus/{id}
 ```
 
 Sample Payload:
@@ -244,7 +244,7 @@ Sample Payload:
 Method: DELETE
 
 ```
-api/menus/{id}
+/api/menus/{id}
 ```
 
 ## Menu Items:
@@ -254,7 +254,7 @@ api/menus/{id}
 Method: GET
 
 ```
-api/menus/items
+/api/menus/items
 ```
 
 ### View a menu item:
@@ -262,7 +262,7 @@ api/menus/items
 Method: GET
 
 ```
-api/menus/items/{id}
+/api/menus/items/{id}
 ```
 
 ### Create a menu item: 
@@ -271,7 +271,7 @@ Method: POST
 Content-Type: Multipart/Form-Data
 
 ```
-api/menus/items
+/api/menus/items
 ```
 
 Sample Payload:
@@ -294,7 +294,7 @@ image:<Multipart-File>
 Method: DELETE
 
 ```
-api/menus/items/{id}
+/api/menus/items/{id}
 ```
 
 ## Orders
@@ -304,7 +304,7 @@ api/menus/items/{id}
 Method: GET
 
 ```
-api/orders
+/api/orders
 ```
 
 1. This will return all placed orders.
@@ -316,7 +316,7 @@ api/orders
 Sample:
 
 ```
-api/orders?status=1
+/api/orders?status=1
 ```
 
 This will list only the pending orders.
@@ -326,7 +326,7 @@ This will list only the pending orders.
 Method: POST
 
 ```
-api/orders
+/api/orders
 ```
 
 Sample Payload:
@@ -347,7 +347,7 @@ Sample Payload:
 6. `customerId` and `status` are mandatory.
 
 ```
-api/orders?approved=true
+/api/orders?approved=true
 ```
 
 ### Approve an order: 
@@ -355,7 +355,7 @@ api/orders?approved=true
 Method: POST
 
 ```
-api/orders/{id}/approve
+/api/orders/{id}/approve
 ```
 
 1. Cancelled orders cannot be approved.
@@ -365,7 +365,7 @@ api/orders/{id}/approve
 Method: POST
 
 ```
-api/orders/{id}/cancel
+/api/orders/{id}/cancel
 ```
 
 2. Approved orders cannot be cancelled.
@@ -375,7 +375,7 @@ api/orders/{id}/cancel
 Method: POST
 
 ```
-api/orders/appove_all
+/api/orders/appove_all
 ```
 
 1. All pending orders will be approved.
@@ -385,7 +385,7 @@ api/orders/appove_all
 Method: POST
 
 ```
-api/orders/cancel_all
+/api/orders/cancel_all
 ```
 
 2. All pending orders will be cancelled.
@@ -397,7 +397,7 @@ api/orders/cancel_all
 Method: POST
 
 ```
-api/generate_report
+/api/generate_report
 ```
 
 1. This endpoint will accept a mandatory param `dateRange` in format `mm/dd/yyyy - mm/dd/yyyy` and two optional params `customerId` and `approverId`
@@ -405,7 +405,7 @@ api/generate_report
 Call like:
 
 ```
-api/generate_report?dateRange=03/31/2021 - 03/31/2021&customerId=1&approverId=2
+/api/generate_report?dateRange=03/31/2021 - 03/31/2021&customerId=1&approverId=2
 ```
 
 Sample Response: 
