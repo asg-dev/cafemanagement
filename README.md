@@ -375,7 +375,7 @@ Method: POST
 Method: POST
 
 ```
-/api/orders/appove_all
+/api/orders/approve_all
 ```
 
 1. All pending orders will be approved.
