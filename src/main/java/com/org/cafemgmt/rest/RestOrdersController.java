@@ -58,6 +58,7 @@ public class RestOrdersController {
         return cafeOrderService.getAllOrders();
     }
 
+    @JsonView(CafeOrdersView.ViewToReturnOrders.class)
     @RequestMapping(value = "/api/orders", method = RequestMethod.POST)
     public ResponseEntity<Object> createOrder(Authentication authentication,
                                               @RequestBody CafeOrders cafeOrder,
@@ -99,6 +100,7 @@ public class RestOrdersController {
         return ResponseEntity.status(200).body(cafeOrderService.saveCafeOrder(cafeOrder));
     }
 
+    @JsonView(CafeOrdersView.ViewToReturnOrders.class)
     @RequestMapping(value = "/api/orders/{id}/approve", method = RequestMethod.POST)
     public ResponseEntity<Object> approveOrder(Authentication authentication, @PathVariable("id") long id) {
         CafeOrders cafeOrder = cafeOrderService.getOrderById(id);
@@ -116,6 +118,7 @@ public class RestOrdersController {
         return ResponseEntity.status(200).body(cafeOrderService.saveCafeOrder(cafeOrder));
     }
 
+    @JsonView(CafeOrdersView.ViewToReturnOrders.class)
     @RequestMapping(value = "/api/orders/approve_all", method = RequestMethod.POST)
     public ResponseEntity<Object> approveAllPendingOrders(Authentication authentication) {
         List<CafeOrders> pendingOrdersList = cafeOrderService.getAllPendingOrders();
@@ -130,6 +133,7 @@ public class RestOrdersController {
         return ResponseEntity.status(200).body(result);
     }
 
+    @JsonView(CafeOrdersView.ViewToReturnOrders.class)
     @RequestMapping(value = "/api/orders/cancel_all", method = RequestMethod.POST)
     public ResponseEntity<Object> cancelAllPendingOrders(Authentication authentication) {
         List<CafeOrders> pendingOrdersList = cafeOrderService.getAllPendingOrders();
@@ -144,6 +148,7 @@ public class RestOrdersController {
         return ResponseEntity.status(200).body(result);
     }
 
+    @JsonView(CafeOrdersView.ViewToReturnOrders.class)
     @RequestMapping(value = "/api/orders/{id}/cancel", method = RequestMethod.POST)
     public ResponseEntity<Object> cancelOrder(Authentication authentication, @PathVariable("id") long id) {
         CafeOrders cafeOrder = cafeOrderService.getOrderById(id);
