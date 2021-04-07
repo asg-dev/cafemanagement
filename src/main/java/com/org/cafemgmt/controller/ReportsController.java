@@ -75,7 +75,7 @@ public class ReportsController {
         model.addAttribute("totalSalePrice", cafeOrderService.getSaleTotalForReport(obtainedOrders));
         model.addAttribute("totalSaleReport", obtainedOrders.size());
         model.addAttribute("totalRatings", cafeOrderService.getTotalRatingsForReport(obtainedOrders));
-        System.out.println(" Date Range :: " + dateRange + " Customer ID :: " + customerId + " Approver ID ::" + approverId);
+        log.info(" Date Range :: " + dateRange + " Customer ID :: " + customerId + " Approver ID ::" + approverId);
         model.addAttribute("dateValue", dateRange);
         model.addAttribute("approverId",approverId);
         model.addAttribute("customerId",customerId);
@@ -94,7 +94,7 @@ public class ReportsController {
         String headerValue = "attachment; filename=cafereport_" + currentTime + ".csv";
         response.setHeader(headerKey, headerValue);
 
-        System.out.println("Sent for CSV Export: --> dateRange: " + dateRange + " ::: customerId: " + customerId + " ::: approverId: " + approverId);
+        log.info("Sent for CSV Export: --> dateRange: " + dateRange + " ::: customerId: " + customerId + " ::: approverId: " + approverId);
         long internalCustomerId= 0;
         long internalApproverId=0;
         if(customerId!=null && !customerId.isEmpty()){
@@ -109,7 +109,7 @@ public class ReportsController {
         } else {
             cafeOrdersList = cafeOrderService.getOrdersForReport(dateRange, internalCustomerId, internalApproverId);
         }
-        System.out.println(cafeOrdersList);
+        log.info(String.valueOf(cafeOrdersList));
         for (CafeOrders order : cafeOrdersList) {
             if( userService.findUserById(order.getCustomerId()).isPresent()) {
                 order.setCustomerName(userService.findUserById(order.getCustomerId()).get().getName());

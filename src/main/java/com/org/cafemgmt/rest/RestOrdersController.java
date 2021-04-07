@@ -7,6 +7,7 @@ import com.org.cafemgmt.model.CafeOrders;
 import com.org.cafemgmt.model.PrincipalUserDetails;
 import com.org.cafemgmt.service.*;
 import com.org.cafemgmt.views.CafeOrdersView;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@Slf4j
 public class RestOrdersController {
 
     @Autowired
@@ -178,13 +180,13 @@ public class RestOrdersController {
             build.add(items.get(0) + ":" + items.get(1) + ":" + totalPrice + ":" + items.get(2));
         }
 
-        System.out.println(build);
+        log.info(String.valueOf(build));
         return String.join(",", build);
     }
 
     private void validateItemListParameter(String cartItemList) {
         String[] cartItems = cartItemList.split(",");
-        // Validating Item Id, menuId
+        // Validating Item Id & menu Id
         try {
             for (String order : cartItems) {
                 if (order.split(":").length != 3) {
