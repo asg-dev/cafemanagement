@@ -39,7 +39,7 @@ public class RestOrdersController {
     public List<CafeOrders> listAllOrders(@RequestParam(value = "status", required = false) Long status) {
         if (status != null) {
             if (! (status > 0 && status < 4)) {
-                throw new CafeInvalidParameterException("Invalid status in request");
+                throw new CafeInvalidParameterException("Invalid value for 'status' in request");
             }
 
             List<CafeOrders> cafeOrdersList = new ArrayList<>();
@@ -61,7 +61,7 @@ public class RestOrdersController {
     @RequestMapping(value = "/api/orders", method = RequestMethod.POST)
     public ResponseEntity<Object> createOrder(Authentication authentication,
                                               @RequestBody CafeOrders cafeOrder,
-                                              @RequestParam(required = false) boolean approved) {
+                                              @RequestParam(name = "approved", required = false) boolean approved) {
         if (cafeOrder.getId() != 0 || cafeOrder.getCreatedAt() != null || cafeOrder.getUpdatedAt() != null || cafeOrder.getTotalPrice() != 0) {
             throw new CafeInvalidParameterException("Invalid parameter in request: id, created_at, updated_at, totalPrice not allowed in request");
         }
@@ -77,6 +77,9 @@ public class RestOrdersController {
         if (cafeOrder.getCartItemList() == null) {
             throw new CafeInvalidParameterException("Missing Cart Items. Add cart items as a comma-separated list of pipe-separated values." +
                     "like: itemId:quantity:menuId,itemId2:quantity2:menuId2,...");
+        }
+        if (cafeOrder.getCustomerId() == 0) {
+            throw new CafeInvalidParameterException("Missing Customer Id in request");
         }
         validateItemListParameter(cafeOrder.getCartItemList());
         String cartItemList = buildCartItemList(cafeOrder.getCartItemList());

@@ -39,6 +39,9 @@ public class RestUsersController {
             if (!user.getAuthority().contains("ROLE_CLERK") && !user.getAuthority().contains("ROLE_ADMIN")) {
                 throw new CafeInvalidParameterException("Invalid Parameter in Request - User authority should be ROLE_CLERK or ROLE_ADMIN");
             }
+            if (user.getId() != 0 || user.getValidityToken() != null || user.getCreated_at() != null || user.getUpdated_at() != null) {
+                throw new CafeInvalidParameterException("Invalid Parameter in Request");
+            }
             return userService.saveCafeUser(user,"CREATE");
         } else {
             throw new CafeInvalidParameterException("Name, emailAddress and authority fields are mandatory");
@@ -62,6 +65,9 @@ public class RestUsersController {
     @RequestMapping(value = "/api/users/{id}", method = RequestMethod.PUT)
     @JsonView(CafeUserView.ViewToReturnUsers.class)
     public ResponseEntity<Object> editUser(@RequestBody CafeUsers cafeUser, @PathVariable long id) {
+        if (cafeUser.getId() != 0 || cafeUser.getValidityToken() != null || cafeUser.getCreated_at() != null || cafeUser.getUpdated_at() != null) {
+            throw new CafeInvalidParameterException("Invalid Parameter in Request");
+        }
         Optional<CafeUsers> myUser = userService.findUserById(id);
         List<String> acceptedAuthorities = new ArrayList<String>();
         acceptedAuthorities.add("ROLE_CLERK");

@@ -43,6 +43,9 @@ public class RestMenusController {
     @RequestMapping(value = "api/menus", method = RequestMethod.POST)
     @JsonView(CafeMenuView.ViewToReturnMenus.class)
     public ResponseEntity<Object> addNewMenu(@RequestBody CafeMenus cafeMenus) {
+        if (cafeMenus.getId() != 0 || cafeMenus.getCreated_at() != null || cafeMenus.getUpdated_at() != null) {
+            throw new CafeInvalidParameterException("Invalid Parameter in Request");
+        }
         validateInput(cafeMenus);
         return ResponseEntity.status(200).body(menuService.saveMenu(cafeMenus));
     }
@@ -54,16 +57,21 @@ public class RestMenusController {
         if (!existingMenu.isPresent()) {
             throw new CafeEntityNotFoundException("Menu with Id <" + id + "> not found");
         }
+        if (cafeMenus.getId() != 0 || cafeMenus.getCreated_at() != null || cafeMenus.getUpdated_at() != null) {
+            throw new CafeInvalidParameterException("Invalid Parameter in Request");
+        }
         validateInput(cafeMenus);
         return ResponseEntity.status(200).body(menuService.updateMenu(cafeMenus, id));
     }
 
     @RequestMapping(value = "api/menus/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteMenu(@PathVariable long id) {
+
         Optional<CafeMenus> existingMenu = menuService.getMenuById(id);
         if (!existingMenu.isPresent()) {
             throw new CafeEntityNotFoundException("Menu with Id <" + id + "> not found");
         }
+
         menuService.deleteMenuById(id);
         return ResponseEntity.status(204).build();
     }

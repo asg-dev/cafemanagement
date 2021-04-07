@@ -91,7 +91,7 @@ public class ReportsController {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String currentTime = dateFormatter.format(new Date());
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=users_" + currentTime + ".csv";
+        String headerValue = "attachment; filename=cafereport_" + currentTime + ".csv";
         response.setHeader(headerKey, headerValue);
 
         System.out.println("Sent for CSV Export: --> dateRange: " + dateRange + " ::: customerId: " + customerId + " ::: approverId: " + approverId);
@@ -105,8 +105,8 @@ public class ReportsController {
         }
         List<CafeOrders> cafeOrdersList = null;
         if((dateRange==null || dateRange.isEmpty()) && internalCustomerId == 0 && internalApproverId == 0){
-            cafeOrdersList = cafeOrderService.listAllOrders();
-        }else {
+            cafeOrdersList = cafeOrderService.getAllApprovedOrders();
+        } else {
             cafeOrdersList = cafeOrderService.getOrdersForReport(dateRange, internalCustomerId, internalApproverId);
         }
         System.out.println(cafeOrdersList);
