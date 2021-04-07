@@ -343,7 +343,7 @@ Sample Payload:
 2. This endpoint will accept an optional flag/param `approved`.
 3. `approved` can be `true` or `false`.
 4. If `approved` is set as `true`, the order will be created with `status` set as `2` - approving it right away.
-5. `cartItemList` will accept a comma-delimited string of pipe-delimited values in this format: `itemId:quantity:menuId,itemId2:quantity2:menuId2,...`
+5. `cartItemList` will accept a comma-delimited string of colon-delimited values in this format: `itemId:quantity:menuId,itemId2:quantity2:menuId2,...`
 6. `customerId` and `status` are mandatory.
 
 ```
