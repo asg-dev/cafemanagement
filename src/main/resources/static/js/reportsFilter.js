@@ -5,16 +5,27 @@ $(function() {
         console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
      });
 
-    $('.csel').change(function() {
-        $('.hiddencid').val($('.csel').val());
-
-        console.log("Value set for hiddencid: ", $('.hiddencid').val());
-    })
-
-    $('.asel').change(function() {
-        $('.hiddenaid').val($('.csel').val());
-        console.log("Value set for hiddenaid: ", $('.hiddenaid').val());
-    })
+//    $('.generate-csv').click(function() {
+//        var dateRange = $('input[name="dateRange"]').val();
+//        var customerId = $('#customerId').val();
+//        var approverId = $('#approverId').val();
+//        generateReportCall(dateRange, customerId, approverId);
+//    });
+//
+//    function generateReportCall(dateRange, customerId, approverId) {
+//        $.ajax({
+//                type: 'GET',
+//                url: `/reports/export_csv`,
+//                dataType: 'json',
+//                data: {
+//                    'dateRange': dateRange,
+//                    'customerId': customerId,
+//                    'approverId': approverId
+//                },
+//                success: function(msg) {
+//                }
+//            });
+//      }
 
     function getCustomers(textArea, callback, delay) {
         var timer = null;
@@ -47,7 +58,7 @@ $(function() {
   function makeAjaxCall(url, flag, id) {
     $.ajax({
             type: 'POST',
-            url: `http://localhost:8080/search/users?customer=${flag}&q=${url}`,
+            url: `/search/users?customer=${flag}&q=${url}`,
             dataType: 'json',
             success: function(msg) {
                 console.log(typeof(msg))

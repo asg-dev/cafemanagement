@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:form="http://www.w3.org/1999/html">
 
 <head>
 
@@ -57,14 +58,14 @@
                     <a class="btn btn-info" data-toggle="collapse" href="#filters" role="button" aria-expanded="false" aria-controls="filters">
                         Filters
                     </a>
+                    <button class="btn btn-primary" href="#" data-toggle="modal" data-target="#insightsModal" >Get Insights</button>
                 </p>
                 <div class="collapse" id="filters">
                 <form method="POST" th:object="${cafeReport}" th:action="@{/generate_report}" autocomplete="off">
 
                     <div class="form-group">
                         <div class="label">Date Range
-                            <input class="form-control" type="text" th:field="*{dateRange}" name="daterange"
-                                   value="03/01/2021 - 04/01/2021"/>
+                            <input class="form-control" type="text" th:field="*{dateRange}" name="daterange"/>
                         </div>
                     </div>
 
@@ -119,6 +120,7 @@
                     </th:block>
                     </tbody>
                 </table>
+                <div th:replace="fragments/insightsmodal :: insightsModal"></div>
             </div>
         </div>
     </div>
@@ -130,7 +132,20 @@
 $(document).ready(function() {
     // DataTables initialisation
     var table = $('#reports-table').DataTable();
+
 });
+
+  function makeAjaxCall(url, flag, id) {
+    $.ajax({
+            type: 'POST',
+            url: `search/users?customer=${flag}&q=${url}`,
+            dataType: 'json',
+            success: function(msg) {
+                console.log(typeof(msg))
+                setDropdownValues(msg, id, flag);
+            }
+        });
+  }
 
 </script>
 

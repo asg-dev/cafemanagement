@@ -30,4 +30,10 @@ public interface CafeOrderService {
     public CafeOrders transformAndSaveCart(CafeCarts cafeCart);
 
     public List<CafeOrders> getOrdersForReport(String dateRange, long customerId, long approverId);
+
+    public double getSaleTotalForReport(List<CafeOrders> obtainedOrders);
+
+    public long getTotalRatingsForReport(List<CafeOrders> obtainedOrders);
+
+    public List<CafeOrders> getAllCancelledOrders();
 }

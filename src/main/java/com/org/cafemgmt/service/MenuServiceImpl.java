@@ -4,11 +4,13 @@ import com.org.cafemgmt.model.CafeMenus;
 import com.org.cafemgmt.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MenuServiceImpl implements MenuService {
 
     @Autowired

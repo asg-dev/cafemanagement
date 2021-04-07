@@ -17,11 +17,13 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     EmailService emi;
+
     @Autowired
     UserRegistration userRegistration;
 

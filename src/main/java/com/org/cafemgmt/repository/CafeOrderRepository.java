@@ -16,6 +16,9 @@ public interface CafeOrderRepository extends JpaRepository<CafeOrders, Long> {
     @Query("SELECT t FROM CafeOrders t WHERE t.status = 2 ORDER BY t.createdAt DESC")
     public List<CafeOrders> listAllApprovedOrders();
 
+    @Query("SELECT t FROM CafeOrders t WHERE t.status = 3 ORDER BY t.createdAt DESC")
+    public List<CafeOrders> listAllCancelledOrders();
+
     @Query("SELECT t FROM CafeOrders t WHERE t.customerId = ?1 ORDER BY t.createdAt DESC")
     public List<CafeOrders> findAllByUserId(long user_id);
 
@@ -30,4 +33,13 @@ public interface CafeOrderRepository extends JpaRepository<CafeOrders, Long> {
 
     @Query("SELECT t FROM CafeOrders t WHERE t.status = 2 AND t.createdAt > ?1 AND t.createdAt < ?2 AND t.customerId = ?3 AND t.approvedUser = ?4")
     public List<CafeOrders> findWithinDateRangeBothIds(Date date, Date date1, long customerId, long approverId);
+
+    @Query("SELECT t FROM CafeOrders t WHERE t.status = 2 AND t.customerId = ?1")
+    public List<CafeOrders> findByCustomerId(long customerId);
+
+    @Query("SELECT t FROM CafeOrders t WHERE t.status = 2 AND t.approvedUser = ?1")
+    public List<CafeOrders> findByApproverId(long approverId);
+
+    @Query("SELECT t FROM CafeOrders t WHERE t.status = 2 AND t.customerId = ?1 AND t.approvedUser = ?2")
+    public List<CafeOrders> findByCustomerIdAndApproverId(long customerId, long approverId);
 }

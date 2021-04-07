@@ -1,7 +1,10 @@
 package com.org.cafemgmt.service;
 
+import org.springframework.stereotype.Service;
+
 import java.util.UUID;
 
+@Service
 public class UserRegistrationImpl implements UserRegistration {
     @Override
     public String generateRegistrationMessage(UUID token, String userName) {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,8 +34,13 @@ public class UsersController {
 
         model.addAttribute("firstCharInUsername", loggedInUsername.charAt(0));
         model.addAttribute("username", loggedInUsername);
-
-        model.addAttribute("users", userList);
+        List<CafeUsers> modifiedUserList = new ArrayList<CafeUsers>();
+        for (CafeUsers user : userList) {
+            if (user.getEmailAddress() != "walkincustomerdefault@freshbrew.com") {
+                modifiedUserList.add(user);
+            }
+        }
+        model.addAttribute("users", modifiedUserList);
         return "users";
     }
 

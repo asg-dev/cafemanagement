@@ -26,12 +26,11 @@ public class BeanConfig {
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp-mail.outlook.com");
+        mailSender.setHost("smtp.office365.com");
         mailSender.setPort(587);
 
         mailSender.setUsername("assist.kingsguard@outlook.com");
         mailSender.setPassword("Fduser@123");
-
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
@@ -76,5 +75,6 @@ public class BeanConfig {
         return new CafeRatingsServiceImpl();
     }
 
-
+    @Bean
+    SaveToS3Service saveToS3Service() { return new SaveToS3ServiceImpl(); }
 }

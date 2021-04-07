@@ -38,10 +38,12 @@ public class RegisterAccountController {
     @RequestMapping(value = "/register_account", method = RequestMethod.POST)
     public String savePasswordForUser(Authentication authentication, HttpServletRequest request, @ModelAttribute("userRegistration") CafeUsers cafeUsers) throws ServletException {
         CafeUsers registeredUser = userService.registerUser(cafeUsers);
-        if (authentication.isAuthenticated()) {
-            // if the user tries registering while having an authenticated session, don't perform login for the new user.
-            // existing session takes precedence.
-            return "redirect:/";
+        if (authentication != null) {
+            if (authentication.isAuthenticated()) {
+                // if the user tries registering while having an authenticated session, don't perform login for the new user.
+                // existing session takes precedence.
+                return "redirect:/";
+            }
         }
         request.login(registeredUser.getEmailAddress(), cafeUsers.getPassword()); // this password will be hashed internally
         return "redirect:/";

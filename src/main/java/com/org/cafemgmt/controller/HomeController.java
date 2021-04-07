@@ -15,7 +15,13 @@ public class HomeController {
     public String home() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
-            return "redirect:/site/menus";
+            if (auth.getAuthorities().contains("ROLE_CUSTOMER")) {
+                return "redirect:/site/menus";
+            }
+            else {
+                return "redirect:/pending_orders";
+            }
+
         }
         return "login";
     }

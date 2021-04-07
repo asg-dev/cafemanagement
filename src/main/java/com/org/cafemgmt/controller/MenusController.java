@@ -64,12 +64,6 @@ public class MenusController {
         return "site_menus2";
     }
 
-    // CUSTOMER: MENU (currentpage) - MY ORDERS - CART - LOGOUT
-    // CLERK:    MENU - PENDING ORDERS - CART (WALKIN CUSTOMER) - LOGOUT
-    // ADMIN:    MENU - PENDING ORDERS - CART (WALKIN CUSTOMER) - ADMIN - LOGOUT
-
-    // ADMIN (in ADMIN page): USERS - MENUS - REPORTS
-
     @RequestMapping(value = "/menus", method = RequestMethod.GET)
     public String showMenus(Authentication authentication, Model model) {
         String loggedInUsername = UserManagement.getUserName(authentication, userService);

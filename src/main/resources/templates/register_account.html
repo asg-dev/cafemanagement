@@ -16,9 +16,6 @@
 	background: rgba(255, 255, 255, 0.8);
 	box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
 }
-
-
-
 </style>
 
 <body>
@@ -32,13 +29,9 @@
                         <h2 class="form-signin-heading" style="font-family: 'Staatliches', cursive;">Create your
                             account</h2>
                         <div class="form-group">
-                            <input type="text" th:field="*{emailAddress}" class="form-control"
-                                   style="font-family: 'Fira Sans', sans-serif;pointer-events:none; background:grey;" placeholder="Email Address"
-                                   autofocus="true">
-                            <span class="has-error" th:if="${#fields.hasErrors('emailAddress')}"
-                                  th:errors="*{emailAddress}"></span>
+                            <div class="text-muted h5" th:inline="text">[[${userRegistration.emailAddress}]]</div>
                         </div>
-
+                        <input type="hidden" th:field="*{emailAddress}">
                         <div class="form-group">
                             <input type="text" th:field="*{name}" class="form-control"
                                    style="font-family: 'Fira Sans', sans-serif;" placeholder="Name">

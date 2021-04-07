@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="insightsModal" class="modal" id="insightsModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="card" style="width: inherit;">
+                    <div class="card-body">
+                        <h5 class="card-title d-flex justify-content-center">Total Revenue</h5>
+                        <h6 class="card-subtitle mb-2 text-muted d-flex justify-content-center" th:object="${dateValue}" th:inline="text">Total Profit over time [[${dateValue}]]</h6>
+                        <hr>
+                        <h1 class="card-text d-flex justify-content-center" th:object="${totalSalePrice}" th:inline="text">
+                            $[[${totalSalePrice}]]
+                        </h1>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <h5 class="card-title d-flex justify-content-center">Total Orders Sold</h5>
+                        <h6 class="card-subtitle mb-2 text-muted d-flex justify-content-center" th:object="${dateValue}" th:inline="text">Total Orders over time [[${dateValue}]]</h6>
+                        <hr>
+                        <h1 class="card-text d-flex justify-content-center" th:object="${totalSaleReport}" th:inline="text">
+                            [[${totalSaleReport}]]
+                        </h1>
+                        <hr>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title d-flex justify-content-center">Total Ratings </h5>
+                        <h6 class="card-subtitle mb-2 text-muted d-flex justify-content-center" th:object="${dateValue}" th:inline="text">Total Ratings over time [[${dateValue}]]</h6>
+                        <hr>
+                        <h1 class="card-text d-flex justify-content-center" th:object="${totalRatings}" th:inline="text">
+                            [[${totalRatings}]]
+                        </h1>
+                        <hr>
+                    </div>
+                        <div class="card-body  d-flex justify-content-center">
+                                <form th:action="@{/reports/export_csv}" method="post">
+                                    <input type="hidden" th:name="dateValue"  th:value="${dateValue}">
+                                    <input type="hidden" th:name="customerId" th:value="${customerId}">
+                                    <input type="hidden" th:name="approverId" th:value="${approverId}">
+                                <button class="btn btn-info" type="submit">Generate CSV</button>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

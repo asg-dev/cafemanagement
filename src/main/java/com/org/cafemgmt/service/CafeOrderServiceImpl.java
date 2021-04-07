@@ -8,6 +8,7 @@ import com.org.cafemgmt.repository.MenuItemsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CafeOrderServiceImpl implements CafeOrderService {
 
     @Autowired
@@ -33,6 +35,10 @@ public class CafeOrderServiceImpl implements CafeOrderService {
     @Override
     @Transactional
     public CafeOrders saveCafeOrder(CafeOrders cafeOrder) {
+        if(cafeOrder.getCreatedAt() == null) {
+            cafeOrder.setCreatedAt(new Date());
+        }
+        cafeOrder.setUpdatedAt(new Date());
         return cafeOrderRepository.save(cafeOrder);
     }
 
@@ -168,14 +174,22 @@ public class CafeOrderServiceImpl implements CafeOrderService {
         }
         CafeOrders cafeOrder = CafeOrders.builder().customerId(customerId).approvedUser(approverId).build();
         try {
-            if (dateRange != null && customerId == 0 && approverId == 0) {
+            if (dateRange != null && !dateRange.trim().isEmpty()&& customerId == 0 && approverId == 0) {
                 return cafeOrderRepository.findWithinDateRange(new Date(completeRange[0]), new Date(completeRange[1]));
-            } else if (dateRange != null && customerId != 0 && approverId == 0) {
+            } else if (dateRange != null && !dateRange.trim().isEmpty()&& customerId != 0 && approverId == 0) {
                 return cafeOrderRepository.findWithinDateRangeCustomerId(new Date(completeRange[0]), new Date(completeRange[1]), customerId);
-            } else if (dateRange != null && customerId == 0 && approverId != 0) {
+            } else if (dateRange != null && !dateRange.trim().isEmpty() && customerId == 0 && approverId != 0) {
                 return cafeOrderRepository.findWithinDateRangeApproverId(new Date(completeRange[0]), new Date(completeRange[1]), approverId);
-            } else if (dateRange != null && customerId != 0 && approverId != 0) {
+            } else if (dateRange != null && !dateRange.trim().isEmpty() && customerId != 0 && approverId != 0) {
                 return cafeOrderRepository.findWithinDateRangeBothIds(new Date(completeRange[0]), new Date(completeRange[1]), customerId, approverId);
+            } else if (dateRange == null && customerId == 0 && approverId == 0) {
+                return cafeOrderRepository.findAll();
+            } else if (dateRange == null && customerId != 0 && approverId == 0) {
+                return cafeOrderRepository.findByCustomerId(customerId);
+            } else if (dateRange == null && customerId == 0 && approverId != 0) {
+                return cafeOrderRepository.findByApproverId(approverId);
+            } else if (dateRange == null && customerId != 0 && approverId != 0) {
+                return cafeOrderRepository.findByCustomerIdAndApproverId(customerId, approverId);
             } else {
                 return cafeOrderRepository.findAll(Example.of(cafeOrder));
             }
@@ -184,4 +198,30 @@ public class CafeOrderServiceImpl implements CafeOrderService {
             throw new CafeInvalidParameterException("Invalid Parameter in Request");
         }
     }
+
+    @Override
+    public double getSaleTotalForReport(List<CafeOrders> obtainedOrders) {
+        double totalSale = 0;
+        for (CafeOrders order : obtainedOrders) {
+            totalSale += (order.getTotalPrice());
+        }
+        return totalSale;
+    }
+
+    @Override
+    public long getTotalRatingsForReport(List<CafeOrders> obtainedOrders) {
+        long totalRating = 0;
+        for (CafeOrders order : obtainedOrders) {
+            if (order.getRating() != 0) {
+                totalRating += 1;
+            }
+        }
+        return totalRating;
+    }
+
+    @Override
+    public List<CafeOrders> getAllCancelledOrders() {
+        return cafeOrderRepository.listAllCancelledOrders();
+    }
+
 }

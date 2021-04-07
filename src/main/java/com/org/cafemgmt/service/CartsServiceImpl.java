@@ -6,10 +6,12 @@ import com.org.cafemgmt.model.CartItem;
 import com.org.cafemgmt.repository.CafeCartsRepository;
 import com.org.cafemgmt.repository.MenuItemsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.*;
 
+@Service
 public class CartsServiceImpl implements CartsService {
     final String sep = ":";
     @Autowired

@@ -4,17 +4,26 @@ import com.org.cafemgmt.model.CafeMenuItems;
 import com.org.cafemgmt.repository.MenuItemsRepository;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+@Service
 public class MenuItemsServiceImpl implements MenuItemsService {
     @Autowired
     MenuItemsRepository menuItemsRepository;
+
+    @Autowired
+    SaveToS3Service saveToS3Service;
 
     private final Path menuItemRoot = Paths.get("uploads/menu_items");
 
@@ -57,7 +66,9 @@ public class MenuItemsServiceImpl implements MenuItemsService {
             if (extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png") || extension.equals("gif") || extension.equals("bmp")) {
                 String filename = file.getOriginalFilename().replace('.' + extension, "") + RandomString.make(6) + '.' + extension;
                 Files.copy(file.getInputStream(), this.menuItemRoot.resolve(filename));
-                return (menuItemRoot.toString() + File.separator + filename);
+                Path imageKey = Paths.get((menuItemRoot.toString() + File.separator + filename));
+                URL s3Url = saveToS3Service.saveImageToS3(new File(String.valueOf(imageKey)).getAbsoluteFile(), String.valueOf(imageKey));
+                return s3Url.toString();
             } else {
                 return null;
             }
@@ -65,6 +76,8 @@ public class MenuItemsServiceImpl implements MenuItemsService {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
     }
+
+
 
     @Override
     public void deleteMenuItem(long id) {

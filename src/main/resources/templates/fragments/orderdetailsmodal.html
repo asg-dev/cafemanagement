@@ -4,12 +4,6 @@
 </head>
 <body>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-</head>
-<body>
-
 <div th:fragment="orderdetailsmodal">
     <th:block th:each="order : ${cafeOrders}">
         <div class="container demo">
@@ -33,7 +27,7 @@
                                                 <tbody>
                                                 <tr>
                                                     <td><p><span><img th:src="${menuItem.imagePath}"
-                                                                      width="100px"></span> <span class="h3"
+                                                                      width="100px" style="border-radius: 7%;"></span> <span class="h3"
                                                                                                   th:inline="text"> [[${menuItem.menuItemName}]] </span>
                                                     </p>
                                                         <p class="text-muted" th:inline="text">

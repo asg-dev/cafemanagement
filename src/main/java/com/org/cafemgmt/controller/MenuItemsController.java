@@ -26,20 +26,33 @@ public class MenuItemsController {
     UserService userService;
 
     @RequestMapping(value = "/menus/items", method = RequestMethod.POST)
-    public String addMenuItem(HttpServletRequest request, Authentication authentication, Model model, @ModelAttribute("menuItemForm") CafeMenuItems cafeMenuItems,
-                              @ModelAttribute("menuForm") CafeMenus cafeMenus, @RequestParam("file") MultipartFile file) {
+    public String addMenuItem(HttpServletRequest request, Authentication authentication, Model model,
+                              @ModelAttribute("menuItemForm") CafeMenuItems cafeMenuItems,
+                              @ModelAttribute("menuForm") CafeMenus cafeMenus,
+                              @RequestParam("file") MultipartFile file) {
+
         String loggedInUsername = UserManagement.getUserName(authentication, userService);
 
         model.addAttribute("firstCharInUsername", loggedInUsername.charAt(0));
         model.addAttribute("username", loggedInUsername);
 
-        // Using the referrer to identify from which page the edit was made - this way, we can redirect them to the same page with the
+        // Using the referrer to identify from which page the edit was made.
+        // this way, we can redirect them to the same page with the
         // correct information after item creation.
         // As we have to redirect them to the correct /menus/{id}/edit page.
+
         String referrer = request.getHeader("referer");
-        String toReturn = "redirect:/" + referrer.replace("http://localhost:8080/", "");
+        String toReturn = "";
+        if (referrer.contains("localhost")) {
+             toReturn = "redirect:/" + referrer.replace("http://localhost:8000/", "");
+        }
+        else if (referrer.contains("herokuapp")) {
+            toReturn = "redirect:/" + referrer.replace("http://floating-sea-57704/", "");
+        }
+
         toReturn = toReturn.split("\\?")[0];
         String imagePath = "";
+
         if (! file.isEmpty()) {
             imagePath = menuItemsService.saveMenuItemImage(file);
             if (imagePath == null) {
