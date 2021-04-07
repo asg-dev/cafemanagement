@@ -47,7 +47,7 @@ public class MenuItemsController {
              toReturn = "redirect:/" + referrer.replace("http://localhost:8000/", "");
         }
         else if (referrer.contains("herokuapp")) {
-            toReturn = "redirect:/" + referrer.replace("http://floating-sea-57704/", "");
+            toReturn = "redirect:/" + referrer.replace("http://freshbrew-cafemgmt.herokuapp.com/", "");
         }
 
         toReturn = toReturn.split("\\?")[0];

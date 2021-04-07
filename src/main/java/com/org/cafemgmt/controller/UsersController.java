@@ -36,7 +36,7 @@ public class UsersController {
         model.addAttribute("username", loggedInUsername);
         List<CafeUsers> modifiedUserList = new ArrayList<CafeUsers>();
         for (CafeUsers user : userList) {
-            if (user.getEmailAddress() != "walkincustomerdefault@freshbrew.com") {
+            if (user.getEmailAddress().equals("walkincustomerdefault@freshbrew.com")) {
                 modifiedUserList.add(user);
             }
         }

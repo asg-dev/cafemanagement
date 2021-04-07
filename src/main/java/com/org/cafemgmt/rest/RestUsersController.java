@@ -2,6 +2,7 @@ package com.org.cafemgmt.rest;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.org.cafemgmt.common.UserManagement;
 import com.org.cafemgmt.exceptionhandlers.CafeEntityNotFoundException;
 import com.org.cafemgmt.exceptionhandlers.CafeInvalidParameterException;
 import com.org.cafemgmt.model.CafeUsers;
@@ -10,6 +11,7 @@ import com.org.cafemgmt.views.CafeUserView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -44,11 +46,14 @@ public class RestUsersController {
     }
 
     @RequestMapping(value = "/api/users/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> deleteUser(@PathVariable long id) {
+    public ResponseEntity<Object> deleteUser(Authentication authentication, @PathVariable long id) {
         Optional<CafeUsers> userToDelete = userService.findUserById(id);
         if (!userToDelete.isPresent()) {
             log.error("User not found, throwing Exception");
             throw new CafeEntityNotFoundException("No User Found with id " + id);
+        }
+        if (UserManagement.getUserName(authentication, userService).equals(userToDelete.get().getEmailAddress())) {
+            throw new CafeInvalidParameterException("Can't delete self.");
         }
         userService.deleteUser(userToDelete.get());
         return ResponseEntity.status(204).body("");
