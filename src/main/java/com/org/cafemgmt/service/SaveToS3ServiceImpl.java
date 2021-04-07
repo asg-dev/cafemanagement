@@ -16,8 +16,10 @@ import java.net.URL;
 @Service
 public class SaveToS3ServiceImpl implements SaveToS3Service {
 
-    AWSCredentials credentials = new BasicAWSCredentials("AKIAWE7RQRH7Y6X32GEJ",
-            "O8E+USkKAIimc/p7V2GI6HJ87XSw3SlR3Ore2GHh");
+    final String accessKey = System.getenv("S3_KEY");
+    final String secretKey = System.getenv("S3_SECRET");
+
+    AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
 
     AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
             .withCredentials(new AWSStaticCredentialsProvider(credentials))
